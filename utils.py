@@ -61,7 +61,7 @@ def create_table(tablename,PKname,FKargs):
 
 #Executes writing commands to DB. To return data from DB, use sql3_grab(), defined below
 def sql3_exec(strn):
-  printer2("Connecting to Database at {}".format(file_struct.DB_path+file_struct.DBname))
+  printer2("Connecting to Database at {0}".format(file_struct.DB_path+file_struct.DBname))
   conn = sqlite3.connect(file_struct.DB_path+file_struct.DBname)
   c = conn.cursor()
   c.execute('PRAGMA foreign_keys = ON;')
