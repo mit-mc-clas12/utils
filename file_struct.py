@@ -69,7 +69,7 @@ users_fields = (('domain_name','TEXT'),('JoinDateStamp','INT'),('Total_Batches',
                 ('Total_Jobs','INT'),('Total_Events','INT'),('Most_Recent_Active_Date','INT'))
 
 
-batches_fields = (('runstatus','VARCHAR'),('timestamp','FLOAT'),('scard','VARCHAR'))
+batches_fields = (('timestamp','FLOAT'),('scard','VARCHAR'))
 
 #Since there is only 1 scard / batch, in princple this entire scard table should be deleted
 #The submission scripts can be completely written using just the text in the VARCHAR 'scard' field in the Batches table
