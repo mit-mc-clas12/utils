@@ -36,8 +36,8 @@ def printer2(strn): # Can't call the function print because it already exists in
 #    with open(newfile,"w") as file: file.write(str_script)
 #    return str_script
 
-#Takes a dictionary, retuns 2 lists: key (oldvals) and value (newvals) from table in DBName
-def grab_DB_data(table,dictionary,BatchID): #DBName, table = str, dictionary = dict
+#Takes a dictionary, retuns 2 lists: key (oldvals) and value (newvals) from table in DB_name
+def grab_DB_data(table,dictionary,BatchID): #DB_name, table = str, dictionary = dict
     oldvals, newvals = [],[]
     for key in dictionary:
       strn = "SELECT {0} FROM {1} Where BatchID = {2};".format(dictionary[key],table,BatchID)
@@ -50,19 +50,19 @@ def grab_DB_data(table,dictionary,BatchID): #DBName, table = str, dictionary = d
 def add_field(tablename,field_name,field_type):
   strn = "ALTER TABLE {0} ADD COLUMN {1} {2}".format(tablename,field_name, field_type)
   sql3_exec(strn)
-  printer('In database {0}, table {1} has succesfully added field {2}'.format(file_struct.DBname,tablename,field_name))
+  printer('In database {0}, table {1} has succesfully added field {2}'.format(file_struct.DB_name,tablename,field_name))
 
 #Create a table in a database
 def create_table(tablename,PKname,FKargs):
   strn = "CREATE TABLE IF NOT EXISTS {0}({1} integer primary key autoincrement {2})".format(tablename,PKname,FKargs)
   sql3_exec(strn)
-  printer('In database {0}, table {1} has succesfully been created with primary key {2}'.format(file_struct.DBname,
+  printer('In database {0}, table {1} has succesfully been created with primary key {2}'.format(file_struct.DB_name,
         tablename,PKname))
 
 #Executes writing commands to DB. To return data from DB, use sql3_grab(), defined below
 def sql3_exec(strn):
-  printer2("Connecting to Database at {0}".format(file_struct.DB_path+file_struct.DBname))
-  conn = sqlite3.connect(file_struct.DB_path+file_struct.DBname)
+  printer2("Connecting to Database at {0}".format(file_struct.DB_path+file_struct.DB_name))
+  conn = sqlite3.connect(file_struct.DB_path+file_struct.DB_name)
   c = conn.cursor()
   c.execute('PRAGMA foreign_keys = ON;')
   printer2('Executing SQL Command: {0}'.format(strn)) #Turn this on for explict printing of all DB write commands
@@ -75,7 +75,7 @@ def sql3_exec(strn):
 
 #Executes reading commands to DB. Cannot currently be used to return data from DB
 def sql3_grab(strn):
-  conn = sqlite3.connect(file_struct.DB_path+file_struct.DBname)
+  conn = sqlite3.connect(file_struct.DB_path+file_struct.DB_name)
   c = conn.cursor()
   printer2('Executing SQL Command: {0}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)

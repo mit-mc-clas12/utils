@@ -182,7 +182,7 @@ DB_path = dirname+"/../utils/database/"
 scard_path = dirname+"/../client/"
 
 #Specifiy Database name:
-DBname = 'CLAS12_OCRDB.db'
+DB_name = 'CLAS12_OCRDB.db'
 #Specify scard name
 scard_name = 'scard.txt'
 #Specify the directory names of all submission files
@@ -200,10 +200,6 @@ cw_obj.file_path = sub_files_path+'condor_wrapper_files/' #This is not currently
 # the key 'dvcs' should be changed to dvcsgen
 genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}
 genExecutable =  {'clasdis': 'clasdis', 'dvcs': 'dvcsgen','disrad':'generate-dis'}
-
-#This is for creating a default user in the database
-default_user = 'admin'
-default_hostname = 'admin.org'
 
 #This is the debug variable for print statments - 0 = no messages, 1 = some, 2 = all messages. Initalized to 1
 DEBUG = 0
