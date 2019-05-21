@@ -177,6 +177,10 @@ dirname = os.path.dirname(os.path.abspath(__file__))#os.path.dirname(__file__)
 #Specify the location of where all submission files live (runscripts, gcards,etc)
 sub_files_path = dirname+'/../server/submission_files/generated_files/'
 #Specify the location of the DB relative to here (This will get changed when moving to SQL RDBMS)
+
+# To Do: the sql lite database should be used only in "test" mode
+# This variable can bet set with a command line argument, for example: -testDB=../CLAS12_OCRDB.db
+# The argument should be handled by both the client and server 
 DB_path = dirname+"/../utils/database/"
 #Specify the location of the scard
 scard_path = dirname+"/../client/"
