@@ -180,7 +180,7 @@ sub_files_path = dirname+'/../server/submission_files/generated_files/'
 
 # To Do: the sql lite database should be used only in "test" mode
 # This variable can bet set with a command line argument, for example: -testDB=../CLAS12_OCRDB.db
-# The argument should be handled by both the client and server 
+# The argument should be handled by both the client and server
 DB_path = dirname+"/../utils/database/"
 #Specify the location of the scard
 scard_path = dirname+"/../client/"
@@ -216,3 +216,5 @@ debug_help = help = """0 (default) - no messages,1 - general messages,
 
 gcard_identifying_text = '.gcard' #For use in gcard_helper.py
 gcard_default = '/jlab/work/clas12.gcard'
+lund_identifying_text = '.txt' #For use in gcard_helper.py
+lund_default = ""
