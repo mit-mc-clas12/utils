@@ -22,18 +22,10 @@
 """
 #***************************************************************
 from __future__ import print_function
-import argparse, subprocess
+import argparse, subprocess, os
 import utils, file_struct, html_reader
 
-def Lund_Entry(url_dir):
-  print("Gathering lund files from {0} ".format(url_dir))
-  if url_dir == file_struct.lund_default:
-    utils.printer('Using default lund file')
-  elif 'https://' in url_dir:
-    utils.printer('Trying to download lund files from online repository')
-    raw_html, lund_urls = html_reader.html_reader(url_dir,file_struct.lund_identifying_text)
-    lund_dir = "lund_dir"
-    subprocess.call(['mkdir','-p',lund_dir])
+def Lund_Downloader(url_dir,lund_urls,lund_dir):
     if len(lund_urls) == 0:
       print("No Lund files found (they must end in '{0}'). Is the online repository correct?".format(file_struct.lund_identifying_text ))
       exit()
@@ -46,11 +38,24 @@ def Lund_Entry(url_dir):
         print("\t Gathered lund file '{0}'".format(url_ending))
         filename = lund_dir+"/"+url_ending
         with open(filename,"a") as file: file.write(lund_text_db)
+
+def Lund_Entry(url_dir):
+  print("Gathering lund files from {0} ".format(url_dir))
+  if url_dir == file_struct.lund_default:
+    utils.printer('Using default lund file')
+  elif 'https://' in url_dir:
+    utils.printer('Trying to download lund files from online repository')
+    raw_html, lund_urls = html_reader.html_reader(url_dir,file_struct.lund_identifying_text)
+    lund_dir_unformatted = url_dir.split("//")[1]
+    lund_dir = lund_dir_unformatted.replace(".","_").replace("/","_").replace("~","_")
+    if os.path.exists(lund_dir):
+      print("Directory of LUND files already has been downloaded, not downloading again")
+    else:
+      subprocess.call(['mkdir','-p',lund_dir])
+      Lund_Downloader(url_dir,lund_urls,lund_dir)
   else:
     print('generator not recognized as default option or valid online repository, please inspect scard')
     exit()
-
-
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
