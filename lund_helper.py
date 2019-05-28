@@ -22,36 +22,32 @@
 """
 #***************************************************************
 from __future__ import print_function
-import argparse
+import argparse, subprocess
 import utils, file_struct, html_reader
 
-def db_lund_write(BatchID,lund_text):
-    strn = "INSERT INTO Gcards(BatchID) VALUES ({0});".format(BatchID)
-    utils.sql3_exec(strn)
-    strn = """UPDATE Gcards SET {0} = "{1}" WHERE BatchID = {2};""".format('gcard_text',lund_text,BatchID)
-    utils.sql3_exec(strn)
-    utils.printer("GCard added to database corresponding to BatchID {0}".format(BatchID))
-
-def Lund_Entry(BatchID,url_dir):
+def Lund_Entry(url_dir):
   print("Gathering lund files from {0} ".format(url_dir))
   if url_dir == file_struct.lund_default:
     utils.printer('Using default lund file')
-    lund_text_db = url_dir
-    db_lund_write(BatchID,lund_text_db)
   elif 'https://' in url_dir:
     utils.printer('Trying to download lund files from online repository')
     raw_html, lund_urls = html_reader.html_reader(url_dir,file_struct.lund_identifying_text)
-    print(raw_html)
-    print(lund_urls)
-    for url_ending in lund_urls:
-      utils.printer('Lund URL name is: '+url_ending)
-      lund_text = html_reader.html_reader(url_dir+'/'+url_ending,'')[0]#This returns a tuple, we need the contents of the tuple
-      utils.printer2('HTML from lund link is: {0}'.format(lund_text))
-      lund_text_db = lund_text.replace('"',"'")
-      print("\t Gathered lund file '{0}'".format(url_ending))
-      db_lund_write(BatchID,lund_text_db)
+    lund_dir = "lund_dir"
+    subprocess.call(['mkdir','-p',lund_dir])
+    if len(lund_urls) == 0:
+      print("No Lund files found (they must end in '{0}'). Is the online repository correct?".format(file_struct.lund_identifying_text ))
+      exit()
+    else:
+      for url_ending in lund_urls:
+        utils.printer('Lund URL name is: '+url_ending)
+        lund_text = html_reader.html_reader(url_dir+'/'+url_ending,'')[0]#This returns a tuple, we need the contents of the tuple
+        utils.printer2('HTML from lund link is: {0}'.format(lund_text))
+        lund_text_db = lund_text.replace('"',"'") #This isn't strictly needed but SQLite can't read " into data fields, only ' characters
+        print("\t Gathered lund file '{0}'".format(url_ending))
+        filename = lund_dir+"/"+url_ending
+        with open(filename,"a") as file: file.write(lund_text_db)
   else:
-    print('gcard not recognized as default option or online repository, please inspect scard')
+    print('generator not recognized as default option or valid online repository, please inspect scard')
     exit()
 
 
@@ -63,4 +59,4 @@ if __name__ == "__main__":
 
     file_struct.DEBUG = getattr(args,file_struct.debug_long)
     url_dir = "https://userweb.jlab.org/~ungaro/lund/"
-    Lund_Entry(2,url_dir)
+    Lund_Entry(url_dir)
