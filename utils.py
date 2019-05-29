@@ -18,7 +18,6 @@ import file_struct, sqlite3, os, datetime
 def gettime():
   return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-
 def printer(strn): # Can't call the function print because it already exists in python
   if (int(file_struct.DEBUG) == 1) or (int(file_struct.DEBUG) == 2):
     print(strn)
@@ -61,8 +60,12 @@ def create_table(tablename,PKname,FKargs):
 
 #Executes writing commands to DB. To return data from DB, use sql3_grab(), defined below
 def sql3_exec(strn):
-  printer2("Connecting to Database at {0}".format(file_struct.DB_path+file_struct.DB_name))
-  conn = sqlite3.connect(file_struct.DB_path+file_struct.DB_name)
+  if file_struct.use_mysql:
+    DB = file_struct.MySQL_DB_path+file_struct.DB_name
+  else:
+    DB = file_struct.SQLite_DB_path+file_struct.DB_name
+  printer2("Connecting to Database at {0}".format(DB))
+  conn = sqlite3.connect(DB)
   c = conn.cursor()
   c.execute('PRAGMA foreign_keys = ON;')
   printer2('Executing SQL Command: {0}'.format(strn)) #Turn this on for explict printing of all DB write commands
@@ -75,7 +78,11 @@ def sql3_exec(strn):
 
 #Executes reading commands to DB. Cannot currently be used to return data from DB
 def sql3_grab(strn):
-  conn = sqlite3.connect(file_struct.DB_path+file_struct.DB_name)
+  if file_struct.use_mysql:
+    DB = file_struct.MySQL_DB_path+file_struct.DB_name
+  else:
+    DB = file_struct.SQLite_DB_path+file_struct.DB_name
+  conn = sqlite3.connect(DB)
   c = conn.cursor()
   printer2('Executing SQL Command: {0}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)

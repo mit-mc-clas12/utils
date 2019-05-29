@@ -19,6 +19,9 @@
 """
 #****************************************************************
 
+from __future__ import print_function
+import file_struct, sqlite3, os, datetime
+
 """*****************************************************************************
 ------------------------ Submission File Specifications ------------------------
 *****************************************************************************"""
@@ -26,6 +29,7 @@
 #But a class seemed like a reasonable way to go, so if we want to add more
 #submission files we can just create a new submission file object.
 #We don't need to decalre any fields in the class constructor but it helps code readability
+
 class sub_file():
   def __init__(self,name):
     self.name = name
@@ -146,32 +150,7 @@ cw_obj.overwrite_vals = {}
 """*****************************************************************************
 ------------------------- File Path Specifications -----------------------------
 *****************************************************************************"""
-"""Current path specifications are as follows: (only important files & dirs included)
-clas12simulation(s)
-  scard.txt
-  database
-    CLAS12_OCRDB.db
-  submission_files
-    condor_files
-    condor_wrapper_files
-    gcards
-    run_job_files
-    runscript_files
-  src
-     db_batch_entry.py
-     db_user_entry.py
-     sub_script_generator.py
-     templates
-        *.template
-     utils
-        create_database.py
-        file_struct.py **** this file, all locations are referenced relative to this
-        gcard_helper.py
-        scard_helper.py
-        utils.py
-"""
-import os #I would like to do this part differently, but dont have the time to do this right now.
-#I would like to remove dirname entirely, and have everything run relatively, but right now this works.
+
 dirname = os.path.dirname(os.path.abspath(__file__))#os.path.dirname(__file__)
 
 #Specify the location of where all submission files live (runscripts, gcards,etc)
@@ -181,7 +160,11 @@ sub_files_path = dirname+'/../server/submission_files/generated_files/'
 # To Do: the sql lite database should be used only in "test" mode
 # This variable can bet set with a command line argument, for example: -testDB=../CLAS12_OCRDB.db
 # The argument should be handled by both the client and server
-DB_path = dirname+"/../utils/database/"
+
+use_mysql = False
+MySQL_DB_path = """path/to/MySQL/connection"""
+SQLite_DB_path = dirname+"/../utils/database/"
+
 #Specify the location of the scard
 scard_path = dirname+"/../client/"
 
