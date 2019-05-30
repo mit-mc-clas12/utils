@@ -43,6 +43,7 @@ def Lund_Entry(url_dir):
   print("Gathering lund files from {0} ".format(url_dir))
   if url_dir == file_struct.lund_default:
     utils.printer('Using default lund file')
+    return 0
   elif 'https://' in url_dir:
     utils.printer('Trying to download lund files from online repository')
     raw_html, lund_urls = html_reader.html_reader(url_dir,file_struct.lund_identifying_text)
@@ -53,9 +54,11 @@ def Lund_Entry(url_dir):
     else:
       subprocess.call(['mkdir','-p',lund_dir])
       Lund_Downloader(url_dir,lund_urls,lund_dir)
+    return lund_dir
   else:
     print('generator not recognized as default option or valid online repository, please inspect scard')
     exit()
+    return 0
 
 if __name__ == "__main__":
     argparser = argparse.ArgumentParser()
