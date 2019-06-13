@@ -64,12 +64,13 @@ def sql3_exec(strn):
   if file_struct.use_mysql:
     DB = file_struct.MySQL_DB_path+file_struct.DB_name
     conn = MySQLdb.connect('jsubmit.jlab.org', user=file_struct.mysql_uname, password=file_struct.mysql_psswrd,database="CLAS12OCR")
+    c = conn.cursor()
   else:
     DB = file_struct.SQLite_DB_path+file_struct.DB_name
     conn = sqlite3.connect(DB)
+    c = conn.cursor()
+    c.execute('PRAGMA foreign_keys = ON;')
   printer2("Connecting to Database at {0}".format(DB))
-  c = conn.cursor()
-  c.execute('PRAGMA foreign_keys = ON;')
   printer2('Executing SQL Command: {0}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)
   insertion_id = c.lastrowid
