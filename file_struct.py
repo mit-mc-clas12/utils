@@ -162,8 +162,11 @@ sub_files_path = dirname+'/../server/submission_files/generated_files/'
 # The argument should be handled by both the client and server
 
 use_mysql = False
-MySQL_DB_path = """path/to/MySQL/connection"""
-SQLite_DB_path = dirname+"/../utils/database/"
+with open('../login.txt','r') as myfile:
+  login=myfile.read().replace('\n', ' ')
+login_params = login.split()
+mysql_uname = login_params[0]
+mysql_psswrd =  login_params[1]
 
 #Specify the location of the scard
 scard_path = dirname+"/../client/"
