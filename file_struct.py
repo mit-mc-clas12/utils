@@ -168,6 +168,8 @@ login_params = login.split()
 mysql_uname = login_params[0]
 mysql_psswrd =  login_params[1]
 
+MySQL_DB_path = "jsubmit.jlab.org"
+
 #Specify the location of the scard
 scard_path = dirname+"/../client/"
 

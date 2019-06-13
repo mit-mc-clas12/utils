@@ -63,7 +63,7 @@ def create_table(tablename,PKname,FKargs):
 def sql3_exec(strn):
   if file_struct.use_mysql:
     DB = file_struct.MySQL_DB_path+file_struct.DB_name
-    conn = MySQLdb.connect('jsubmit.jlab.org', user=file_struct.mysql_uname, password=file_struct.mysql_psswrd,database="mydatabase")
+    conn = MySQLdb.connect('jsubmit.jlab.org', user=file_struct.mysql_uname, password=file_struct.mysql_psswrd,database="CLAS12OCR")
   else:
     DB = file_struct.SQLite_DB_path+file_struct.DB_name
     conn = sqlite3.connect(DB)
