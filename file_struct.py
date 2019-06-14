@@ -162,7 +162,7 @@ sub_files_path = dirname+'/../server/submission_files/generated_files/'
 # The argument should be handled by both the client and server
 
 use_mysql = False
-with open('../login.txt','r') as myfile:
+with open('../msql.txt','r') as myfile: #msql.txt is a file that contains two line: first line is username, second line is password
   login=myfile.read().replace('\n', ' ')
 login_params = login.split()
 mysql_uname = login_params[0]

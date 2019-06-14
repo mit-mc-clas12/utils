@@ -31,6 +31,7 @@ if __name__ == "__main__":
   argparser.add_argument('-m','--mysql',help = "use -m or --mysql to connect to mysql DB, otherwise use SQLite DB", action = 'store_true')
   args = argparser.parse_args()
 
+  file_struct.DEBUG = getattr(args,file_struct.debug_long)
   file_struct.use_mysql = args.mysql
 
   create_database(args)
