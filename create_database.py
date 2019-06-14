@@ -28,10 +28,10 @@ if __name__ == "__main__":
   argparser = argparse.ArgumentParser()
   argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
                       default = file_struct.debug_default,help = file_struct.debug_help)
-  argparser.add_argument('-m','--mysql',help = "use -m or --mysql to connect to mysql DB, otherwise use SQLite DB", action = 'store_true')
+  argparser.add_argument('-l','--lite',help = "use -l or --lite to connect to sqlite DB, otherwise use MySQL DB", action = 'store_false')
   args = argparser.parse_args()
 
   file_struct.DEBUG = getattr(args,file_struct.debug_long)
-  file_struct.use_mysql = args.mysql
+  file_struct.use_mysql = args.lite
 
   create_database(args)

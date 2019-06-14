@@ -54,7 +54,7 @@ def add_field(tablename,field_name,field_type):
 
 #Create a table in a database
 def create_table(tablename,PKname,FKargs):
-  strn = "CREATE TABLE IF NOT EXISTS {0}({1} integer primary key autoincrement {2})".format(tablename,PKname,FKargs)
+  strn = "CREATE TABLE IF NOT EXISTS {0}({1} INT AUTO_INCREMENT, PRIMARY KEY ({1}) {2});".format(tablename,PKname,FKargs)
   sql3_exec(strn)
   printer('In database {0}, table {1} has succesfully been created with primary key {2}'.format(file_struct.DB_name,
         tablename,PKname))
