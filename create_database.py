@@ -8,8 +8,8 @@
 """
 #****************************************************************
 
-import utils, file_struct
-import sqlite3, argparse
+import utils, file_struct, get_args
+import sqlite3
 
 def create_database(args):
   file_struct.DEBUG = getattr(args,file_struct.debug_long)
@@ -25,14 +25,5 @@ def create_database(args):
                       file_struct.table_fields[j][i][0],file_struct.table_fields[j][i][1],args)
 
 if __name__ == "__main__":
-  argparser = argparse.ArgumentParser()
-  argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash,
-                      default = file_struct.debug_default,help = file_struct.debug_help)
-  argparser.add_argument('-l','--lite',help = "use -l or --lite to connect to sqlite DB, otherwise use MySQL DB", action = 'store_true')
-  args = argparser.parse_args()
-
-  file_struct.DEBUG = getattr(args,file_struct.debug_long)
-  file_struct.use_mysql = not args.lite
-
-
+  args = get_args.get_args()
   create_database(args)
