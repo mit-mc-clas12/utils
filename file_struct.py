@@ -20,7 +20,7 @@
 #****************************************************************
 
 from __future__ import print_function
-import file_struct, sqlite3, os, datetime
+import sqlite3, os, datetime
 
 """*****************************************************************************
 ------------------------ Submission File Specifications ------------------------
@@ -129,7 +129,7 @@ foreign_key_relations = [users_special_relations, batches_foreign_keys,
 #This defines the ordering and items that need to be in scard.txt
 
 scard_key = ('project','group','farm_name','generator',
-            'genOptions', 'nevents', 'gcards',   
+            'genOptions', 'nevents', 'gcards',
             'luminosity', 'tcurrent',  'pcurrent',
             'cores_req','mem_req','jobs')
 
@@ -159,13 +159,16 @@ sub_files_path = dirname+'/../server/submission_files/generated_files/'
 # The argument should be handled by both the client and server
 
 use_mysql = True
-with open(dirname+'/../msql.txt','r') as myfile: #msql.txt is a file that contains two line: first line is username, second line is password
+#with open(dirname+'/../msql.txt','r') as myfile: #msql.txt is a file that contains two line: first line is username, second line is password
+#This is a temporary fix, need to store the password information outside of github
+with open(dirname+'/msql.txt','r') as myfile:
   login=myfile.read().replace('\n', ' ')
-login_params = login.split()
-mysql_uname = login_params[0]
-mysql_psswrd =  login_params[1]
+  login_params = login.split()
+  mysql_uname = login_params[0]
+  mysql_psswrd =  login_params[1]
 
 MySQL_DB_path = "jsubmit.jlab.org"
+SQLite_DB_path = dirname+"/database/"
 
 #Specify the location of the scard
 scard_path = dirname+"/../client/"

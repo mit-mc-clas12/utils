@@ -47,14 +47,17 @@ def grab_DB_data(table,dictionary,BatchID): #DB_name, table = str, dictionary = 
     return oldvals, newvals
 
 #Add a field to an existing DB. Need to add error statements if DB or table does not exist
-def add_field(tablename,field_name,field_type):
+def add_field(tablename,field_name,field_type,args):
   strn = "ALTER TABLE {0} ADD COLUMN {1} {2}".format(tablename,field_name, field_type)
   sql3_exec(strn)
   printer('In database {0}, table {1} has succesfully added field {2}'.format(file_struct.DB_name,tablename,field_name))
 
 #Create a table in a database
-def create_table(tablename,PKname,FKargs):
-  strn = "CREATE TABLE IF NOT EXISTS {0}({1} INT AUTO_INCREMENT, PRIMARY KEY ({1}) {2});".format(tablename,PKname,FKargs)
+def create_table(tablename,PKname,FKargs,args):
+  if args.lite:
+    strn = "CREATE TABLE IF NOT EXISTS {0}({1} integer primary key autoincrement {2})".format(tablename,PKname,FKargs)
+  if not args.lite: 
+    strn = "CREATE TABLE IF NOT EXISTS {0}({1} INT AUTO_INCREMENT, PRIMARY KEY ({1}) {2});".format(tablename,PKname,FKargs)
   sql3_exec(strn)
   printer('In database {0}, table {1} has succesfully been created with primary key {2}'.format(file_struct.DB_name,
         tablename,PKname))
