@@ -34,7 +34,5 @@ if __name__ == "__main__":
   file_struct.DEBUG = getattr(args,file_struct.debug_long)
   file_struct.use_mysql = not args.lite
 
-  if args.lite:
-    print("USING ARGS LITE")
 
   create_database(args)
