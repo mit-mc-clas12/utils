@@ -44,27 +44,34 @@ def Lund_Entry(url_dir):
   if url_dir == file_struct.lund_default:
     utils.printer('Using default lund file')
     return 0
-  elif 'https://' in url_dir:
+  elif 'http' in url_dir:
     utils.printer('Trying to download lund files from online repository')
-    raw_html, lund_urls = html_reader.html_reader(url_dir,file_struct.lund_identifying_text)
-    lund_dir_unformatted = url_dir.split("//")[1]
-    lund_dir = lund_dir_unformatted.replace(".","_").replace("/","_").replace("~","_")
-    if os.path.exists(lund_dir):
-      print("Directory of LUND files already has been downloaded, not downloading again")
+    if '.txt' in url_dir:
+      lund_dir_unformatted = url_dir.split("/")
+      lund_dir = lund_dir_unformatted[len(lund_dir_unformatted)-1]
+      #lund_dir = lund_dir_unformatted.replace(".","_").replace("/","_").replace("~","_")
+      if os.path.exists(lund_dir):
+        print("Lund file already has been downloaded, not downloading again")
+      else:
+        lund_text = html_reader.html_reader(url_dir,'')[0]#This returns a tuple, we need the contents of the tuple
+        utils.printer2('HTML from lund link is: {0}'.format(lund_text))
+        lund_text_db = lund_text.replace('"',"'") #This isn't strictly needed but SQLite can't read " into data fields, only ' characters
+        print("\t Gathered lund file '{0}'".format(url_dir))
+        filename = lund_dir
+        with open(filename,"a") as file: file.write(lund_text_db)
+      return lund_dir
+
     else:
-      subprocess.call(['mkdir','-p',lund_dir])
-      Lund_Downloader(url_dir,lund_urls,lund_dir)
-    return lund_dir
+      raw_html, lund_urls = html_reader.html_reader(url_dir,file_struct.lund_identifying_text)
+      lund_dir_unformatted = url_dir.split("//")[1]
+      lund_dir = lund_dir_unformatted.replace(".","_").replace("/","_").replace("~","_")
+      if os.path.exists(lund_dir):
+        print("Directory of LUND files already has been downloaded, not downloading again")
+      else:
+        subprocess.call(['mkdir','-p',lund_dir])
+        Lund_Downloader(url_dir,lund_urls,lund_dir)
+      return lund_dir
   else:
     print('generator not recognized as default option or valid online repository, please inspect scard')
     exit()
     return 0
-
-if __name__ == "__main__":
-    argparser = argparse.ArgumentParser()
-    argparser.add_argument(file_struct.debug_short,file_struct.debug_longdash, default = file_struct.debug_default,help = file_struct.debug_help)
-    args = argparser.parse_args()
-
-    file_struct.DEBUG = getattr(args,file_struct.debug_long)
-    url_dir = "https://userweb.jlab.org/~ungaro/lund/"
-    Lund_Entry(url_dir)

@@ -31,26 +31,35 @@ def db_gcard_write(BatchID,timestamp,gcard_text):
     utils.sql3_exec(strn)
     utils.printer("GCard added to database corresponding to BatchID {0}".format(BatchID))
 
+
 def GCard_Entry(BatchID,unixtimestamp,url_dir):
   print("Gathering gcards from {0} ".format(url_dir))
   if url_dir == file_struct.gcard_default:
     utils.printer('Using gcard from /jlab/work')
     gcard_text_db = url_dir
     db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
-  elif 'https://' in url_dir:
+  elif 'http' in url_dir:
     utils.printer('Trying to download gcards from online repository')
-    raw_html, gcard_urls = html_reader.html_reader(url_dir,file_struct.gcard_identifying_text)
-    if len(gcard_urls) == 0:
-      print("No gcard files found (they must end in '{0}'). Is the online repository correct?".format(file_struct.gcard_identifying_text))
-      exit()
+    if '.gcard' in url_dir:
+      utils.printer('Gcard URL name is: '+url_dir)
+      gcard_text = html_reader.html_reader(url_dir,'')[0]#This returns a tuple, we need the contents of the tuple
+      utils.printer2('HTML from gcard link is: {0}'.format(gcard_text))
+      gcard_text_db = gcard_text.replace('"',"'")
+      print("\t Gathered gcard '{0}'".format(url_dir))
+      db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
     else:
-      for url_ending in gcard_urls:
-        utils.printer('Gcard URL name is: '+url_ending)
-        gcard_text = html_reader.html_reader(url_dir+'/'+url_ending,'')[0]#This returns a tuple, we need the contents of the tuple
-        utils.printer2('HTML from gcard link is: {0}'.format(gcard_text))
-        gcard_text_db = gcard_text.replace('"',"'")
-        print("\t Gathered gcard '{0}'".format(url_ending))
-        db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
+      raw_html, gcard_urls = html_reader.html_reader(url_dir,file_struct.gcard_identifying_text)
+      if len(gcard_urls) == 0:
+        print("No gcard files found (they must end in '{0}'). Is the online repository correct?".format(file_struct.gcard_identifying_text))
+        exit()
+      else:
+        for url_ending in gcard_urls:
+          utils.printer('Gcard URL name is: '+url_ending)
+          gcard_text = html_reader.html_reader(url_dir+'/'+url_ending,'')[0]#This returns a tuple, we need the contents of the tuple
+          utils.printer2('HTML from gcard link is: {0}'.format(gcard_text))
+          gcard_text_db = gcard_text.replace('"',"'")
+          print("\t Gathered gcard '{0}'".format(url_ending))
+          db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
   else:
     print('gcard not recognized as default option or online repository, please inspect scard')
     exit()
