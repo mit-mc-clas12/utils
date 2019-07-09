@@ -159,9 +159,9 @@ sub_files_path = dirname+'/../server/submission_files/generated_files/'
 # The argument should be handled by both the client and server
 
 use_mysql = True
-#with open(dirname+'/../msql.txt','r') as myfile: #msql.txt is a file that contains two line: first line is username, second line is password
+with open(dirname+'/../msqlrw.txt','r') as myfile: #msql.txt is a file that contains two line: first line is username, second line is password
 #This is a temporary fix, need to store the password information outside of github
-with open(dirname+'/msql.txt','r') as myfile:
+#with open(dirname+'/msql.txt','r') as myfile:
   login=myfile.read().replace('\n', ' ')
   login_params = login.split()
   mysql_uname = login_params[0]
