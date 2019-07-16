@@ -22,4 +22,13 @@ def get_args():
 
   file_struct.DEBUG = getattr(args,file_struct.debug_long)
   file_struct.use_mysql = not args.lite
+
+  if not args.lite:
+    with open(file_struct.dirname+'/../msqlrw.txt','r') as myfile: #msql.txt is a file that contains two line: first line is username, second line is password
+    #This is a temporary fix, need to store the password information outside of github
+      login=myfile.read().replace('\n', ' ')
+      login_params = login.split()
+      file_struct.mysql_uname = login_params[0]
+      file_struct.mysql_psswrd =  login_params[1]
+
   return args

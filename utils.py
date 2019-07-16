@@ -56,7 +56,7 @@ def add_field(tablename,field_name,field_type,args):
 def create_table(tablename,PKname,FKargs,args):
   if args.lite:
     strn = "CREATE TABLE IF NOT EXISTS {0}({1} integer primary key autoincrement {2})".format(tablename,PKname,FKargs)
-  if not args.lite: 
+  if not args.lite:
     strn = "CREATE TABLE IF NOT EXISTS {0}({1} INT AUTO_INCREMENT, PRIMARY KEY ({1}) {2});".format(tablename,PKname,FKargs)
   sql3_exec(strn)
   printer('In database {0}, table {1} has succesfully been created with primary key {2}'.format(file_struct.DB_name,
@@ -66,7 +66,8 @@ def create_table(tablename,PKname,FKargs,args):
 def sql3_exec(strn):
   if file_struct.use_mysql:
     DB = file_struct.MySQL_DB_path+file_struct.DB_name
-    conn = MySQLdb.connect('jsubmit.jlab.org', user=file_struct.mysql_uname, password=file_struct.mysql_psswrd,database="CLAS12OCR")
+    conn = MySQLdb.connect(file_struct.MySQL_DB_path, user=file_struct.mysql_uname,
+                            password=file_struct.mysql_psswrd,database="CLAS12OCR")
     c = conn.cursor()
   else:
     DB = file_struct.SQLite_DB_path+file_struct.DB_name
@@ -86,7 +87,8 @@ def sql3_exec(strn):
 def sql3_grab(strn):
   if file_struct.use_mysql:
     DB = file_struct.MySQL_DB_path+file_struct.DB_name
-    conn = MySQLdb.connect('jsubmit.jlab.org', user=file_struct.mysql_uname, password=file_struct.mysql_psswrd,database="CLAS12OCR")
+    conn = MySQLdb.connect(file_struct.MySQL_DB_path, user=file_struct.mysql_uname,
+                          password=file_struct.mysql_psswrd,database="CLAS12OCR")
   else:
     DB = file_struct.SQLite_DB_path+file_struct.DB_name
     conn = sqlite3.connect(DB)
