@@ -48,17 +48,20 @@ def Lund_Entry(url_dir):
     utils.printer('Trying to download lund files from online repository')
     if '.txt' in url_dir:
       lund_dir_unformatted = url_dir.split("/")
-      lund_dir = lund_dir_unformatted[len(lund_dir_unformatted)-1]
+      print(lund_dir_unformatted)
+      filename = lund_dir_unformatted[len(lund_dir_unformatted)-1]
+      lund_dir = filename[:-4] #This removes the .txt ending
+      print(lund_dir)
       #lund_dir = lund_dir_unformatted.replace(".","_").replace("/","_").replace("~","_")
       if os.path.exists(lund_dir):
         print("Lund file already has been downloaded, not downloading again")
       else:
+        subprocess.call(['mkdir','-p',lund_dir])
         lund_text = html_reader.html_reader(url_dir,'')[0]#This returns a tuple, we need the contents of the tuple
         utils.printer2('HTML from lund link is: {0}'.format(lund_text))
         lund_text_db = lund_text.replace('"',"'") #This isn't strictly needed but SQLite can't read " into data fields, only ' characters
         print("\t Gathered lund file '{0}'".format(url_dir))
-        filename = lund_dir
-        with open(filename,"a") as file: file.write(lund_text_db)
+        with open(lund_dir+"/"+filename,"a") as file: file.write(lund_text_db)
       return lund_dir
 
     else:

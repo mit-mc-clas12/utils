@@ -14,6 +14,7 @@ import sqlite3
 
 def create_database(args):
   if args.lite:
+    print(os.path.isfile(file_struct.SQLite_DB_path))
     if not os.path.isfile(file_struct.SQLite_DB_path):
       os.mkdir(file_struct.SQLite_DB_path)
 
