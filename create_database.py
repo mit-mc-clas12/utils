@@ -7,11 +7,18 @@
 #as arguements to create_table and add_field functions defined in utils
 """
 #****************************************************************
-
+from __future__ import print_function
+import os
 import utils, file_struct, get_args
 import sqlite3
 
 def create_database(args):
+  filename = 'database'
+  if os.path.isfile(filename):
+    print(filename)
+  else:
+    os.mkdir(filename)
+
   file_struct.DEBUG = getattr(args,file_struct.debug_long)
   #Create tables in the database
   for i in range(0,len(file_struct.tables)):
