@@ -13,11 +13,9 @@ import utils, file_struct, get_args
 import sqlite3
 
 def create_database(args):
-  filename = 'database'
-  if os.path.isfile(filename):
-    print(filename)
-  else:
-    os.mkdir(filename)
+  if args.lite:
+    if not os.path.isfile(file_struct.SQLite_DB_path):
+      os.mkdir(file_struct.SQLite_DB_path)
 
   file_struct.DEBUG = getattr(args,file_struct.debug_long)
   #Create tables in the database
