@@ -20,7 +20,7 @@ def create_database(args):
       print("{0} already exists in {1} , exiting".format(file_struct.DB_name,file_struct.SQLite_DB_path))
       exit()
 
-  print("Creating {} now".format(file_struct.DB_name))
+  print("Creating {0} now".format(file_struct.DB_name))
 
   file_struct.DEBUG = getattr(args,file_struct.debug_long)
   #Create tables in the database
