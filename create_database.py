@@ -14,9 +14,13 @@ import sqlite3
 
 def create_database(args):
   if args.lite:
-    print(os.path.isfile(file_struct.SQLite_DB_path))
-    if not os.path.isfile(file_struct.SQLite_DB_path):
+    if not os.path.exists(file_struct.SQLite_DB_path):
       os.mkdir(file_struct.SQLite_DB_path)
+    if os.path.exists(file_struct.SQLite_DB_path+"/"+file_struct.DB_name):
+      print("{0} already exists in {1} , exiting".format(file_struct.DB_name,file_struct.SQLite_DB_path))
+      exit()
+
+  print("Creating {} now".format(file_struct.DB_name))
 
   file_struct.DEBUG = getattr(args,file_struct.debug_long)
   #Create tables in the database
