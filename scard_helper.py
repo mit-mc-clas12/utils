@@ -52,8 +52,8 @@ class scard_class:
 
 def SCard_Entry(BatchID,timestamp,scard_dict):
     strn = """INSERT INTO Scards(BatchID,timestamp) VALUES ("{0}","{1}");""".format(BatchID,timestamp)
-    utils.sql3_exec(strn)
+    utils.db_write(strn)
     for key in scard_dict:
       strn = "UPDATE Scards SET {0} = '{1}' WHERE BatchID = {2};".format(key,scard_dict[key],BatchID)
-      utils.sql3_exec(strn)
+      utils.db_write(strn)
     utils.printer("SCard record added to database corresponding to BatchID {0}".format(BatchID))

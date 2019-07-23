@@ -30,12 +30,12 @@ def user_validation():
 
   strn = """SELECT 1 FROM Users WHERE EXISTS (SELECT 1 FROM Users WHERE User ="{0}"
           AND domain_name = "{1}")""".format(username,domain_name)
-  user_already_exists = utils.sql3_grab(strn)
+  user_already_exists = utils.db_grab(strn)
   if not user_already_exists:
     print("""\nThis is the first time {0} from {1} has submitted jobs. Adding user to database""".format(username,domain_name))
     strn = """INSERT INTO Users(User, domain_name, JoinDateStamp, Total_Batches,
               Total_Jobs, Total_Events, Most_Recent_Active_Date)
               VALUES ("{0}","{1}","{2}","{3}","{4}","{5}","{6}");""".format(
               username,domain_name,utils.gettime(),0,0,0,"Null")
-    utils.sql3_exec(strn)
+    utils.db_write(strn)
   return username

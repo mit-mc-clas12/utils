@@ -26,9 +26,9 @@ import utils, fs, html_reader
 
 def db_gcard_write(BatchID,timestamp,gcard_text):
     strn = "INSERT INTO Gcards(BatchID) VALUES ({0});".format(BatchID)
-    utils.sql3_exec(strn)
+    utils.db_write(strn)
     strn = """UPDATE Gcards SET {0} = "{1}" WHERE BatchID = {2};""".format('gcard_text',gcard_text,BatchID)
-    utils.sql3_exec(strn)
+    utils.db_write(strn)
     utils.printer("GCard added to database corresponding to BatchID {0}".format(BatchID))
 
 

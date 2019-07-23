@@ -8,7 +8,7 @@
 # (this will be replaced in the future with functions to generate scripts directly)
 # grab_DB_data - creates lists by grabbing values from the DB based on a dictionary
 # add_field  and create_table - functions to create the SQLite DB, used by create_database.py
-# sql3_exec and sql3_grab - functions to write and read information to/from the DB
+# db_write and db_grab - functions to write and read information to/from the DB
 """
 #****************************************************************
 
@@ -41,7 +41,7 @@ def grab_DB_data(table,dictionary,BatchID): #DB_name, table = str, dictionary = 
     oldvals, newvals = [],[]
     for key in dictionary:
       strn = "SELECT {0} FROM {1} Where BatchID = {2};".format(dictionary[key],table,BatchID)
-      value = sql3_grab(strn)[0][0]#Grabs value from list of tuples
+      value = db_grab(strn)[0][0]#Grabs value from list of tuples
       oldvals.append(key)
       newvals.append(value)
     return oldvals, newvals
@@ -49,7 +49,7 @@ def grab_DB_data(table,dictionary,BatchID): #DB_name, table = str, dictionary = 
 #Add a field to an existing DB. Need to add error statements if DB or table does not exist
 def add_field(tablename,field_name,field_type,args):
   strn = "ALTER TABLE {0} ADD COLUMN {1} {2}".format(tablename,field_name, field_type)
-  sql3_exec(strn)
+  db_write(strn)
   printer('In database {0}, table {1} has succesfully added field {2}'.format(fs.DB_name,tablename,field_name))
 
 #Create a table in a database
@@ -58,12 +58,12 @@ def create_table(tablename,PKname,FKargs,args):
     strn = "CREATE TABLE IF NOT EXISTS {0}({1} integer primary key autoincrement {2})".format(tablename,PKname,FKargs)
   if not args.lite:
     strn = "CREATE TABLE IF NOT EXISTS {0}({1} INT AUTO_INCREMENT, PRIMARY KEY ({1}) {2});".format(tablename,PKname,FKargs)
-  sql3_exec(strn)
+  db_write(strn)
   printer('In database {0}, table {1} has succesfully been created with primary key {2}'.format(fs.DB_name,
         tablename,PKname))
 
-#Executes writing commands to DB. To return data from DB, use sql3_grab(), defined below
-def sql3_exec(strn):
+#Executes writing commands to DB. To return data from DB, use db_grab(), defined below
+def db_write(strn):
   if fs.use_mysql:
     DB = fs.MySQL_DB_path+fs.DB_name
     conn = MySQLdb.connect(fs.MySQL_DB_path, user=fs.mysql_uname,
@@ -84,7 +84,7 @@ def sql3_exec(strn):
   return insertion_id
 
 #Executes reading commands to DB. Cannot currently be used to return data from DB
-def sql3_grab(strn):
+def db_grab(strn):
   if fs.use_mysql:
     DB = fs.MySQL_DB_path+fs.DB_name
     conn = MySQLdb.connect(fs.MySQL_DB_path, user=fs.mysql_uname,
