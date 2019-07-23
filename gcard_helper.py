@@ -34,7 +34,7 @@ def db_gcard_write(BatchID,timestamp,gcard_text):
 
 def GCard_Entry(BatchID,unixtimestamp,url_dir):
   print("Gathering gcards from {0} ".format(url_dir))
-  if url_dir == fs.gcard_default:
+  if not 'http' in url_dir: #== fs.gcard_default:
     utils.printer('Using gcard from /jlab/work')
     gcard_text_db = url_dir
     db_gcard_write(BatchID,unixtimestamp,gcard_text_db)

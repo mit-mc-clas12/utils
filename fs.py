@@ -1,5 +1,6 @@
 #****************************************************************
 """
+# This file was named file_struct.py until 7/23/19. It was renamed to fs.py for brevity
 # This file is the central location for this software information. It includes:
 # - Submission file specifications, including:
 #        - submission file class definition
@@ -59,7 +60,6 @@ cw_obj = sub_file('condor_wrapper')
 cw_obj.file_base = 'condor_wrapper'
 cw_obj.file_end = ''
 cw_obj.file_text_fieldname = 'condor_wrapper_text'
-
 
 """*****************************************************************************
 -------------------------  DB Schema Specification -----------------------------

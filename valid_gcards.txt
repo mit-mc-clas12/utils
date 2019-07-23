@@ -1,0 +1,8 @@
+List of valid gcards in CVMFS image. Most recent update: 7/23/19
+clas12-default.gcard, default CLAS12 configuration
+rga-fall2018.gcard, RGA fall 2018 configuration
+rga-spring2018.gcard, RGA spring 2018 configuration
+rga-spring2019.gcard, RGA spring 2019 configuration
+rgb-spring2019.gcard, RGB spring 2019 configuration
+rgb-winter2019.gcard, RGB winter 2019 configuration
+rgk-fall2018.gcard, RGK fall 2018 configuration
