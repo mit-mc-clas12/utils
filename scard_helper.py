@@ -9,7 +9,7 @@
 
 from __future__ import print_function
 import sqlite3, time
-import utils, file_struct
+import utils, fs
 
 class scard_class:
     def __init__(self,scard_text):
@@ -28,9 +28,9 @@ class scard_class:
             key =   line[:pos_delimeter_colon].strip()
             value=  line[pos_delimeter_colon+1:pos_delimeter_hash].strip()
             if key == "generator" and not 'http' in value:
-              if key != file_struct.scard_key[linenum]:
+              if key != fs.scard_key[linenum]:
                 utils.printer("ERROR: Line {0} of the steering card has the key '{1}''.".format(linenum+1,key))
-                utils.printer("That line must have the key '{0}'.".format(file_struct.scard_key[linenum]))
+                utils.printer("That line must have the key '{0}'.".format(fs.scard_key[linenum]))
             self.data[key] = value
 
     def validate_scard_line(self, linenum, line):

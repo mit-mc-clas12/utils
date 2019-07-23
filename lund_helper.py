@@ -23,11 +23,11 @@
 #***************************************************************
 from __future__ import print_function
 import argparse, subprocess, os
-import utils, file_struct, html_reader
+import utils, fs, html_reader
 
 def Lund_Downloader(url_dir,lund_urls,lund_dir):
     if len(lund_urls) == 0:
-      print("No Lund files found (they must end in '{0}'). Is the online repository correct?".format(file_struct.lund_identifying_text ))
+      print("No Lund files found (they must end in '{0}'). Is the online repository correct?".format(fs.lund_identifying_text ))
       exit()
     else:
       for url_ending in lund_urls:
@@ -41,17 +41,15 @@ def Lund_Downloader(url_dir,lund_urls,lund_dir):
 
 def Lund_Entry(url_dir):
   print("Gathering lund files from {0} ".format(url_dir))
-  if url_dir == file_struct.lund_default:
+  if url_dir == fs.lund_default:
     utils.printer('Using default lund file')
     return 0
   elif 'http' in url_dir:
     utils.printer('Trying to download lund files from online repository')
     if '.txt' in url_dir:
       lund_dir_unformatted = url_dir.split("/")
-      print(lund_dir_unformatted)
       filename = lund_dir_unformatted[len(lund_dir_unformatted)-1]
       lund_dir = filename[:-4] #This removes the .txt ending
-      print(lund_dir)
       #lund_dir = lund_dir_unformatted.replace(".","_").replace("/","_").replace("~","_")
       if os.path.exists(lund_dir):
         print("Lund file already has been downloaded, not downloading again")
@@ -65,7 +63,7 @@ def Lund_Entry(url_dir):
       return lund_dir
 
     else:
-      raw_html, lund_urls = html_reader.html_reader(url_dir,file_struct.lund_identifying_text)
+      raw_html, lund_urls = html_reader.html_reader(url_dir,fs.lund_identifying_text)
       lund_dir_unformatted = url_dir.split("//")[1]
       lund_dir = lund_dir_unformatted.replace(".","_").replace("/","_").replace("~","_")
       if os.path.exists(lund_dir):

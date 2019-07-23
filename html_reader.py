@@ -6,7 +6,7 @@
 
 
 from __future__ import print_function
-import utils, file_struct
+import utils, fs
 from HTMLParser import HTMLParser
 import urllib2, argparse
 

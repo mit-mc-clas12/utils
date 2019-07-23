@@ -7,7 +7,7 @@
 #****************************************************************
 from __future__ import print_function
 import sqlite3, time
-import utils, file_struct, argparse, socket, subprocess
+import utils, fs, argparse, socket, subprocess
 import datetime
 from subprocess import PIPE, Popen
 import os

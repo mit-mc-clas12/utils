@@ -22,7 +22,7 @@
 """
 #***************************************************************
 from __future__ import print_function
-import utils, file_struct, html_reader
+import utils, fs, html_reader
 
 def db_gcard_write(BatchID,timestamp,gcard_text):
     strn = "INSERT INTO Gcards(BatchID) VALUES ({0});".format(BatchID)
@@ -34,7 +34,7 @@ def db_gcard_write(BatchID,timestamp,gcard_text):
 
 def GCard_Entry(BatchID,unixtimestamp,url_dir):
   print("Gathering gcards from {0} ".format(url_dir))
-  if url_dir == file_struct.gcard_default:
+  if url_dir == fs.gcard_default:
     utils.printer('Using gcard from /jlab/work')
     gcard_text_db = url_dir
     db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
@@ -48,9 +48,9 @@ def GCard_Entry(BatchID,unixtimestamp,url_dir):
       print("\t Gathered gcard '{0}'".format(url_dir))
       db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
     else:
-      raw_html, gcard_urls = html_reader.html_reader(url_dir,file_struct.gcard_identifying_text)
+      raw_html, gcard_urls = html_reader.html_reader(url_dir,fs.gcard_identifying_text)
       if len(gcard_urls) == 0:
-        print("No gcard files found (they must end in '{0}'). Is the online repository correct?".format(file_struct.gcard_identifying_text))
+        print("No gcard files found (they must end in '{0}'). Is the online repository correct?".format(fs.gcard_identifying_text))
         exit()
       else:
         for url_ending in gcard_urls:
