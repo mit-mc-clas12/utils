@@ -50,10 +50,10 @@ class scard_class:
         #    print("':' can be used only as a delimeter and only once per line. Edit scard to fix.")
         #    exit()
 
-def SCard_Entry(BatchID,timestamp,scard_dict):
-    strn = """INSERT INTO Scards(BatchID,timestamp) VALUES ("{0}","{1}");""".format(BatchID,timestamp)
+def SCard_Entry(UserSubmissionID,timestamp,scard_dict):
+    strn = """INSERT INTO Scards(UserSubmissionID,timestamp) VALUES ("{0}","{1}");""".format(UserSubmissionID,timestamp)
     utils.db_write(strn)
     for key in scard_dict:
-      strn = "UPDATE Scards SET {0} = '{1}' WHERE BatchID = {2};".format(key,scard_dict[key],BatchID)
+      strn = "UPDATE Scards SET {0} = '{1}' WHERE UserSubmissionID = {2};".format(key,scard_dict[key],UserSubmissionID)
       utils.db_write(strn)
-    utils.printer("SCard record added to database corresponding to BatchID {0}".format(BatchID))
+    utils.printer("SCard record added to database corresponding to UserSubmissionID {0}".format(UserSubmissionID))

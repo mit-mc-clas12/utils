@@ -37,10 +37,10 @@ def printer2(strn): # Can't call the function print because it already exists in
 #    return str_script
 
 #Takes a dictionary, retuns 2 lists: key (oldvals) and value (newvals) from table in DB_name
-def grab_DB_data(table,dictionary,BatchID): #DB_name, table = str, dictionary = dict
+def grab_DB_data(table,dictionary,UserSubmissionID): #DB_name, table = str, dictionary = dict
     oldvals, newvals = [],[]
     for key in dictionary:
-      strn = "SELECT {0} FROM {1} Where BatchID = {2};".format(dictionary[key],table,BatchID)
+      strn = "SELECT {0} FROM {1} Where UserSubmissionID = {2};".format(dictionary[key],table,UserSubmissionID)
       value = db_grab(strn)[0][0]#Grabs value from list of tuples
       oldvals.append(key)
       newvals.append(value)

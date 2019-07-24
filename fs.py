@@ -65,19 +65,19 @@ cw_obj.file_text_fieldname = 'condor_wrapper_text'
 -------------------------  DB Schema Specification -----------------------------
 *****************************************************************************"""
 
-tables = ['Users','Batches','Scards','Gcards','Submissions','JobsLog']
+tables = ['Users','UserSubmissions','Scards','Gcards','FarmSubmissions','JobsLog']
 
 #Primary Key definitions:
-PKs = ['UserID','BatchID','ScardID','GcardID','SubmissionID','JobID']
+PKs = ['UserID','UserSubmissionID','ScardID','GcardID','FarmSubmissionID','JobID']
 
-users_fields = (('domain_name','TEXT'),('JoinDateStamp','TEXT'),('Total_Batches','INT'),
+users_fields = (('domain_name','TEXT'),('JoinDateStamp','TEXT'),('Total_UserSubmissions','INT'),
                 ('Total_Jobs','INT'),('Total_Events','INT'),('Most_Recent_Active_Date','TEXT'))
 
 
-batches_fields = (('User','TEXT'),('timestamp','TEXT'),('scard','TEXT'))
+UserSubmissions_fields = (('User','TEXT'),('timestamp','TEXT'),('scard','TEXT'))
 
-#Since there is only 1 scard / batch, in princple this entire scard table should be deleted
-#The submission scripts can be completely written using just the text in the VARCHAR 'scard' field in the Batches table
+#Since there is only 1 scard / UserSubmission, in princple this entire scard table should be deleted
+#The submission scripts can be completely written using just the text in the VARCHAR 'scard' field in the UserSubmissions table
 #Importantly, this is not yet implemented. It should be straightforward to do so, but time consuming
 scards_fields = (('group_name','TEXT'),('farm_name','TEXT'),('Nevents','INT'),
                 ('Generator','TEXT'),('genExecutable','TEXT'),('genOutput','TEXT'),
@@ -88,7 +88,7 @@ scards_fields = (('group_name','TEXT'),('farm_name','TEXT'),('Nevents','INT'),
 
 gcards_fields = (('gcard_text','TEXT'),)
 
-submissions_fields = (('submission_pool','TEXT'),('submission_timestamp','TEXT'),
+FarmSubmissions_fields = (('submission_pool','TEXT'),('submission_timestamp','TEXT'),
                       ('pool_node','TEXT'),
                       ('run_status','TEXT'),('completion_timestamp','TEXT'),
                       (runscript_file_obj.file_text_fieldname,'TEXT'),
@@ -100,29 +100,29 @@ joblogs_fields = (('Job_Submission_Datestamp','TEXT'),
                   ('Job_Completion_Datestamp','TEXT'),('Output_file_directory','TEXT'),
                   ('Output_file_size','INT'),('Number_Job_failures','INT'))
 
-table_fields = [users_fields,batches_fields, scards_fields, gcards_fields, submissions_fields, joblogs_fields]
+table_fields = [users_fields,UserSubmissions_fields, scards_fields, gcards_fields, FarmSubmissions_fields, joblogs_fields]
 
 #Below defines foreign key relations. There is a more succinet way to do this but as we have
 #only a few relations, I did not spend the time to modifiy this code.
 users_special_relations = """, User TEXT NOT NULL"""
-batches_foreign_keys = """, UserID INT,
+UserSubmissions_foreign_keys = """, UserID INT,
                       FOREIGN KEY(UserID) REFERENCES Users(UserID)"""
-scards_foreign_keys = """, BatchID INTEGER,
-                      FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)"""
-gcards_foreign_keys = """, BatchID INTEGER,
-                      FOREIGN KEY(BatchID) REFERENCES Batches(BatchID)"""
-submissions_foreign_keys = """, BatchID INTEGER, GcardID INTEGER,
-                      FOREIGN KEY(BatchID) REFERENCES Batches(BatchID),
+scards_foreign_keys = """, UserSubmissionID INTEGER,
+                      FOREIGN KEY(UserSubmissionID) REFERENCES UserSubmissions(UserSubmissionID)"""
+gcards_foreign_keys = """, UserSubmissionID INTEGER,
+                      FOREIGN KEY(UserSubmissionID) REFERENCES UserSubmissions(UserSubmissionID)"""
+FarmSubmissions_foreign_keys = """, UserSubmissionID INTEGER, GcardID INTEGER,
+                      FOREIGN KEY(UserSubmissionID) REFERENCES UserSubmissions(UserSubmissionID),
                       FOREIGN KEY(GcardID) REFERENCES Gcards(GcardID)"""
-joblogs_foreign_keys = """, UserID INTEGER, BatchID INTEGER, SubmissionID INTEGER,
+joblogs_foreign_keys = """, UserID INTEGER, UserSubmissionID INTEGER, FarmSubmissionID INTEGER,
                       FOREIGN KEY(UserID) REFERENCES Users(UserID),
-                      FOREIGN KEY(BatchID) REFERENCES Batches(BatchID),
-                      FOREIGN KEY(SubmissionID) REFERENCES Submissions(SubmissionID)"""
+                      FOREIGN KEY(UserSubmissionID) REFERENCES UserSubmissions(UserSubmissionID),
+                      FOREIGN KEY(FarmSubmissionID) REFERENCES FarmSubmissions(FarmSubmissionID)"""
 #create table yourtablename (_id  integer primary key autoincrement, column1 text not null unique, column2 text);
 
-foreign_key_relations = [users_special_relations, batches_foreign_keys,
+foreign_key_relations = [users_special_relations, UserSubmissions_foreign_keys,
                         scards_foreign_keys, gcards_foreign_keys,
-                        submissions_foreign_keys, joblogs_foreign_keys]
+                        FarmSubmissions_foreign_keys, joblogs_foreign_keys]
 """*****************************************************************************
 -------------------- Scard and Runscripts Specifications -----------------------
 *****************************************************************************"""

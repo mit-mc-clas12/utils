@@ -14,7 +14,7 @@
 #Unfortunately, this module must be imported and cannot be gaurannted that it will be on whatever
 #server this software will live on, so it is safer to instead use HTMLParser which is more common
 ####
-#This file takes in a BatchID, unixtimestamp, and gcard url from db_batch_entry and passes it through
+#This file takes in a UserSubmissionID, unixtimestamp, and gcard url from db_batch_entry and passes it through
 #a few functions to download the gcards from the specified location and to enter them into the
 #appropriate gcard table in the database.
 # Some effort should be developed to sanitize the gcard files to prevent
@@ -24,20 +24,20 @@
 from __future__ import print_function
 import utils, fs, html_reader
 
-def db_gcard_write(BatchID,timestamp,gcard_text):
-    strn = "INSERT INTO Gcards(BatchID) VALUES ({0});".format(BatchID)
+def db_gcard_write(UserSubmissionID,timestamp,gcard_text):
+    strn = "INSERT INTO Gcards(UserSubmissionID) VALUES ({0});".format(UserSubmissionID)
     utils.db_write(strn)
-    strn = """UPDATE Gcards SET {0} = "{1}" WHERE BatchID = {2};""".format('gcard_text',gcard_text,BatchID)
+    strn = """UPDATE Gcards SET {0} = "{1}" WHERE UserSubmissionID = {2};""".format('gcard_text',gcard_text,UserSubmissionID)
     utils.db_write(strn)
-    utils.printer("GCard added to database corresponding to BatchID {0}".format(BatchID))
+    utils.printer("GCard added to database corresponding to UserSubmissionID {0}".format(UserSubmissionID))
 
 
-def GCard_Entry(BatchID,unixtimestamp,url_dir):
+def GCard_Entry(UserSubmissionID,unixtimestamp,url_dir):
   print("Gathering gcards from {0} ".format(url_dir))
   if not 'http' in url_dir: #== fs.gcard_default:
     utils.printer('Using gcard from /jlab/work')
     gcard_text_db = url_dir
-    db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
+    db_gcard_write(UserSubmissionID,unixtimestamp,gcard_text_db)
   elif 'http' in url_dir:
     utils.printer('Trying to download gcards from online repository')
     if '.gcard' in url_dir:
@@ -46,7 +46,7 @@ def GCard_Entry(BatchID,unixtimestamp,url_dir):
       utils.printer2('HTML from gcard link is: {0}'.format(gcard_text))
       gcard_text_db = gcard_text.replace('"',"'")
       print("\t Gathered gcard '{0}'".format(url_dir))
-      db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
+      db_gcard_write(UserSubmissionID,unixtimestamp,gcard_text_db)
     else:
       raw_html, gcard_urls = html_reader.html_reader(url_dir,fs.gcard_identifying_text)
       if len(gcard_urls) == 0:
@@ -59,7 +59,7 @@ def GCard_Entry(BatchID,unixtimestamp,url_dir):
           utils.printer2('HTML from gcard link is: {0}'.format(gcard_text))
           gcard_text_db = gcard_text.replace('"',"'")
           print("\t Gathered gcard '{0}'".format(url_ending))
-          db_gcard_write(BatchID,unixtimestamp,gcard_text_db)
+          db_gcard_write(UserSubmissionID,unixtimestamp,gcard_text_db)
   else:
     print('gcard not recognized as default option or online repository, please inspect scard')
     exit()

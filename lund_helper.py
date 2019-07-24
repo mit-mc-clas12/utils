@@ -14,7 +14,7 @@
 #Unfortunately, this module must be imported and cannot be gaurannted that it will be on whatever
 #server this software will live on, so it is safer to instead use HTMLParser which is more common
 ####
-#This file takes in a BatchID and gcard url from db_batch_entry and passes it through
+#This file takes in a UserSubmissionID and gcard url from db_batch_entry and passes it through
 #a few functions to download the gcards from the specified location and to enter them into the
 #appropriate gcard table in the database.
 # Some effort should be developed to sanitize the gcard files to prevent
