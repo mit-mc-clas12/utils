@@ -183,6 +183,8 @@ cw_obj.file_path = sub_files_path+'condor_wrapper_files/' #This is not currently
 """*****************************************************************************
 ---------------------------- Other Specifications ------------------------------
 *****************************************************************************"""
+#Definition of valid scard types. Explainations for these types can be found in the documentation.
+valid_scard_types = [1,2]
 
 # This defines a mapping between 'generator' in scard and the genOutput and genExecutable literals to be invoked
 # the key 'dvcs' should be changed to dvcsgen
