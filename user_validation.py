@@ -12,11 +12,13 @@ import datetime
 from subprocess import PIPE, Popen
 import os
 
-def user_validation():
+def user_validation(args):
   #These next two lines are good but do not work on python < 2.7
   #username = (subprocess.check_output('whoami'))[:-1]#The [:-1] is so we drop the implicit \n from the string
   #domain_name = subprocess.check_output(['hostname','-d'])#socket.getfqdn()  #socket.getdomain_name()
   username = Popen(['whoami'], stdout=PIPE).communicate()[0].split()[0]
+  if username == 'gemc' || args.username != None:
+    username = args.username
 
   is_travis = 'TRAVIS' in os.environ
   if is_travis == True:
