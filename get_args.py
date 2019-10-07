@@ -41,6 +41,7 @@ def get_args_client():
   argparser.add_argument('scard',help = 'relative path and name scard you want to submit, e.g. ../scard.txt',nargs='?',)
   argparser.add_argument(fs.debug_short,fs.debug_longdash, default = fs.debug_default,help = fs.debug_help)
   argparser.add_argument('-l','--lite',help = "use -l or --lite to connect to sqlite DB, otherwise use MySQL DB", action = 'store_true')
+  argparser.add_argument('-u','--username', default=None, help = 'Enter user ID for web-interface, Only if \'whoami\' is \'gemc\'')
   args = argparser.parse_args()
 
   fs.DEBUG = getattr(args,fs.debug_long)
