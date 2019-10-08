@@ -17,7 +17,7 @@ def user_validation(args):
   #username = (subprocess.check_output('whoami'))[:-1]#The [:-1] is so we drop the implicit \n from the string
   #domain_name = subprocess.check_output(['hostname','-d'])#socket.getfqdn()  #socket.getdomain_name()
   username = Popen(['whoami'], stdout=PIPE).communicate()[0].split()[0]
-  if username == 'gemc' || args.username != None:
+  if username == 'gemc' or args.username != None:
     username = args.username
 
   is_travis = 'TRAVIS' in os.environ
