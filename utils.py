@@ -66,8 +66,7 @@ def create_table(tablename,PKname,FKargs,args):
 def db_write(strn):
   if fs.use_mysql:
     DB = fs.MySQL_DB_path+fs.DB_name
-    conn = MySQLdb.connect(fs.MySQL_DB_path, user=fs.mysql_uname,
-                            password=fs.mysql_psswrd,database="CLAS12OCR")
+    conn = MySQLdb.connect(fs.MySQL_DB_path, fs.mysql_uname, fs.mysql_psswrd, "CLAS12OCR")
     c = conn.cursor()
   else:
     DB = fs.SQLite_DB_path+fs.DB_name
@@ -87,8 +86,7 @@ def db_write(strn):
 def db_grab(strn):
   if fs.use_mysql:
     DB = fs.MySQL_DB_path+fs.DB_name
-    conn = MySQLdb.connect(fs.MySQL_DB_path, user=fs.mysql_uname,
-                          password=fs.mysql_psswrd,database="CLAS12OCR")
+    conn = MySQLdb.connect(fs.MySQL_DB_path, fs.mysql_uname, fs.mysql_psswrd, "CLAS12OCR")
   else:
     DB = fs.SQLite_DB_path+fs.DB_name
     conn = sqlite3.connect(DB)
