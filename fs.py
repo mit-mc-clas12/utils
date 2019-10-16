@@ -1,6 +1,6 @@
 #****************************************************************
 """
-# This file was named file_struct.py until 7/23/19. It was renamed to fs.py for brevity
+# File Structure (fs)
 # This file is the central location for this software information. It includes:
 # - Submission file specifications, including:
 #        - submission file class definition
@@ -26,10 +26,10 @@ import sqlite3, os, datetime
 """*****************************************************************************
 ------------------------ Submission File Specifications ------------------------
 *****************************************************************************"""
-#Create a class for all submission files. There are other ways to store this information
-#But a class seemed like a reasonable way to go, so if we want to add more
-#submission files we can just create a new submission file object.
-#We don't need to decalre any fields in the class constructor but it helps code readability
+# Create a class for all submission files. There are other ways to store this information
+# But a class seemed like a reasonable way to go, so if we want to add more
+# submission files we can just create a new submission file object.
+# We don't need to declare any fields in the class constructor but it helps code readability
 
 class sub_file():
   def __init__(self,name):
@@ -160,38 +160,39 @@ sub_files_path = dirname+'/../server/submission_files/generated_files/'
 
 use_mysql = True
 
-mysql_uname = "Null_User"
+mysql_uname  = "Null_User"
 mysql_psswrd =  "Null_Password"
 
-MySQL_DB_path = "jsubmit.jlab.org"
+MySQL_DB_path  = "jsubmit.jlab.org"
 SQLite_DB_path = dirname+"/database/"
 
-#Specify the location of the scard
+# Specify the location of the scard
 scard_path = dirname+"/../client/"
 
-#Specifiy Database name:
+# Specifiy Database name:
 DB_name = 'CLAS12_OCRDB.db'
-#Specify scard name
+
+# Specify scard name
 scard_name = 'scard.txt'
-#Specify the directory names of all submission files
+
+# Specify the directory names of all submission files
 gcards_dir = 'gcards/'
-condor_file_obj.file_path = sub_files_path+'condor_files/'
+condor_file_obj.file_path    = sub_files_path+'condor_files/'
 runscript_file_obj.file_path = sub_files_path+'runscript_files/'
-run_job_obj.file_path = sub_files_path+'run_job_files/'
-cw_obj.file_path = sub_files_path+'condor_wrapper_files/' #This is not currently used / needed, but included for completeness
+run_job_obj.file_path        = sub_files_path+'run_job_files/'
+cw_obj.file_path             = sub_files_path+'condor_wrapper_files/' # This is not currently used / needed, but included for completeness
 
 """*****************************************************************************
 ---------------------------- Other Specifications ------------------------------
 *****************************************************************************"""
-#Definition of valid scard types. Explainations for these types can be found in the documentation.
-valid_scard_types = [1,2]
+# Definition of valid scard types. Explainations for these types can be found in the documentation.
+valid_scard_types = [1]
 
-# This defines a mapping between 'generator' in scard and the genOutput and genExecutable literals to be invoked
-# the key 'dvcs' should be changed to dvcsgen
-genOutput= {'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat','disrad':'dis-rad.dat'}
-genExecutable =  {'clasdis': 'clasdis', 'dvcs': 'dvcsgen','disrad':'generate-dis'}
+# This defines a mapping between 'generator' in scard, the genOutput and genExecutable
+genOutput     =  {'clasdis': 'sidis.dat', 'dvcs': 'dvcsgen1.dat', 'disrad':'dis-rad.dat',  'genKYandOnePion': 'genKYandOnePion.dat'}
+genExecutable =  {'clasdis': 'clasdis',   'dvcs': 'dvcsgen',      'disrad':'generate-dis', 'genKYandOnePion': 'eg_ky'}
 
-#This is the debug variable for print statments - 0 = no messages, 1 = some, 2 = all messages. Initalized to 1
+# This is the debug variable for print statments - 0 = no messages, 1 = some, 2 = all messages. Initalized to 1
 DEBUG = 0
 debug_short = '-d'
 debug_long = 'debug'
@@ -200,7 +201,7 @@ debug_default = DEBUG
 debug_help = help = """0 (default) - no messages,1 - general messages,
                     2 - all messages, all reads and writes into and out of the database"""
 
-gcard_identifying_text = '.gcard' #For use in gcard_helper.py
-gcard_default = '/jlab/work/clas12.gcard'
+gcard_identifying_text = '.gcard' # For use in gcard_helper.py
+gcard_default = '/jlab/clas12Tags/gcards/clas12-default.gcard'
 lund_identifying_text = '.txt' #For use in gcard_helper.py
 lund_default = ""

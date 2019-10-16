@@ -1,6 +1,6 @@
 #****************************************************************
 """
-#This file reads the text of the scard, validates the information,
+# This file reads the text of the scard, validates the information,
 # and writes it into the scard table in the database.
 # Some effort should be developed to sanitize the scard to prevent
 # against sql injection attacks
@@ -25,8 +25,8 @@ class scard_class:
               break
             pos_delimeter_colon = line.find(":")
             pos_delimeter_hash = line.find("#")
-            key =   line[:pos_delimeter_colon].strip()
-            value=  line[pos_delimeter_colon+1:pos_delimeter_hash].strip()
+            key   =  line[:pos_delimeter_colon].strip()
+            value =  line[pos_delimeter_colon+1:pos_delimeter_hash].strip()
             if key == "generator" and not 'http' in value:
               if key != fs.scard_key[linenum]:
                 utils.printer("ERROR: Line {0} of the steering card has the key '{1}''.".format(linenum+1,key))
@@ -44,11 +44,6 @@ class scard_class:
             utils.printer("ERROR: No colon in line {0}".format(linenum+1))
             utils.printer("The data cannot be interpreted. Stopped.")
             exit()
-        #The below is now commented out because urls have at least 1 colon
-        #elif line.count(":")>1:
-        #    print("ERROR: number of colons>1 at line {0}".format(linenum+1))
-        #    print("':' can be used only as a delimeter and only once per line. Edit scard to fix.")
-        #    exit()
 
 def SCard_Entry(UserSubmissionID,timestamp,scard_dict):
     strn = """INSERT INTO Scards(UserSubmissionID,timestamp) VALUES ("{0}","{1}");""".format(UserSubmissionID,timestamp)
