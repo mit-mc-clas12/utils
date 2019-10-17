@@ -1,19 +1,17 @@
-#****************************************************************
+"""This is the second most important file behind fs to understanding
+    the flow of this software. Commonly used functions are defined here and
+    reference in most parts of the code. The functions are:
+    printer and printer2 - prints strings depending on value of DEBUG variable
+    overwrite_file - overwrites a template file to a newfile based off old 
+    and new value lists (this will be replaced in the future with functions to
+    generate scripts directly) grab_DB_data - creates lists by grabbing values
+    from the DB based on a dictionary add_field  and create_table - functions
+    to create the SQLite DB, used by create_database.py db_write and
+    db_grab - functions to write and read information to/from the DB
 """
-# This is the second most important file behind fs to understanding
-# the flow of this software. Commonly used functions are defined here and
-# reference in most parts of the code. The functions are:
-# printer and printer2 - prints strings depending on value of DEBUG variable
-# overwrite_file - overwrites a template file to a newfile based off old and new value lists
-# (this will be replaced in the future with functions to generate scripts directly)
-# grab_DB_data - creates lists by grabbing values from the DB based on a dictionary
-# add_field  and create_table - functions to create the SQLite DB, used by create_database.py
-# db_write and db_grab - functions to write and read information to/from the DB
-"""
-#****************************************************************
 
 from __future__ import print_function
-import fs, sqlite3, os, datetime
+import fs, sqlite3, datetime
 import MySQLdb
 
 def gettime():
@@ -46,7 +44,8 @@ def grab_DB_data(table,dictionary,UserSubmissionID): #DB_name, table = str, dict
       newvals.append(value)
     return oldvals, newvals
 
-#Add a field to an existing DB. Need to add error statements if DB or table does not exist
+# Add a field to an existing DB. Need to add error statements if DB 
+# or table does not exist
 def add_field(tablename,field_name,field_type,args):
   strn = "ALTER TABLE {0} ADD COLUMN {1} {2}".format(tablename,field_name, field_type)
   db_write(strn)
@@ -62,7 +61,8 @@ def create_table(tablename,PKname,FKargs,args):
   printer('In database {0}, table {1} has succesfully been created with primary key {2}'.format(fs.DB_name,
         tablename,PKname))
 
-#Executes writing commands to DB. To return data from DB, use db_grab(), defined below
+# Executes writing commands to DB. To return data from DB, use db_grab(), 
+# defined below
 def db_write(strn):
   if fs.use_mysql:
     DB = fs.MySQL_DB_path+fs.DB_name
@@ -85,7 +85,8 @@ def db_write(strn):
   conn.close()
   return insertion_id
 
-#Executes reading commands to DB. Cannot currently be used to return data from DB
+# Executes reading commands to DB. Cannot currently be used to return 
+# data from DB.
 def db_grab(strn):
   if fs.use_mysql:
     DB = fs.MySQL_DB_path+fs.DB_name
@@ -103,3 +104,48 @@ def db_grab(strn):
   c.close()
   conn.close()
   return return_array
+
+def connect_to_mysql(host, username, password, db_name):
+  """Return a MySQL database connection. """
+  return MySQLdb.connect(host, username, password, db_name)
+
+def connect_to_sqlite(host, db_name):
+  """Return an sqlite database connection. """
+  return sqlite3.connect(host + db_name)
+
+def load_database_credentials(cred_file):
+  """Read a file with database username and password and 
+  return a tuple. """
+  with open(cred_file, 'r') as creds:
+
+    # Ensure the file contents are on one line
+    login = creds.read().replace('\n', ' ').split() 
+
+    if len(login) < 2:
+      raise ValueError(("Credential file must contain username and password,"
+                        " separated by a space and nothing else."))
+      
+    return (login[0], login[1])
+
+def establish_database_connection(username, password):
+  """Authenticate to the database as done in the db_write and db_grab
+  functions.  Returns an active database connection, this must be closed 
+  by the user. """
+
+  # Configure for MySQL 
+  if fs.use_mysql: 
+    db_connection = connect_to_mysql(fs.MySQL_DB_path, username, 
+                                     password, "CLAS12OCR")
+  # Configure for sqlite 
+  else:
+    db_connection = connect_to_sqlite(fs.SQLite_DB_path, fs.DB_name)
+
+  # Create a cursor object for executing statements. 
+  sql = db_connection.cursor() 
+
+  # For SQLite, foreign keys need to be enabled
+  # manually. 
+  if not fs.use_mysql:
+    sql.execute("PRAGMA foreign_keys = ON;")
+    
+  return db_connection, sql 
