@@ -33,6 +33,29 @@ class scard_class:
                 utils.printer("That line must have the key '{0}'.".format(fs.scard_key[linenum]))
             self.data[key] = value
 
+        """                                                                           
+
+        This block was moved from scard_helper to this parse_scard function.
+        It seems like this is a better place to handle the correction of these 
+        fields. 
+
+        'group' is a protected word in SQL so we can't use the field title "group"    
+        For more information on protected words in SQL, see:                          
+        https://docs.intersystems.com/irislatest/csp/docbook/                         
+        DocBook.UI.Page.cls?KEY=RSQL_reservedwords                                    
+        """
+        self.data['group_name'] = self.data.pop('group')
+            
+        # Set event generator executable and output to null if the                    
+        # generator doesn't exist in our container.  We are                           
+        # trying to keep the client agnostic to SCard type.                           
+        self.data['genExecutable'] = fs.genExecutable.get(
+            self.data.get('generator'), 'Null'
+        )
+        self.data['genOutput'] = fs.genOutput.get(
+            self.data.get('generator'), 'Null'
+        )
+
     def validate_scard_line(self, linenum, line):
         if line.count("#") ==0:
             utils.printer("Warning: No comment in line {0}.".format(linenum+1))
