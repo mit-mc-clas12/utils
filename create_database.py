@@ -1,10 +1,10 @@
 #****************************************************************
 """
 # This file facilitates the construction of the database. In a perfect world, once everything is
-#up and running, it will only be run once. However, it was clear from the beginning of the project
-#that for testing purposes, the DB will have to be made many many times as the schema and goals change.
-#This takes in the database structure as specified in fs and passes the structure
-#as arguements to create_table and add_field functions defined in utils
+# up and running, it will only be run once. However, it was clear from the beginning of the project
+# that for testing purposes, the DB will have to be made many many times as the schema and goals change.
+# This takes in the database structure as specified in fs and passes the structure
+# as arguements to create_table and add_field functions defined in utils
 """
 #****************************************************************
 from __future__ import print_function
@@ -17,7 +17,7 @@ def create_database(args):
     if not os.path.exists(fs.SQLite_DB_path):
       os.mkdir(fs.SQLite_DB_path)
     if os.path.exists(fs.SQLite_DB_path+"/"+fs.DB_name):
-      print("{0} already exists in {1} , exiting".format(fs.DB_name,fs.SQLite_DB_path))
+      print("{0} already exists in {1}, exiting".format(fs.DB_name,fs.SQLite_DB_path))
       exit()
 
   print("Creating {0} now".format(fs.DB_name))

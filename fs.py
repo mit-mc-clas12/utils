@@ -76,9 +76,9 @@ users_fields = (('domain_name','TEXT'),('JoinDateStamp','TEXT'),('Total_UserSubm
 
 UserSubmissions_fields = (('User','TEXT'),('timestamp','TEXT'),('scard','TEXT'))
 
-#Since there is only 1 scard / UserSubmission, in princple this entire scard table should be deleted
-#The submission scripts can be completely written using just the text in the VARCHAR 'scard' field in the UserSubmissions table
-#Importantly, this is not yet implemented. It should be straightforward to do so, but time consuming
+# Since there is only 1 scard / UserSubmission, in princple this entire scard table should be deleted
+# The submission scripts can be completely written using just the text in the VARCHAR 'scard' field in the UserSubmissions table
+# Importantly, this is not yet implemented. It should be straightforward to do so, but time consuming
 scards_fields = (('group_name','TEXT'),('farm_name','TEXT'),('Nevents','INT'),
                 ('Generator','TEXT'),('genExecutable','TEXT'),('genOutput','TEXT'),
                 ('GenOptions','TEXT'),('Gcards','TEXT'),('Jobs','INT'),
