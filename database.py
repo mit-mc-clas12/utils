@@ -1,8 +1,8 @@
 """ 
 
 This module provides database configuration functions as well 
-as database read access functions.  Write access functions are only 
-needed on the client side, and live in client/update_tables.py.
+as database read access functions.  Write access functions 
+for the client side live in client/update_tables.py.
 
 """
 
