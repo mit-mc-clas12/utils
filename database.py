@@ -1,8 +1,13 @@
-"""Docstring.
- """
+""" 
+
+This module provides database configuration functions as well 
+as database read access functions.  Write access functions are only 
+needed on the client side, and live in client/update_tables.py.
+
+"""
 
 from __future__ import print_function
-import fs, sqlite3, datetime
+import fs, sqlite3
 import MySQLdb
 
 def connect_to_mysql(host, username, password, db_name):
@@ -28,9 +33,17 @@ def load_database_credentials(cred_file):
     return (login[0], login[1])
 
 def get_database_connection():
-  """Authenticate to the database as done in the db_write and db_grab
+  """ Authenticate to the database as done in the db_write and db_grab
   functions.  Returns an active database connection, this must be closed 
-  by the user. """
+  by the user. Currently, this function still relies on having the correct
+  configuration in fs.py before being called.  This means manually or 
+  automatically injecting the user credentials into the fs file before 
+  calling this function. 
+
+  returns: 
+  db_connection - a MySQL or sqlite database connection 
+  sql - A cursor for the database, used to execute all queries
+  """
 
   # Configure for MySQL 
   if fs.use_mysql: 
