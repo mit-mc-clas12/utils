@@ -6,3 +6,6 @@
 *.pyc
 *.gcard
 /database/*.db
+
+# emacs files that I leave laying around 
+*~ 
