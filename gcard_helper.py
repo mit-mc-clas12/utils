@@ -63,3 +63,23 @@ def GCard_Entry(UserSubmissionID,unixtimestamp,url_dir):
   else:
     print('gcard not recognized as default option or online repository, please inspect scard')
     exit()
+
+
+def get_valid_gcards(gcard_file):
+    """Load a list of valid gcards from the input gcard file.  This                                                                                                                                                      
+    is the list available in the container. """
+
+    gcards = []
+    with open(gcard_file, 'r') as gfile:
+
+        # First line is just the header, skip it                                                                                                                                                                         
+        # by slicing.                                                                                                                                                                                                    
+        for line in gfile.readlines()[1:]:
+
+            # Remove new-line and split on comma                                                                                                                                                                         
+            tokens = line.strip().split(',')
+            if '.gcard' in tokens[0]:
+                gcards.append(tokens[0])
+
+    return gcards
+

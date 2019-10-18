@@ -74,3 +74,38 @@ def get_users(sql):
   # The result of fetchall is a list of tuples, we need
   # just the first element of each tuple. 
   return { user_tuple[0] for user_tuple in sql.fetchall() }
+
+def select_by_user_submission_id(usub_id, table, fields, sql):
+  """A common operation in this project 
+  is the retrieval of data from tables indexed by 
+  UserSubmissionID.  This funtion can be used to 
+  do that.
+
+  Inputs: 
+  ------- 
+  sql - Database cursor object for execution of queries 
+  table - Name of the table to get fields from (str)
+  fields - Fields to select from table (str)
+  usub_id - The UserSubmissionID key 
+
+  Outputs:
+  --------
+  results - Tuple returned from the SELECT call 
+
+  """
+
+  if isinstance(fields, list):
+    query_fields = ', '.join(fields)
+  elif isinstance(fields, str):
+    query_fields = fields
+  else:
+    raise ValueError('fields must be a list of fields (strings) or a string')
+    
+  query = """
+  SELECT {0} FROM {1} 
+      WHERE UserSubmissionID = {2}; 
+  """.format(query_fields, table, usub_id)
+
+  sql.execute(query)
+
+  return sql.fetchall()
