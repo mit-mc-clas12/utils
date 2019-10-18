@@ -33,8 +33,8 @@ class scard_class:
                 utils.printer("That line must have the key '{0}'.".format(fs.scard_key[linenum]))
             self.data[key] = value
 
-        """                                                                           
 
+        """                                                                           
         This block was moved from scard_helper to this parse_scard function.
         It seems like this is a better place to handle the correction of these 
         fields. 

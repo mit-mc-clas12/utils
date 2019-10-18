@@ -202,5 +202,6 @@ debug_help = help = """0 (default) - no messages,1 - general messages,
 
 gcard_identifying_text = '.gcard' # For use in gcard_helper.py
 gcard_default = '/jlab/clas12Tags/gcards/clas12-default.gcard'
+container_gcards = [gcard_default, '/path/to/other.gcard', '/path/to/yet_another.gcard']
 lund_identifying_text = '.txt' #For use in gcard_helper.py
 lund_default = ""

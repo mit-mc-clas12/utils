@@ -42,47 +42,16 @@ def user_validation(args):
     utils.db_write(strn)
   return username
 
+def get_username():
+  """Return the current users name as a string."""
+  return Popen(['whoami'], stdout=PIPE).communicate()[0].split()[0]
 
-def user_validation_refactor(username_provided, sql):
-  """To be renamed.  This function accepts the username and performs the lookup. """
-  
-  username = Popen(['whoami'], stdout=PIPE).communicate()[0].split()[0]
-  
-  if username == 'gemc' or username_provided is not None:
-    username = username_provided 
+def get_domain_name():
+  """Return the current domain name as a string."""
 
+  # Spit a dummy domain back 
   if 'TRAVIS' in os.environ:
-  	print("We're at travis-ci environment")
-  	fake_domain = "travis.dev"
-  	domain_name = fake_domain
+    return 'travis.dev'
+
   else:
-    # The following does not work on mac. This needs to get resolved, 
-    # currently bridged over for testing
-    # domain_name = Popen(['hostname',''-d'], 
-    # stdout=PIPE).communicate()[0].split()[0]
-    domain_name = "example_domain"
-
-  query = """
-  SELECT 1 FROM Users 
-      WHERE EXISTS (
-          SELECT 1 FROM Users WHERE User ="{0}" AND domain_name = "{1}"
-      )
-  """.format(username, domain_name)
-  sql.execute(query)
-  user_already_exists = sql.fetchall() 
-
-  if not user_already_exists:
-    print(("\nThis is the first time {0} from {1} has submitted jobs. "
-          "Adding user to database").format(username,domain_name))
-
-    insertion = """
-    INSERT INTO Users(User, domain_name, JoinDateStamp, 
-    Total_UserSubmissions, Total_Jobs, Total_Events, Most_Recent_Active_Date) 
-    VALUES ("{0}","{1}","{2}","{3}","{4}","{5}","{6}");
-    """.format(username, domain_name, utils. gettime(), 0, 0, 0, "Null")
-
-    sql.execute(insertion)
-
-  return username
-  
-    
+    return 'example_domain'
