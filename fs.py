@@ -187,7 +187,7 @@ cw_obj.file_path             = sub_files_path+'condor_wrapper_files/' # This is 
 ---------------------------- Other Specifications ------------------------------
 *****************************************************************************"""
 # Definition of valid scard types. Explainations for these types can be found in the documentation.
-valid_scard_types = [1]
+valid_scard_types = [1, 2, 3, 4]
 
 # This defines a mapping between 'generator' in scard, the genOutput and genExecutable
 genOutput     =  {'clasdis': 'sidis.dat', 'dvcs': 'dvcsgen1.dat', 'disrad':'dis-rad.dat',  'genKYandOnePion': 'genKYandOnePion.dat'}

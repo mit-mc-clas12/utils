@@ -60,26 +60,64 @@ def GCard_Entry(UserSubmissionID,unixtimestamp,url_dir):
           gcard_text_db = gcard_text.replace('"',"'")
           print("\t Gathered gcard '{0}'".format(url_ending))
           db_gcard_write(UserSubmissionID,unixtimestamp,gcard_text_db)
+
+  # I don't think this block can ever be reached 
   else:
     print('gcard not recognized as default option or online repository, please inspect scard')
     exit()
 
 
 def get_valid_gcards(gcard_file):
-    """Load a list of valid gcards from the input gcard file.  This                                                                                                                                                      
+    """Load a list of valid gcards from the input gcard file.  This
     is the list available in the container. """
 
     gcards = []
     with open(gcard_file, 'r') as gfile:
-
-        # First line is just the header, skip it                                                                                                                                                                         
-        # by slicing.                                                                                                                                                                                                    
+        # First line is just the header, skip it
+        # by slicing.
         for line in gfile.readlines()[1:]:
 
-            # Remove new-line and split on comma                                                                                                                                                                         
+            # Remove new-line and split on comma
             tokens = line.strip().split(',')
             if '.gcard' in tokens[0]:
                 gcards.append(tokens[0])
 
     return gcards
 
+def download_gcards(url):
+    """Download the gcard, or gcards that are located 
+    at the url provided.  
+
+    Input: 
+    ------ 
+    url - Gcard URL provided in the scard.
+
+    Returns: 
+    --------
+    gcards - List of gcards from collected from URL. 
+
+
+    To Do: 
+    ------
+    - Add logging to replace utils.printer commands removed. 
+
+    """
+    gcards = [] 
+    
+    if '.gcard' in url:
+        # This returns a tuple, we need the contents of the tuple
+        gcard = html_reader.html_reader(url,'')[0]
+        gcards.append(gcard)
+
+    # There could be an online directory that contains gcards
+    # specified by the scard, here we need to search for the 
+    # gcards that it contains and add them to our list. 
+    else:
+        raw_html, gcard_urls = html_reader.html_reader(url, fs.gcard_identifying_text)
+
+        for url_ending in gcard_urls:
+            # This returns a tuple, we need the contents of the tuple
+            gcard = html_reader.html_reader(url + '/' + url_ending, '')[0]
+            gcards.append(gcard)
+
+    return [g.replace('"',"'") for g in gcards]
