@@ -75,6 +75,26 @@ def get_users(sql):
   # just the first element of each tuple. 
   return { user_tuple[0] for user_tuple in sql.fetchall() }
 
+def get_user_id(username, sql):
+  """Get UserID from the Users table based on our username. 
+
+  Inputs: 
+  -------
+  username - The current username, returned from user_validation.get_username
+  sql - Database cursor object used to execute statements. 
+
+  Returns: 
+  --------
+  Tuple containing the UserID
+  """
+
+  query = """
+  SELECT UserID FROM Users
+      WHERE User = '{0}'
+  """.format(username)
+  sql.execute(query)
+  return sql.fetchall()
+
 def select_by_user_submission_id(usub_id, table, fields, sql):
   """A common operation in this project 
   is the retrieval of data from tables indexed by 
