@@ -85,7 +85,7 @@ def get_user_id(username, sql):
 
   Returns: 
   --------
-  Tuple containing the UserID
+  user_id - The integer UserID.
   """
 
   query = """
@@ -93,7 +93,10 @@ def get_user_id(username, sql):
       WHERE User = '{0}'
   """.format(username)
   sql.execute(query)
-  return sql.fetchall()
+
+  # If you query one column for one value
+  # that exists once, you get ((value,),).  
+  return sql.fetchall()[0][0]
 
 def select_by_user_submission_id(usub_id, table, fields, sql):
   """A common operation in this project 
