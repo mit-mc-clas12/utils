@@ -11,8 +11,13 @@
 """
 
 from __future__ import print_function
-import fs, sqlite3, datetime
+import datetime 
+import logging 
+
+import fs
 import MySQLdb
+import sqlite3
+
 
 def gettime():
   return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -105,3 +110,19 @@ def db_grab(strn):
   conn.close()
   return return_array
 
+
+def configure_logger(args):
+    """ Logging, very basic for now. """
+    logger = logging.getLogger('SubMit')
+    level = logging.DEBUG if (args.debug > 0) else logging.INFO
+    logger.setLevel(level)
+
+    # Can be changed to output file                                                                                                   
+    console_log = logging.StreamHandler()
+    console_log.setLevel(level)
+
+    formatter = logging.Formatter('[%(asctime)s:%(levelname)s] %(message)s')
+    console_log.setFormatter(formatter)
+
+    logger.addHandler(console_log)
+    return logger

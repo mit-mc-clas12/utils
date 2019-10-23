@@ -16,6 +16,7 @@ class scard_class:
         self.name = 'scard.txt'
         self.data = {}
         self.parse_scard(scard_text)
+        self.raw_text = None 
 
     def parse_scard(self, scard_text):
         scard_lines = scard_text.split("\n")
@@ -29,8 +30,10 @@ class scard_class:
             value =  line[pos_delimeter_colon+1:pos_delimeter_hash].strip()
             if key == "generator" and not 'http' in value:
               if key != fs.scard_key[linenum]:
-                utils.printer("ERROR: Line {0} of the steering card has the key '{1}''.".format(linenum+1,key))
-                utils.printer("That line must have the key '{0}'.".format(fs.scard_key[linenum]))
+                  pass
+                  # utils.printer("ERROR: Line {0} of the steering card has the key '{1}''.".format(linenum+1,key))
+                  # utils.printer("That line must have the key '{0}'.".format(fs.scard_key[linenum]))
+
             self.data[key] = value
 
 
