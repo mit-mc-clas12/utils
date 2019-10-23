@@ -1,8 +1,8 @@
 List of valid gcards in CVMFS image. Most recent update: 10/22/19
 /jlab/clas12Tags/gcards/clas12-default.gcard, default CLAS12 configuration
-/jlab/clas12Tags/gcards/rga-fall2018.gcard,   RGA fall 2018 configuration
 /jlab/clas12Tags/gcards/rga-spring2018.gcard, RGA spring 2018 configuration
+/jlab/clas12Tags/gcards/rga-fall2018.gcard,   RGA fall 2018 configuration
+/jlab/clas12Tags/gcards/rgk-fall2018.gcard,   RGK fall 2018 configuration
 /jlab/clas12Tags/gcards/rga-spring2019.gcard, RGA spring 2019 configuration
 /jlab/clas12Tags/gcards/rgb-spring2019.gcard, RGB spring 2019 configuration
 /jlab/clas12Tags/gcards/rgb-winter2019.gcard, RGB winter 2019 configuration
-/jlab/clas12Tags/gcards/rgk-fall2018.gcard,   RGK fall 2018 configuration
