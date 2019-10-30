@@ -67,6 +67,11 @@ def Lund_Entry(url_dir, target_dir):
     lund_extensions = ['.dat', '.txt', '.lund']
     lund_dir = target_dir
 
+    # A case used to work around not downloading for types 1/3
+    if url_dir == "no_download":
+        print('Not downloading files due to SCard type.')
+        return lund_dir
+
     if os.path.exists(lund_dir):
         print('Lund directory already exists, not downloading again.')
         return lund_dir 
