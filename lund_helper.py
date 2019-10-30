@@ -40,7 +40,7 @@ def Lund_Downloader(url_dir,lund_urls,lund_dir):
             filename = lund_dir+"/"+url_ending
             with open(filename,"a") as file: file.write(lund_text_db)
 
-def Lund_Entry(url_dir):
+def Lund_Entry(url_dir, target_dir):
     """ Download or copy lund files and return the name of 
     the target directory. 
 
@@ -65,7 +65,7 @@ def Lund_Entry(url_dir):
     """
 
     lund_extensions = ['.dat', '.txt', '.lund']
-    lund_dir = 'lund_dir'
+    lund_dir = target_dir
 
     if os.path.exists(lund_dir):
         print('Lund directory already exists, not downloading again.')
