@@ -190,8 +190,8 @@ cw_obj.file_path             = sub_files_path+'condor_wrapper_files/' # This is 
 valid_scard_types = [1, 2, 3, 4]
 
 # This defines a mapping between 'generator' in scard, the genOutput and genExecutable
-genOutput     =  {'gemc': 'na',  'clasdis': 'sidis.dat', 'dvcs': 'dvcs.dat',     'disrad':'dis-rad.dat',  'genKYandOnePion': 'genKYandOnePion.dat'}
-genExecutable =  {'gemc':'gemc', 'clasdis': 'clasdis',   'dvcs': 'dvcsgen',      'disrad':'generate-dis', 'genKYandOnePion': 'eg_ky'}
+genOutput     =  {'clasdis': 'sidis.dat', 'dvcs': 'dvcsgen1.dat', 'disrad':'dis-rad.dat' , 'genKYandOnePion': 'genKYandOnePion.dat', 'gemc': 'gemc'}
+genExecutable =  {'clasdis': 'clasdis'  , 'dvcs': 'dvcsgen'     , 'disrad':'generate-dis', 'genKYandOnePion': 'eg_ky'              , 'gemc': 'gemc'}
 
 # This is the debug variable for print statments - 0 = no messages, 1 = some, 2 = all messages. Initalized to 1
 DEBUG = 0
