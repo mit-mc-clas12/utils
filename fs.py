@@ -86,9 +86,8 @@ scards_fields = (('group_name','TEXT'),('farm_name','TEXT'),('Nevents','INT'),
                 ('GenOptions','TEXT'),('Gcards','TEXT'),('Jobs','INT'),
                 ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
                  ('Cores_Req','INT'),('Mem_Req','INT'),('timestamp','TEXT'), 
-                 ('dst','TEXT'), ('reconstruct','TEXT'), ('gemc_evio','TEXT'), 
-                 ('gemc_decoded','TEXT'))
-
+                 ('generatorOUT','TEXT'), ('reconstructionOUT','TEXT'), ('gemcEvioOUT','TEXT'), 
+                 ('gemcHipoOUT','TEXT'), ('dstOUT', 'TEXT'))
 
 gcards_fields = (('gcard_text','TEXT'),)
 
