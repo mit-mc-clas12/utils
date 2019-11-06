@@ -1,0 +1,50 @@
+{
+    "user_data": [
+        {
+            "username": "avakian", 
+            "job_id": "1417876", 
+            "submit_date": "11/4", 
+            "submitted": "999", 
+            "done": "1", 
+            "submit_time": "12:02", 
+            "total": "1000"
+        }, 
+        {
+            "username": "avakian", 
+            "job_id": "1417932", 
+            "submit_date": "11/4", 
+            "submitted": "234", 
+            "done": "10", 
+            "submit_time": "16:55", 
+            "total": "244"
+        }, 
+        {
+            "username": "fxgirod", 
+            "job_id": "1417949", 
+            "submit_date": "11/4", 
+            "submitted": "996", 
+            "done": "_", 
+            "submit_time": "20:39", 
+            "total": "1000"
+        }, 
+        {
+            "username": "fxgirod", 
+            "job_id": "1417954", 
+            "submit_date": "11/5", 
+            "submitted": "3997", 
+            "done": "3", 
+            "submit_time": "08:30", 
+            "total": "4000"
+        }
+    ], 
+    "metadata": {
+        "held": "4", 
+        "idle": "0", 
+        "jobs": "18", 
+        "suspended": "0", 
+        "update_timestamp": "2019-11-06 07:58:41", 
+        "completed": "0", 
+        "removed": "0", 
+        "running": "14"
+    }
+}

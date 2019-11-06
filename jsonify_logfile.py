@@ -8,6 +8,9 @@ import json
 import os 
 import sys 
 
+import argparse 
+
+# This project 
 import fs
 from database import (get_database_connection, 
                       load_database_credentials)
@@ -35,11 +38,15 @@ def connect_to_database():
 
 if __name__ == '__main__':
 
+    ap = argparse.ArgumentParser() 
+    ap.add_argument('-l', '--logfile', required=True)
+    ap.add_argument('-o', '--output', required=True)
+    args = ap.parse_args()
 
     # Connect to our database with read/write access. 
     db_conn, sql = connect_to_database() 
 
-    logfile = '/group/clas/www/gemc/html/web_interface/stats_results/gemcRunning.log'
+    logfile = args.logfile 
     logtime = gettime() 
     
     with open(logfile, 'r') as raw_log:
@@ -92,5 +99,5 @@ if __name__ == '__main__':
     db_conn.close() 
 
 
-    with open('monitoring_sample.json', 'w') as output_file:
+    with open(args.output, 'w') as output_file:
         json.dump(json_dict, output_file, indent=4)
