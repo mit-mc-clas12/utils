@@ -34,7 +34,7 @@ def connect_to_database():
     
     return get_database_connection() 
 
-def build_user_data(line, user, farm_sub_id):
+def build_user_data(line, user, osg_id, farm_sub_id):
     user_data = {} 
     user_data['username'] = user
     user_data['farm_submission_id'] = farm_sub_id
@@ -86,7 +86,7 @@ if __name__ == '__main__':
             
             sql.execute(USER_QUERY.format(osg_id))
             user, farm_sub_id = sql.fetchall()[0]
-            user_data = build_user_data(line, user, farm_sub_id)
+            user_data = build_user_data(line, user, osg_id, farm_sub_id)
 
             json_dict['user_data'].append(user_data)
 
