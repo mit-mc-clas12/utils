@@ -17,11 +17,9 @@ from database import (get_database_connection,
 from utils import gettime 
 
 USER_QUERY = """
-SELECT User from UserSubmissions 
-WHERE UserSubmissionID IN 
-(SELECT UserSubmissionID FROM FarmSubmissions 
-WHERE pool_node = {}
-)
+SELECT User,FarmSubmissionID FROM UserSubmissions 
+INNER JOIN FarmSubmissions ON FarmSubmissions.UserSubmissionID = UserSubmissions.UserSubmissionID
+WHERE FarmSubmissions.pool_node = {}
 """
 
 def connect_to_database():
@@ -35,6 +33,18 @@ def connect_to_database():
     fs.mysql_psswrd = pword
     
     return get_database_connection() 
+
+def build_user_data(line, user, farm_sub_id):
+    user_data = {} 
+    user_data['username'] = user
+    user_data['farm_submission_id'] = farm_sub_id
+    user_data['osg_id'] = osg_id
+    user_data['submit_date'] = line[1]
+    user_data['submit_time'] = line[2]
+    user_data['submitted'] = line[3]
+    user_data['done'] = line[4]
+    user_data['total'] = line[7]
+    return user_data
 
 if __name__ == '__main__':
 
@@ -70,32 +80,16 @@ if __name__ == '__main__':
     }
     json_dict['user_data'] = [] 
 
-    # Example Header 
-    # ['SUBMITTED', 'DONE', 'RUN', 'IDLE', 'HOLD', 'TOTAL', 'JOB_IDS']
-
-    # Example entry 
-    # ['gemc', '11/4', '12:02', '999', '1', '_', '_', '1000', '1417876.13']
-
-
     for line_number, line in enumerate(log_text[1:-1]):
         if line:
-            job_id = line[8].split('.')[0]
+            osg_id = line[8].split('.')[0]
             
-            sql.execute(USER_QUERY.format(job_id))
-            user = sql.fetchall()[0][0]
-            
-            user_data = {} 
-            user_data['username'] = user
-            user_data['job_id'] = job_id
-            user_data['submit_date'] = line[1]
-            user_data['submit_time'] = line[2]
-            user_data['submitted'] = line[3]
-            user_data['done'] = line[4]
-            user_data['total'] = line[7]
+            sql.execute(USER_QUERY.format(osg_id))
+            user, farm_sub_id = sql.fetchall()[0]
+            user_data = build_user_data(line, user, farm_sub_id)
 
             json_dict['user_data'].append(user_data)
 
-    # End by closing the database. 
     db_conn.close() 
 
 
