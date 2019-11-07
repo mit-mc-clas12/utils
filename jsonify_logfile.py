@@ -48,8 +48,8 @@ def build_user_data(line, user, osg_id, farm_sub_id):
     user_data = OrderedDict() 
     user_data['username'] = user
     user_data['job_id'] = farm_sub_id
-    user_data['total'] = line[7]
     user_data['submitted'] = ' '.join(line[1:3])
+    user_data['total'] = line[7]
     user_data['done'] = line[3]
     user_data['running'] = line[4]
     user_data['idle'] = line[5]
