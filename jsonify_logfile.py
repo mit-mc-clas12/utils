@@ -7,6 +7,7 @@ Logfile jsonification for monitoring.
 import json 
 import os 
 import sys 
+from collections import OrderedDict 
 
 import argparse 
 
@@ -44,7 +45,7 @@ def build_user_data(line, user, osg_id, farm_sub_id):
     gemc        11/6  14:22      4   1571   1424      1   3000 1423098.0-
 
     """
-    user_data = {} 
+    user_data = OrderedDict() 
     user_data['username'] = user
     user_data['farm_submission_id'] = farm_sub_id
     user_data['osg_id'] = osg_id
