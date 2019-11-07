@@ -35,14 +35,24 @@ def connect_to_database():
     return get_database_connection() 
 
 def build_user_data(line, user, osg_id, farm_sub_id):
+    """
+    Sample input from the logfile. 
+
+    SUBMITTED   DONE   RUN    IDLE   HOLD  TOTAL JOB_IDS
+    gemc        11/4  16:55    239      5      _      _    244 1417932.64
+    gemc        11/6  12:50     43    956      _      1   1000 1422770.0-
+    gemc        11/6  14:22      4   1571   1424      1   3000 1423098.0-
+
+    """
     user_data = {} 
     user_data['username'] = user
     user_data['farm_submission_id'] = farm_sub_id
     user_data['osg_id'] = osg_id
-    user_data['submit_date'] = line[1]
-    user_data['submit_time'] = line[2]
-    user_data['submitted'] = line[3]
-    user_data['done'] = line[4]
+    user_data['submit_time'] = ' '.join(line[1:3])
+    user_data['done'] = line[3]
+    user_data['running'] = line[4]
+    user_data['idle'] = line[5]
+    user_data['hold'] = line[6]
     user_data['total'] = line[7]
     return user_data
 
@@ -62,8 +72,7 @@ if __name__ == '__main__':
     with open(logfile, 'r') as raw_log:
         log_text = raw_log.readlines()
         
-    log_text = [line.strip().split() for line in log_text]
-
+    log_text = [l.strip().split() for l in log_text]
     header = log_text[0]
     footer = log_text[-1]
 
@@ -80,18 +89,21 @@ if __name__ == '__main__':
     }
     json_dict['user_data'] = [] 
 
-    for line_number, line in enumerate(log_text[1:-1]):
+    # Don't read header/footer 
+    for line in log_text[1:-1]:
+        
+        # Don't process empty lists 
         if line:
+            line = [l.replace('_','0') for l in line]
             osg_id = line[8].split('.')[0]
-            
+
+            # Get information from database to connect with this job
             sql.execute(USER_QUERY.format(osg_id))
             user, farm_sub_id = sql.fetchall()[0]
             user_data = build_user_data(line, user, osg_id, farm_sub_id)
-
             json_dict['user_data'].append(user_data)
 
     db_conn.close() 
-
 
     with open(args.output, 'w') as output_file:
         json.dump(json_dict, output_file, indent=4)
