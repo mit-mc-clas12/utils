@@ -81,12 +81,12 @@ if __name__ == '__main__':
     json_dict['metadata'] = {
         'update_timestamp': logtime,
         'jobs': footer[0],
-#        'completed': footer[2],
-#        'removed': footer[4],
+        'completed': footer[2],
+        'removed': footer[4],
         'idle': footer[6],
         'running': footer[8],
-        'held': footer[10]
-#        'suspended': footer[12]
+        'held': footer[10],
+        'suspended': footer[12]
     }
     json_dict['user_data'] = [] 
 
