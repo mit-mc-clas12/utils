@@ -80,13 +80,11 @@ if __name__ == '__main__':
     json_dict = {} 
     json_dict['metadata'] = {
         'update_timestamp': logtime,
-        'jobs': footer[0],
-        'completed': footer[2],
-        'removed': footer[4],
-        'idle': footer[6],
-        'running': footer[8],
-        'held': footer[10],
-        'suspended': footer[12]
+        'jobs': 0,
+        'completed': 0,
+        'idle': 0,
+        'running': 0,
+        'held': 0
     }
     json_dict['user_data'] = [] 
 
@@ -103,6 +101,12 @@ if __name__ == '__main__':
             user, farm_sub_id = sql.fetchall()[0]
             user_data = build_user_data(line, user, osg_id, farm_sub_id)
             json_dict['user_data'].append(user_data)
+
+            json_dict['metadata']['jobs'] += int(user_data['total'])
+            json_dict['metadata']['completed'] += int(user_data['done'])
+            json_dict['metadata']['idle'] += int(user_data['idle'])
+            json_dict['metadata']['held'] += int(user_data['hold'])
+            json_dict['metadata']['running'] += int(user_data['running'])
 
     db_conn.close() 
 
