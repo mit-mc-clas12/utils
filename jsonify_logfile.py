@@ -49,11 +49,11 @@ def build_user_data(line, user, osg_id, farm_sub_id):
     user_data['username'] = user
     user_data['job_id'] = farm_sub_id
     user_data['submitted'] = ' '.join(line[1:3])
-    user_data['total'] = line[7]
+    user_data['total'] = line[6]
     user_data['done'] = line[3]
     user_data['running'] = line[4]
     user_data['idle'] = line[5]
-    user_data['hold'] = line[6]
+    user_data['hold'] = 0
     user_data['osg_id'] = osg_id
     return user_data
 
@@ -94,7 +94,7 @@ if __name__ == '__main__':
         # Don't process empty lists 
         if line:
             line = [l.replace('_','0') for l in line]
-            osg_id = line[8].split('.')[0]
+            osg_id = line[7].split('.')[0]
 
             # Get information from database to connect with this job
             sql.execute(USER_QUERY.format(osg_id))
