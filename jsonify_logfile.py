@@ -1,7 +1,5 @@
 """
-
 Logfile jsonification for monitoring. 
-
 """
 
 import json 
@@ -52,7 +50,7 @@ def build_user_data(line, user, osg_id, farm_sub_id):
     user_data['job_id'] = farm_sub_id
     user_data['submitted'] = ' '.join(line[1:3])
 
-    if len(line) > 7:
+    if len(line) > 8:
         user_data['total'] = line[7]
     else:
         user_data['total'] = line[6]
@@ -61,13 +59,28 @@ def build_user_data(line, user, osg_id, farm_sub_id):
     user_data['running'] = line[4]
     user_data['idle'] = line[5]
 
-    if len(line) > 7:
+    if len(line) > 8:
         user_data['hold'] = line[6]
     else:
         user_data['hold'] = 0
 
     user_data['osg_id'] = osg_id
     return user_data
+
+def build_dummy_user_data():
+
+    user_data = OrderedDict() 
+    user_data['username'] = ''
+    user_data['job_id'] = ''
+    user_data['submitted'] = ''
+    user_data['total'] = 0
+    user_data['done'] = 0
+    user_data['running'] = 0
+    user_data['idle'] = 0
+    user_data['hold'] = 0
+    user_data['osg_id'] = 0
+    return user_data
+    
 
 if __name__ == '__main__':
 
@@ -122,5 +135,9 @@ if __name__ == '__main__':
 
     db_conn.close() 
 
+    # Nothing was added 
+    if not json_dict['user_data']:
+        json_dict['user_data'].append(build_dummy_user_data())
+    
     with open(args.output, 'w') as output_file:
         json.dump(json_dict, output_file, indent=4)
