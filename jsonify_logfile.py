@@ -37,7 +37,9 @@ def connect_to_database():
 
 def build_user_data(line, user, osg_id, farm_sub_id):
     """
-    Sample input from the logfile. 
+    Sample input from the logfile.  This output is not standard, sometimes
+    the hold column is missing.  For that reason, there is an if statement 
+    on the length of the line.
 
     SUBMITTED   DONE   RUN    IDLE   HOLD  TOTAL JOB_IDS
     gemc        11/4  16:55    239      5      _      _    244 1417932.64
@@ -49,11 +51,21 @@ def build_user_data(line, user, osg_id, farm_sub_id):
     user_data['username'] = user
     user_data['job_id'] = farm_sub_id
     user_data['submitted'] = ' '.join(line[1:3])
-    user_data['total'] = line[6]
+
+    if len(line) > 7:
+        user_data['total'] = line[7]
+    else:
+        user_data['total'] = line[6]
+
     user_data['done'] = line[3]
     user_data['running'] = line[4]
     user_data['idle'] = line[5]
-    user_data['hold'] = 0
+
+    if len(line) > 7:
+        user_data['hold'] = line[6]
+    else:
+        user_data['hold'] = 0
+
     user_data['osg_id'] = osg_id
     return user_data
 
