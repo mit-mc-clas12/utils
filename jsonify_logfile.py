@@ -38,29 +38,23 @@ def build_user_data(line, user, osg_id, farm_sub_id):
     Sample input from the logfile.  This output is not standard, sometimes
     the hold column is missing.  For that reason, there is an if statement 
     on the length of the line.
-
-    SUBMITTED   DONE   RUN    IDLE   HOLD  TOTAL JOB_IDS
-    gemc        11/4  16:55    239      5      _      _    244 1417932.64
-    gemc        11/6  12:50     43    956      _      1   1000 1422770.0-
-    gemc        11/6  14:22      4   1571   1424      1   3000 1423098.0-
-
     """
     user_data = OrderedDict() 
     user_data['username'] = user
     user_data['job_id'] = farm_sub_id
-    user_data['submitted'] = ' '.join(line[1:3])
+    user_data['submitted'] = ' '.join(line[3:5])
 
-    if len(line) > 8:
-        user_data['total'] = line[7]
+    if len(line) > 9:
+        user_data['total'] = line[9]
     else:
-        user_data['total'] = line[6]
+        user_data['total'] = line[8]
 
-    user_data['done'] = line[3]
-    user_data['running'] = line[4]
-    user_data['idle'] = line[5]
+    user_data['done'] = line[5]
+    user_data['running'] = line[6]
+    user_data['idle'] = line[7]
 
-    if len(line) > 8:
-        user_data['hold'] = line[6]
+    if len(line) > 9:
+        user_data['hold'] = line[8]
     else:
         user_data['hold'] = 0
 
@@ -99,7 +93,9 @@ if __name__ == '__main__':
         log_text = raw_log.readlines()
         
     log_text = [l.strip().split() for l in log_text]
+    log_text = [l for l in log_text if l]
     header = log_text[0]
+    columns = log_text[1]
     footer = log_text[-1]
 
     json_dict = {} 
@@ -113,13 +109,13 @@ if __name__ == '__main__':
     }
     json_dict['user_data'] = [] 
 
-    # Don't read header/footer 
-    for line in log_text[1:-1]:
+    # Don't read header/columns/footer 
+    for line in log_text[2:-1]:
         
         # Don't process empty lists 
         if line:
             line = [l.replace('_','0') for l in line]
-            osg_id = line[7].split('.')[0]
+            osg_id = line[-1].split('.')[0]
 
             # Get information from database to connect with this job
             sql.execute(USER_QUERY.format(osg_id))
