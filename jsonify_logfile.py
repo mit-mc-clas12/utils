@@ -26,12 +26,8 @@ def connect_to_database():
     creds_file = os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + '/../msqlrw.txt')
     uname, pword = load_database_credentials(creds_file)
 
-    # Manual injection of username and password, still
-    # not quite ideal. 
-    fs.mysql_uname = uname
-    fs.mysql_psswrd = pword
-    
-    return get_database_connection() 
+    return get_database_connection(use_mysql=True, username=uname, password=pword,
+                                   hostname='jsubmit.jlab.org') 
 
 def build_user_data(line, user, osg_id, farm_sub_id):
     """
