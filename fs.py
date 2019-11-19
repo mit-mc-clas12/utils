@@ -161,12 +161,10 @@ sub_files_path = dirname+'/../server/submission_files/generated_files/'
 # The argument should be handled by both the client and server
 
 use_mysql = True
-
 mysql_uname  = "Null_User"
 mysql_psswrd =  "Null_Password"
-
 MySQL_DB_path  = "jsubmit.jlab.org"
-SQLite_DB_path = dirname+"/database/"
+SQLite_DB_path = dirname + '/../tests/test.sqlite'
 
 # Specify the location of the scard
 scard_path = dirname+"/../client/"

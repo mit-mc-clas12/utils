@@ -77,7 +77,7 @@ def db_write(strn):
     conn = MySQLdb.connect(fs.MySQL_DB_path, fs.mysql_uname, fs.mysql_psswrd, "CLAS12OCR")
     c = conn.cursor()
   else:
-    DB = fs.SQLite_DB_path+fs.DB_name
+    DB = fs.SQLite_DB_path
     conn = sqlite3.connect(DB)
     c = conn.cursor()
     c.execute('PRAGMA foreign_keys = ON;')
@@ -93,15 +93,19 @@ def db_write(strn):
 # Executes reading commands to DB. Cannot currently be used to return 
 # data from DB.
 def db_grab(strn):
+
   if fs.use_mysql:
     DB = fs.MySQL_DB_path+fs.DB_name
     #mysqldb.connect doesn't work with optional arguments from frontend. It used be
     #conn = MySQLdb.connect(fs.MySQL_DB_path, user=fs.mysql_uname,
     #                        password=fs.mysql_psswrd,database="CLAS12OCR")
     conn = MySQLdb.connect(fs.MySQL_DB_path, fs.mysql_uname, fs.mysql_psswrd, "CLAS12OCR")
+
   else:
-    DB = fs.SQLite_DB_path+fs.DB_name
+    DB = fs.SQLite_DB_path
+    print('Connecting to SQLite database@{}'.format(DB))
     conn = sqlite3.connect(DB)
+
   c = conn.cursor()
   printer2('Executing SQL Command: {0}'.format(strn)) #Turn this on for explict printing of all DB write commands
   c.execute(strn)

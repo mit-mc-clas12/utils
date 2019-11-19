@@ -22,7 +22,7 @@ def get_args():
   args = argparser.parse_args()
 
   fs.DEBUG = getattr(args,fs.debug_long)
-  fs.use_mysql = not args.lite
+  fs.use_mysql = False if args.lite else True
 
   if not args.lite:
     with open(fs.dirname+'/../msqlrw.txt','r') as myfile: #msql.txt is a file that contains two line: first line is username, second line is password
