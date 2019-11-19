@@ -14,9 +14,9 @@ def connect_to_mysql(host, username, password, db_name):
   """Return a MySQL database connection. """
   return MySQLdb.connect(host, username, password, db_name)
 
-def connect_to_sqlite(host, db_name):
+def connect_to_sqlite(db_name):
   """Return an sqlite database connection. """
-  return sqlite3.connect(host + db_name)
+  return sqlite3.connect(db_name)
 
 def load_database_credentials(cred_file):
   """Read a file with database username and password and 
@@ -32,13 +32,12 @@ def load_database_credentials(cred_file):
       
     return (login[0], login[1])
 
-def get_database_connection():
+def get_database_connection(use_mysql=True, hostname=None, 
+                            database_name=None, username=None, 
+                            password=None):
   """ Authenticate to the database as done in the db_write and db_grab
   functions.  Returns an active database connection, this must be closed 
-  by the user. Currently, this function still relies on having the correct
-  configuration in fs.py before being called.  This means manually or 
-  automatically injecting the user credentials into the fs file before 
-  calling this function. 
+  by the user.
 
   returns: 
   db_connection - a MySQL or sqlite database connection 
@@ -46,19 +45,19 @@ def get_database_connection():
   """
 
   # Configure for MySQL 
-  if fs.use_mysql: 
-    db_connection = connect_to_mysql(fs.MySQL_DB_path, fs.mysql_uname, 
-                                     fs.mysql_psswrd, "CLAS12OCR")
+  if use_mysql: 
+    db_connection = connect_to_mysql(hostname, username, 
+                                     password, "CLAS12OCR")
   # Configure for sqlite 
   else:
-    db_connection = connect_to_sqlite(fs.SQLite_DB_path, fs.DB_name)
+    db_connection = connect_to_sqlite(database_name)
 
   # Create a cursor object for executing statements. 
   sql = db_connection.cursor() 
 
   # For SQLite, foreign keys need to be enabled
   # manually. 
-  if not fs.use_mysql:
+  if not use_mysql:
     sql.execute("PRAGMA foreign_keys = ON;")
     
   return db_connection, sql 
