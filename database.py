@@ -190,3 +190,24 @@ def get_scard_text_for_submission(usub_id, sql):
   WHERE UserSubmissionID = {0};""".format(usub_id)
   sql.execute(query)
   return sql.fetchall()[0][0]
+
+def get_unsubmitted_jobs(sql):
+  """ Return a list of UserSubmissionID for 
+  jobs that have not yet been submitted. 
+
+  Inputs: 
+  -------
+  - sql - cursor object for querying database 
+
+
+  Returns: 
+  --------
+  - ids - list of UserSubmissionID
+  """
+  query = """
+  SELECT UserSubmissionID FROM FarmSubmissions 
+  WHERE run_status NOT LIKE '{0}';""".format(
+  "Submitted to%") 
+  sql.execute(query)
+
+  return [entry[0] for entry in sql.fetchall()]
