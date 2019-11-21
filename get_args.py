@@ -19,7 +19,7 @@ def get_args():
   argparser.add_argument(fs.debug_short,fs.debug_longdash, default = fs.debug_default,help = fs.debug_help)
   argparser.add_argument('-l','--lite',help = "use -l or --lite to connect to sqlite DB, otherwise use MySQL DB", type=str, default=None)
   argparser.add_argument('-o','--OutputDir', default='none', help = 'Enter full path of your desired output directory, e.g. /u/home/robertej')
-  argparser.add_argument('--test_database', action='store_true', default=None, help='Use testing database (MySQL)')
+  argparser.add_argument('--test_database', action='store_true', default=False, help='Use testing database (MySQL)')
   args = argparser.parse_args()
 
   fs.DEBUG = getattr(args,fs.debug_long)
