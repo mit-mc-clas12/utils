@@ -35,19 +35,35 @@ def load_database_credentials(cred_file):
 def get_database_connection(use_mysql=True, hostname=None,
                             database_name=None, username=None,
                             password=None):
-  """ Authenticate to the database as done in the db_write and db_grab
+  """ 
+
+  Authenticate to the database as done in the db_write and db_grab
   functions.  Returns an active database connection, this must be closed
   by the user.
 
-  returns:
+  Inputs: 
+  -------
+  - use_mysql - (boolean) will configure sqlite or mysql 
+  - hostname - (str) the database hostname 
+  - username - (str) username loaded from file 
+  - password - (str) password loaded from file 
+  - database_name - (str) Database name, if using sqlite
+  this should be the entire path to the database.  If the 
+  database is MySQL, this should be the name of the table. 
+  Valid options are "CLAS12OCR" for production or "CLAS12TEST"
+  for testing. 
+
+  Returns:
+  --------
   db_connection - a MySQL or sqlite database connection
   sql - A cursor for the database, used to execute all queries
+
   """
 
   # Configure for MySQL
   if use_mysql:
     db_connection = connect_to_mysql(hostname, username,
-                                     password, "CLAS12OCR")
+                                     password, database_name)
   # Configure for sqlite
   else:
     db_connection = connect_to_sqlite(database_name)
