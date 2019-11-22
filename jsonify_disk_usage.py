@@ -6,66 +6,52 @@ Disk usage utility.
 
 import argparse
 import json
-import os
-import subprocess
-import shutil
 
-# global dictionary to reduce runtime 
-# on repeat file counts 
-cached = {}
 
-def sub_dirs(target_dir):
-    return [d for d in os.listdir(target_dir) if os.path.isdir(target_dir + '/' + d)]
+def tokenize(line):
+    return line.strip().split()
 
-def folder_size(target_dir):
-    """
-    https://stackoverflow.com/questions/1392413/calculating-a-directorys-size-using-python
-    """
+def line_is_accepted(line):
+    tokens = tokenize(line)
+    
+    if len(tokens) != 2:
+        return False 
+    if tokens[1] == '.':
+        return False
 
-    total_size = os.path.getsize(target_dir)
+    return True
 
-    for item in os.listdir(target_dir):
-        item_path = os.path.join(target_dir, item)
-
-        if os.path.isfile(item_path):
-            if item_path in cached:
-                total_size += cached[item_path]
-            else:
-                cached[item_path] = os.path.getsize(item_path)
-                total_size += cached[item_path]
-
-        elif os.path.isdir(item_path):
-            if item_path in cached:
-                total_size += cached[item_path]
-            else:
-                cached[item_path] = folder_size(item_path)
-                total_size += cached[item_path]
-
-    return total_size
+def is_subdir(folder_name):
+    return (len(folder_name.split('/')) == 3)
 
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
+    parser.add_argument('--logfile', required=True, type=str)
     parser.add_argument('--output', required=True, type=str)
     args = parser.parse_args()
 
-    target_dir = '/volatile/clas12/osg/'
+    json_dict = {}
 
-    user_dirs = {} 
-    for user_dir in sub_dirs(target_dir):
-        user_dirs[user_dir] = folder_size(os.path.join(target_dir, user_dir))
-        
-    json_dict = {} 
-    for user_dir, dir_size in user_dirs.items(): 
-        json_dict[user_dir] = {} 
-        json_dict[user_dir]['total_size'] = dir_size 
-        json_dict[user_dir]['sub_directories'] = [] 
-        
-        for sub_dir in sub_dirs(os.path.join(target_dir, user_dir)):
-            sub_dir_stats = {}
-            sub_dir_stats['name'] = sub_dir
-            sub_dir_stats['size'] = folder_size(os.path.join(target_dir, user_dir, sub_dir))
-            json_dict[user_dir]['sub_directories'].append(sub_dir_stats)
+    with open(args.logfile, 'r') as log_file:
+        log = log_file.readlines() 
 
+    lines = [tokenize(line) for line in log if line_is_accepted(line)]
+    for line in lines:
+        size = line[0]
+        user_dir = line[1]
+        user = user_dir.split('/')[1]
+        
+        if user not in json_dict:
+            json_dict[user] = {} 
+            json_dict[user]['sub_directories'] = [] 
+
+        if is_subdir(user_dir):
+            json_dict[user]['sub_directories'].append(
+                {'name': user_dir.split('/')[2], 'size': size}
+            )
+        else:
+            json_dict[user]['total_size'] = size
+            
     with open(args.output, 'w') as json_file:
         json.dump(json_dict, json_file, indent=4)
