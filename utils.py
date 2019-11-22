@@ -74,7 +74,7 @@ def db_write(strn):
     #mysqldb.connect doesn't work with optional arguments from frontend. It used be
     #conn = MySQLdb.connect(fs.MySQL_DB_path, user=fs.mysql_uname,
     #                        password=fs.mysql_psswrd,database="CLAS12OCR")
-    conn = MySQLdb.connect(fs.MySQL_DB_path, fs.mysql_uname, fs.mysql_psswrd, "CLAS12OCR")
+    conn = MySQLdb.connect(fs.MySQL_DB_path, fs.mysql_uname, fs.mysql_psswrd, "CLAS12TEST")
     c = conn.cursor()
   else:
     DB = fs.SQLite_DB_path
