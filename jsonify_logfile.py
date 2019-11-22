@@ -27,7 +27,7 @@ def connect_to_database():
     uname, pword = load_database_credentials(creds_file)
 
     return get_database_connection(use_mysql=True, username=uname, password=pword,
-                                   hostname='jsubmit.jlab.org') 
+                                   hostname='jsubmit.jlab.org', database_name="CLAS12OCR") 
 
 def build_user_data(line, user, osg_id, farm_sub_id):
     """
@@ -113,17 +113,25 @@ if __name__ == '__main__':
             line = [l.replace('_','0') for l in line]
             osg_id = line[-1].split('.')[0]
 
-            # Get information from database to connect with this job
-            sql.execute(USER_QUERY.format(osg_id))
-            user, farm_sub_id = sql.fetchall()[0]
-            user_data = build_user_data(line, user, osg_id, farm_sub_id)
-            json_dict['user_data'].append(user_data)
+            sql.execute("SELECT COUNT(pool_node) FROM FarmSubmissions WHERE pool_node = {}".format(
+                osg_id
+            ))
+            count = sql.fetchall()[0][0]
 
-            json_dict['metadata']['jobs'] += int(user_data['total'])
-            json_dict['metadata']['completed'] += int(user_data['done'])
-            json_dict['metadata']['idle'] += int(user_data['idle'])
-            json_dict['metadata']['held'] += int(user_data['hold'])
-            json_dict['metadata']['running'] += int(user_data['running'])
+            if count > 0:
+                # Get information from database to connect with this job
+                sql.execute(USER_QUERY.format(osg_id))
+                user, farm_sub_id = sql.fetchall()[0]
+                user_data = build_user_data(line, user, osg_id, farm_sub_id)
+                json_dict['user_data'].append(user_data)
+
+                json_dict['metadata']['jobs'] += int(user_data['total'])
+                json_dict['metadata']['completed'] += int(user_data['done'])
+                json_dict['metadata']['idle'] += int(user_data['idle'])
+                json_dict['metadata']['held'] += int(user_data['hold'])
+                json_dict['metadata']['running'] += int(user_data['running'])
+            else:
+                print('Skipping {}'.format(osg_id))
 
     db_conn.close() 
 
