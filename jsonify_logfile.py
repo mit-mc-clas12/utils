@@ -41,12 +41,14 @@ def build_user_data(line, user, osg_id, farm_sub_id):
     user_data['submitted'] = ' '.join(line[3:5])
 
     if len(line) > 9:
-        user_data['total'] = line[9]
-    else:
         user_data['total'] = line[8]
+    else:
+        user_data['total'] = line[7]
+
 
     jobs_completed = int(line[5])
-    total_jobs = int(user_data['total'].split('.')[0])
+    total_jobs = int(user_data['total'])
+
 
     try:
         percent_completed = 100 * jobs_completed / total_jobs 
@@ -133,7 +135,7 @@ if __name__ == '__main__':
                 user_data = build_user_data(line, user, osg_id, farm_sub_id)
                 json_dict['user_data'].append(user_data)
 
-                json_dict['metadata']['jobs'] += int(user_data['total'].split('.')[0])
+                json_dict['metadata']['jobs'] += int(user_data['total'])
                 json_dict['metadata']['completed'] += int(line[5])
                 json_dict['metadata']['idle'] += int(user_data['idle'])
                 json_dict['metadata']['held'] += int(user_data['hold'])
