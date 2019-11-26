@@ -36,7 +36,7 @@ def build_user_data(line, user, osg_id, farm_sub_id):
     on the length of the line.
     """
     user_data = OrderedDict() 
-    user_data['username'] = user
+    user_data['user'] = user
     user_data['job_id'] = farm_sub_id
     user_data['submitted'] = ' '.join(line[3:5])
 
@@ -45,7 +45,15 @@ def build_user_data(line, user, osg_id, farm_sub_id):
     else:
         user_data['total'] = line[8]
 
-    user_data['done'] = line[5]
+    jobs_completed = int(line[5])
+    total_jobs = int(user_data['total'])
+
+    try:
+        percent_completed = 100 * jobs_completed / total_jobs 
+    except:
+        precent_completed = 0 
+
+    user_data['done'] = '{0} ({1:3.2f}%)'.format(jobs_completed, percent_completed)
     user_data['running'] = line[6]
     user_data['idle'] = line[7]
 
@@ -60,7 +68,7 @@ def build_user_data(line, user, osg_id, farm_sub_id):
 def build_dummy_user_data():
 
     user_data = OrderedDict() 
-    user_data['username'] = ''
+    user_data['user'] = ''
     user_data['job_id'] = ''
     user_data['submitted'] = ''
     user_data['total'] = 0
@@ -126,7 +134,7 @@ if __name__ == '__main__':
                 json_dict['user_data'].append(user_data)
 
                 json_dict['metadata']['jobs'] += int(user_data['total'])
-                json_dict['metadata']['completed'] += int(user_data['done'])
+                json_dict['metadata']['completed'] += int(line[5])
                 json_dict['metadata']['idle'] += int(user_data['idle'])
                 json_dict['metadata']['held'] += int(user_data['hold'])
                 json_dict['metadata']['running'] += int(user_data['running'])
