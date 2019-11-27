@@ -60,7 +60,7 @@ def build_user_data(line, user, osg_id, farm_sub_id):
     user_data['idle'] = line[7]
 
     if len(line) > 9:
-        user_data['hold'] = line[8]
+        user_data['hold'] = line[7]
     else:
         user_data['hold'] = 0
 
