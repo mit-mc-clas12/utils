@@ -2,12 +2,11 @@
 Logfile jsonification for monitoring. 
 """
 
+import argparse 
 import json 
 import os 
 import sys 
 from collections import OrderedDict 
-
-import argparse 
 
 # This project 
 import fs
@@ -21,6 +20,9 @@ INNER JOIN FarmSubmissions ON FarmSubmissions.UserSubmissionID = UserSubmissions
 WHERE FarmSubmissions.pool_node = {}
 """
 
+COLS_TO_SPLIT = ['SUBMITTED', 'BATCH_NAME']
+COLS_TO_SKIP = ['BATCH_NAME', 'OWNER', 'JOB_IDS']
+    
 def connect_to_database():
 
     creds_file = os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + '/../msqlrw.txt')
@@ -29,59 +31,39 @@ def connect_to_database():
     return get_database_connection(use_mysql=True, username=uname, password=pword,
                                    hostname='jsubmit.jlab.org', database_name="CLAS12OCR") 
 
-def build_user_data(line, user, osg_id, farm_sub_id):
+def build_user_data(columns, line, user, osg_id, farm_sub_id):
     """
     Sample input from the logfile.  This output is not standard, sometimes
     the hold column is missing.  For that reason, there is an if statement 
     on the length of the line.
     """
     user_data = OrderedDict() 
-    user_data['user'] = user
-    user_data['job_id'] = farm_sub_id
-    user_data['submitted'] = ' '.join(line[3:5])
+    
+    icol = 0 
+    for col in columns:
 
-    if len(line) > 9:
-        user_data['total'] = line[8]
-    else:
-        user_data['total'] = line[7]
+        if col in COLS_TO_SPLIT:
+            entry = ' '.join(line[icol:icol+2])
+            icol += 2
+        else:
+            entry = line[icol]
+            icol += 1 
 
+        if col not in COLS_TO_SKIP:
+            user_data[col] = entry
 
-    jobs_completed = int(line[5])
-    total_jobs = int(user_data['total'])
-
-
-    try:
-        percent_completed = 100 * jobs_completed / total_jobs 
-    except:
-        precent_completed = 0 
-
-    user_data['done'] = '{0} ({1:3.2f}%)'.format(jobs_completed, percent_completed)
-    user_data['running'] = line[6]
-    user_data['idle'] = line[7]
-
-    if len(line) > 9:
-        user_data['hold'] = line[7]
-    else:
-        user_data['hold'] = 0
-
-    user_data['osg_id'] = osg_id
+    user_data['USER'] = user
+    user_data['OSG ID'] = osg_id
     return user_data
 
-def build_dummy_user_data():
+def build_dummy_user_data(columns):
 
     user_data = OrderedDict() 
-    user_data['user'] = ''
-    user_data['job_id'] = ''
-    user_data['submitted'] = ''
-    user_data['total'] = 0
-    user_data['done'] = 0
-    user_data['running'] = 0
-    user_data['idle'] = 0
-    user_data['hold'] = 0
-    user_data['osg_id'] = 0
+    for col in columns:
+        user_data[col] = "No data"
+
     return user_data
     
-
 if __name__ == '__main__':
 
     ap = argparse.ArgumentParser() 
@@ -100,18 +82,15 @@ if __name__ == '__main__':
         
     log_text = [l.strip().split() for l in log_text]
     log_text = [l for l in log_text if l]
-    header = log_text[0]
-    columns = log_text[1]
+    columns = log_text[0]
     footer = log_text[-1]
+
+    print(columns)
 
     json_dict = {} 
     json_dict['metadata'] = {
         'update_timestamp': logtime,
-        'jobs': 0,
-        'completed': 0,
-        'idle': 0,
-        'running': 0,
-        'held': 0
+        'footer': ' '.join(footer),
     }
     json_dict['user_data'] = [] 
 
@@ -132,14 +111,9 @@ if __name__ == '__main__':
                 # Get information from database to connect with this job
                 sql.execute(USER_QUERY.format(osg_id))
                 user, farm_sub_id = sql.fetchall()[0]
-                user_data = build_user_data(line, user, osg_id, farm_sub_id)
+                user_data = build_user_data(columns, line, user, osg_id, farm_sub_id)
                 json_dict['user_data'].append(user_data)
 
-                json_dict['metadata']['jobs'] += int(user_data['total'])
-                json_dict['metadata']['completed'] += int(line[5])
-                json_dict['metadata']['idle'] += int(user_data['idle'])
-                json_dict['metadata']['held'] += int(user_data['hold'])
-                json_dict['metadata']['running'] += int(user_data['running'])
             else:
                 print('Skipping {}'.format(osg_id))
 
@@ -147,7 +121,7 @@ if __name__ == '__main__':
 
     # Nothing was added 
     if not json_dict['user_data']:
-        json_dict['user_data'].append(build_dummy_user_data())
+        json_dict['user_data'].append(build_dummy_user_data(columns))
     
     with open(args.output, 'w') as output_file:
         json.dump(json_dict, output_file, indent=4)
