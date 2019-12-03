@@ -93,7 +93,7 @@ if __name__ == '__main__':
     json_dict['user_data'] = [] 
 
     # Don't read header/columns/footer 
-    for line in log_text[2:-1]:
+    for line in log_text[1:-1]:
         
         # Don't process empty lists 
         if line:
