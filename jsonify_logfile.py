@@ -85,8 +85,6 @@ if __name__ == '__main__':
     columns = log_text[0]
     footer = log_text[-1]
 
-    print(columns)
-
     json_dict = {} 
     json_dict['metadata'] = {
         'update_timestamp': logtime,
