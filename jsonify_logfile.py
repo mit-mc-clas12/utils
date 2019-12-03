@@ -62,6 +62,8 @@ def build_dummy_user_data(columns):
     for col in columns:
         user_data[col] = "No data"
 
+    user_data['USER'] = "No user"
+    user_data['OSG ID'] = "No ID"
     return user_data
     
 if __name__ == '__main__':
