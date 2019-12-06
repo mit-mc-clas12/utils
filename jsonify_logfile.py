@@ -65,7 +65,7 @@ def build_dummy_user_data(columns):
 
     user_data = {}
     for col in columns:
-        user_data[col] = "No data"
+        user_data[col.lower()] = "No data"
 
     user_data['user'] = "No user"
     user_data['osg id'] = "No ID"
