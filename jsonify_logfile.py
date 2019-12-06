@@ -20,9 +20,12 @@ INNER JOIN FarmSubmissions ON FarmSubmissions.UserSubmissionID = UserSubmissions
 WHERE FarmSubmissions.pool_node = {}
 """
 
-COLS_TO_SPLIT = ['SUBMITTED', 'BATCH_NAME']
-COLS_TO_SKIP = ['BATCH_NAME', 'OWNER', 'JOB_IDS']
-    
+COLS_TO_SPLIT = ['submitted', 'batch_name']
+COLS_TO_SKIP = ['batch_name', 'owner', 'job_ids']
+ORDERING = ['user', 'job id', 'submitted', 'total',
+            'done', 'running', 'idle', 'hold', 
+            'osg id']    
+
 def connect_to_database():
 
     creds_file = os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + '/../msqlrw.txt')
@@ -31,17 +34,18 @@ def connect_to_database():
     return get_database_connection(use_mysql=True, username=uname, password=pword,
                                    hostname='jsubmit.jlab.org', database_name="CLAS12OCR") 
 
-def build_user_data(columns, line, user, osg_id, farm_sub_id):
+def build_user_data(columns, line, user, job_id, osg_id, farm_sub_id):
     """
     Sample input from the logfile.  This output is not standard, sometimes
     the hold column is missing.  For that reason, there is an if statement 
     on the length of the line.
     """
-    user_data = OrderedDict() 
+    user_data = {}
     
     icol = 0 
     for col in columns:
 
+        col = col.lower() 
         if col in COLS_TO_SPLIT:
             entry = ' '.join(line[icol:icol+2])
             icol += 2
@@ -52,20 +56,38 @@ def build_user_data(columns, line, user, osg_id, farm_sub_id):
         if col not in COLS_TO_SKIP:
             user_data[col] = entry
 
-    user_data['USER'] = user
-    user_data['OSG ID'] = osg_id
+    user_data['user'] = user
+    user_data['osg id'] = osg_id
+    user_data['job id'] = job_id
     return user_data
 
 def build_dummy_user_data(columns):
 
-    user_data = OrderedDict() 
+    user_data = {}
     for col in columns:
         user_data[col] = "No data"
 
-    user_data['USER'] = "No user"
-    user_data['OSG ID'] = "No ID"
+    user_data['user'] = "No user"
+    user_data['osg id'] = "No ID"
+    user_data['job id'] = "No ID"
     return user_data
+
+def enforce_preferential_key_ordering(input_data, ordering):
+    """ Order the keys of a dictionary according 
+    to some prefered scheme. """
+    data = OrderedDict() 
+
+    for key in ordering:
+        if key in input_data:
+            data[key] = input_data[key]
     
+    # Anything that doesn't have a preferential order. 
+    for key in input_data:
+        if key not in data:
+            data[key] = input_data[key]
+
+    return data
+
 if __name__ == '__main__':
 
     ap = argparse.ArgumentParser() 
@@ -111,7 +133,9 @@ if __name__ == '__main__':
                 # Get information from database to connect with this job
                 sql.execute(USER_QUERY.format(osg_id))
                 user, farm_sub_id = sql.fetchall()[0]
-                user_data = build_user_data(columns, line, user, osg_id, farm_sub_id)
+                user_data = build_user_data(columns, line, user, 
+                                            farm_sub_id, osg_id, farm_sub_id)
+                user_data = enforce_preferential_key_ordering(user_data, ORDERING)
                 json_dict['user_data'].append(user_data)
 
             else:
@@ -121,7 +145,8 @@ if __name__ == '__main__':
 
     # Nothing was added 
     if not json_dict['user_data']:
-        json_dict['user_data'].append(build_dummy_user_data(columns))
+        json_dict['user_data'].append(enforce_preferential_key_ordering(
+            build_dummy_user_data(columns), ORDERING))
     
     with open(args.output, 'w') as output_file:
         json.dump(json_dict, output_file, indent=4)
