@@ -23,7 +23,7 @@ WHERE FarmSubmissions.pool_node = {}
 COLS_TO_SPLIT = ['submitted', 'batch_name']
 COLS_TO_SKIP = ['batch_name', 'owner', 'job_ids']
 ORDERING = ['user', 'job id', 'submitted', 'total',
-            'done', 'running', 'idle', 'hold', 
+            'done', 'run', 'idle', 'hold', 
             'osg id']    
 
 def connect_to_database():
