@@ -15,9 +15,8 @@ from database import (get_database_connection,
 from utils import gettime 
 
 USER_QUERY = """
-SELECT User,FarmSubmissionID FROM UserSubmissions 
-INNER JOIN FarmSubmissions ON FarmSubmissions.UserSubmissionID = UserSubmissions.UserSubmissionID
-WHERE FarmSubmissions.pool_node = {}
+SELECT user,user_submission_id FROM submissions 
+WHERE pool_node = {}
 """
 
 COLS_TO_SPLIT = ['submitted', 'batch_name']
