@@ -8,6 +8,7 @@
 """
 #****************************************************************
 from __future__ import print_function
+import argparse
 import os
 import utils, fs, get_args
 import sqlite3
@@ -32,8 +33,14 @@ def create_database(args):
   for j in range(0,len(fs.tables)):
     for i in range(0,(len(fs.table_fields[j]))):
       utils.add_field(fs.tables[j],
-                      fs.table_fields[j][i][0],fs.table_fields[j][i][1],args)
+                      fs.table_fields[j][i][0], fs.table_fields[j][i][1], args)
 
 if __name__ == "__main__":
-  args = get_args.get_args()
-  create_database(args)
+  #args = get_args.get_args()
+  
+  parser = argparse.ArgumentParser()
+  parser.add_argument('--lite', action='store_true', default=False)
+  args = parser.parse_args()
+
+  #create_database(args)
+  create_new_database(args)

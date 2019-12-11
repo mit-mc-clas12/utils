@@ -67,6 +67,30 @@ cw_obj.file_text_fieldname = 'condor_wrapper_text'
 -------------------------  DB Schema Specification -----------------------------
 *****************************************************************************"""
 
+new_tables = ['users', 'submissions']
+new_pks = ['user_id', 'user_submission_id']
+new_user_fields = (('user','TEXT'), ('domain_name','TEXT'), ('join_date','TEXT'),
+                   ('total_submissions','INT'), ('total_jobs','INT'),
+                   ('total_events','INT'), ('most_recent_active_date','TEXT'))
+new_submissions_fields = (
+  ('user','TEXT'), ('timestamp','TEXT'), ('scard','TEXT'),
+  ('client_ip','TEXT'), ('submission_pool','TEXT'), ('submission_timestamp','TEXT'),
+  ('pool_node','TEXT'), ('run_status','TEXT'), ('completion_timestamp','TEXT'),
+  (runscript_file_obj.file_text_fieldname,'TEXT'),
+  (condor_file_obj.file_text_fieldname,'TEXT'),
+  (run_job_obj.file_text_fieldname,'TEXT'),
+  (cw_obj.file_text_fieldname,'TEXT'),
+  ('job_submission_date','TEXT'),
+  ('job_completion_date','TEXT'),
+  ('output_file_directory','TEXT'),
+  ('output_file_size', 'INT'),
+  ('number_job_failures', 'INT')
+)
+new_user_foreign_keys = ""
+new_submission_foreign_keys = """, user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id)"""
+new_foreign_keys = [new_user_foreign_keys, new_submission_foreign_keys]
+new_table_fields = [new_user_fields, new_submissions_fields]
+
 tables = ['Users','UserSubmissions','Scards','Gcards','FarmSubmissions','JobsLog']
 
 #Primary Key definitions:

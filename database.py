@@ -82,7 +82,7 @@ def get_users(sql):
   """Get a set of database users from the Users table. """
 
   query = """
-  SELECT DISTINCT User FROM Users
+  SELECT DISTINCT user FROM users
   """
   sql.execute(query)
 
@@ -104,8 +104,8 @@ def get_user_id(username, sql):
   """
 
   query = """
-  SELECT UserID FROM Users
-      WHERE User = '{0}'
+  SELECT user_id FROM users
+      WHERE user = '{0}'
   """.format(username)
   sql.execute(query)
 
@@ -141,7 +141,7 @@ def select_by_user_submission_id(usub_id, table, fields, sql):
 
   query = """
   SELECT {0} FROM {1}
-      WHERE UserSubmissionID = {2};
+      WHERE user_submission_id = {2};
   """.format(query_fields, table, usub_id)
 
   sql.execute(query)
@@ -183,8 +183,8 @@ def get_username_for_submission(usub_id, sql):
   - username (str)
   """
   query = """
-  SELECT User FROM UserSubmissions
-  WHERE UserSubmissionID = {0};""".format(usub_id)
+  SELECT user FROM submissions
+  WHERE user_submission_id = {0};""".format(usub_id)
 
   sql.execute(query)
   return sql.fetchall()[0][0]
@@ -202,8 +202,8 @@ def get_scard_text_for_submission(usub_id, sql):
   - scard_text (str)
   """
   query  = """
-  SELECT scard FROM UserSubmissions
-  WHERE UserSubmissionID = {0};""".format(usub_id)
+  SELECT scard FROM submissions
+  WHERE user_submission_id = {0};""".format(usub_id)
   sql.execute(query)
   return sql.fetchall()[0][0]
 
@@ -221,7 +221,7 @@ def get_unsubmitted_jobs(sql):
   - ids - list of UserSubmissionID
   """
   query = """
-  SELECT UserSubmissionID FROM FarmSubmissions 
+  SELECT user_submission_id FROM submissions
   WHERE run_status NOT LIKE '{0}';""".format(
   "Submitted to%") 
   sql.execute(query)
