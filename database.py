@@ -233,11 +233,11 @@ def get_unsubmitted_jobs(sql):
 def get_old_jobs_from_queue(sql, hours=1):
   """ Get old jobs from the job_queue table. """
   query = """
-  SELECT entry,timestamp FROM job_queue
+  SELECT entry,update_time FROM job_queue
   """
   sql.execute(query)
 
-  current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+  current_time = datetime.datetime.now()
 
   old_jobs = [] 
   for entry, timestamp in sql.fetchall():
