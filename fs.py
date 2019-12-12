@@ -70,11 +70,11 @@ cw_obj.file_text_fieldname = 'condor_wrapper_text'
 new_tables = ['users', 'submissions']
 new_pks = ['user_id', 'user_submission_id']
 new_user_fields = (('user','TEXT'), ('domain_name','TEXT'), ('join_date','TEXT'),
-                   ('total_submissions','INT'), ('total_jobs','INT'),
-                   ('total_events','INT'), ('most_recent_active_date','TEXT'))
+                   ('total_submissions','INT'),
+                   ('total_events','INT'), ('priority','INT'))
 new_submissions_fields = (
-  ('user','TEXT'), ('timestamp','TEXT'), ('scard','TEXT'),
-  ('client_ip','TEXT'), ('submission_pool','TEXT'), ('submission_timestamp','TEXT'),
+  ('user','TEXT'), ('client_time','TEXT'), ('scard','TEXT'),
+  ('client_ip','TEXT'), ('server_time','TEXT'),
   ('pool_node','TEXT'), ('run_status','TEXT'),
   (runscript_file_obj.file_text_fieldname,'TEXT'),
   (condor_file_obj.file_text_fieldname,'TEXT'),
