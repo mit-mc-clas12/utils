@@ -67,8 +67,8 @@ cw_obj.file_text_fieldname = 'condor_wrapper_text'
 -------------------------  DB Schema Specification -----------------------------
 *****************************************************************************"""
 
-new_tables = ['users', 'submissions']
-new_pks = ['user_id', 'user_submission_id']
+new_tables = ['users', 'submissions', 'job_queue']
+new_pks = ['user_id', 'user_submission_id', 'entry']
 new_user_fields = (('user','TEXT'), ('domain_name','TEXT'), ('join_date','TEXT'),
                    ('total_submissions','INT'),
                    ('total_events','INT'), ('priority','INT'))
@@ -80,10 +80,13 @@ new_submissions_fields = (
   (condor_file_obj.file_text_fieldname,'TEXT'),
   (run_job_obj.file_text_fieldname,'TEXT')
 )
+new_job_queue_fields = (('n_jobs','INT'), ('update_time','TEXT'))
+
 new_user_foreign_keys = ""
 new_submission_foreign_keys = """, user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id)"""
-new_foreign_keys = [new_user_foreign_keys, new_submission_foreign_keys]
-new_table_fields = [new_user_fields, new_submissions_fields]
+new_job_queue_keys = """, user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id)"""
+new_foreign_keys = [new_user_foreign_keys, new_submission_foreign_keys, new_job_queue_keys]
+new_table_fields = [new_user_fields, new_submissions_fields, new_job_queue_fields]
 
 tables = ['Users','UserSubmissions','Scards','Gcards','FarmSubmissions','JobsLog']
 

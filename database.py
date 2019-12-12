@@ -7,6 +7,8 @@ for the client side live in client/update_tables.py.
 """
 
 from __future__ import print_function
+import datetime 
+
 import fs, sqlite3
 import MySQLdb
 
@@ -227,3 +229,22 @@ def get_unsubmitted_jobs(sql):
   sql.execute(query)
 
   return [entry[0] for entry in sql.fetchall()]
+
+def get_old_jobs_from_queue(sql, hours=1):
+  """ Get old jobs from the job_queue table. """
+  query = """
+  SELECT entry,timestamp FROM job_queue
+  """
+  sql.execute(query)
+
+  current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+  old_jobs = [] 
+  for entry, timestamp in sql.fetchall():
+    entry_time = datetime.datetime.strptime(timestamp, '%Y-%m-%d %H:%M:%S')
+    expire_time = entry_time + datetime.timedelta(hours=hours)
+    
+    if expire_time < current_time:
+      old_jobs.append(entry)
+
+  return old_jobs
