@@ -75,16 +75,10 @@ new_user_fields = (('user','TEXT'), ('domain_name','TEXT'), ('join_date','TEXT')
 new_submissions_fields = (
   ('user','TEXT'), ('timestamp','TEXT'), ('scard','TEXT'),
   ('client_ip','TEXT'), ('submission_pool','TEXT'), ('submission_timestamp','TEXT'),
-  ('pool_node','TEXT'), ('run_status','TEXT'), ('completion_timestamp','TEXT'),
+  ('pool_node','TEXT'), ('run_status','TEXT'),
   (runscript_file_obj.file_text_fieldname,'TEXT'),
   (condor_file_obj.file_text_fieldname,'TEXT'),
-  (run_job_obj.file_text_fieldname,'TEXT'),
-  (cw_obj.file_text_fieldname,'TEXT'),
-  ('job_submission_date','TEXT'),
-  ('job_completion_date','TEXT'),
-  ('output_file_directory','TEXT'),
-  ('output_file_size', 'INT'),
-  ('number_job_failures', 'INT')
+  (run_job_obj.file_text_fieldname,'TEXT')
 )
 new_user_foreign_keys = ""
 new_submission_foreign_keys = """, user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id)"""
