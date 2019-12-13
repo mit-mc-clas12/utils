@@ -121,3 +121,52 @@ def Lund_Entry(url_dir, target_dir):
 
     return lund_dir
                 
+def count_files(url_dir):
+    """ 
+    We need to know how many files are going 
+    to be downloaded before we do this job.  This 
+    is used in the queue system.
+
+    Inputs:
+    -------
+    - url_dir (str) - Specifies the location of the 
+    lund files. 
+
+    Returns:
+    --------
+    - nfiles (int) - The number of files to be downloaded. 
+
+    """
+    lund_extensions = ['.dat', '.txt', '.lund']
+
+    # A case used to work around not downloading for types 1/3
+    if url_dir == "no_download":
+        print('Not downloading files due to SCard type.')
+        return 0
+
+    # Case 3/4
+    if 'http' in url_dir:
+        
+        # Single web file 
+        if any([ext in url_dir for ext in lund_extensions]):
+            return 1 
+
+        # Web directory 
+        else:
+            raw_html, lund_urls = html_reader.html_reader(url_dir, fs.lund_identifying_text)
+            return len(lund_urls)
+
+    # Case 1/2
+    else:
+
+        # Single local file 
+        if any([ext in url_dir for ext in lund_extensions]):
+            return 1 
+
+        # Local directory, many files 
+        else:
+            lund_files = glob.glob(url_dir + '*')
+            return len(lund_files)
+
+    # Something weird happened. 
+    return 0 
