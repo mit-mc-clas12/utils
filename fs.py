@@ -80,7 +80,9 @@ new_submissions_fields = (
   (condor_file_obj.file_text_fieldname,'TEXT'),
   (run_job_obj.file_text_fieldname,'TEXT')
 )
-new_job_queue_fields = (('n_jobs','INT'), ('update_time','TEXT'))
+new_job_queue_fields = (('total','INT'), ('update_time','TEXT'), 
+                        ('run', 'INT'), ('hold', 'INT'), ('idle', 'INT'),
+                        ('done', 'INT'), ('osg_id', 'INT'), ('submitted', 'INT'))
 
 new_user_foreign_keys = ""
 new_submission_foreign_keys = """, user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id)"""
