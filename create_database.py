@@ -1,46 +1,73 @@
-#****************************************************************
+""" 
+
+Create new database tables.
+
 """
-# This file facilitates the construction of the database. In a perfect world, once everything is
-# up and running, it will only be run once. However, it was clear from the beginning of the project
-# that for testing purposes, the DB will have to be made many many times as the schema and goals change.
-# This takes in the database structure as specified in fs and passes the structure
-# as arguements to create_table and add_field functions defined in utils
-"""
-#****************************************************************
-from __future__ import print_function
-import argparse
+import argparse 
 import os
-import utils, fs, get_args
 import sqlite3
+import sys 
 
-def create_database(args):
-  if args.lite:
-    if not os.path.exists(fs.SQLite_DB_path):
-      os.mkdir(fs.SQLite_DB_path)
-    if os.path.exists(fs.SQLite_DB_path+"/"+fs.DB_name):
-      print("{0} already exists in {1}, exiting".format(fs.DB_name,fs.SQLite_DB_path))
-      exit()
+import database 
+import fs 
 
-  print("Creating {0} now".format(fs.DB_name))
+def add_field(db, sql, tablename, field_name, field_type):
+    strn = "ALTER TABLE {0} ADD COLUMN {1} {2}".format(
+        tablename, field_name, field_type)
+    print(strn)
+    sql.execute(strn)
+    db.commit()
 
-  fs.DEBUG = getattr(args,fs.debug_long)
-  #Create tables in the database
-  for i in range(0,len(fs.tables)):
-    utils.create_table(fs.tables[i],
-                      fs.PKs[i],fs.foreign_key_relations[i],args)
+def create_table(db, sql, tablename, PKname, FKargs):
+    if isinstance(db, sqlite3.Connection):
+        strn = ("CREATE TABLE IF NOT EXISTS {0}({1} "
+                "integer primary key autoincrement {2});").format(
+                    tablename, PKname, FKargs)
+    else:
+        strn = ("CREATE TABLE IF NOT EXISTS {0}({1} "
+                "INT AUTO_INCREMENT, PRIMARY KEY ({1}) {2});").format(
+                    tablename, PKname, FKargs)
+        
+    print(strn)
+    sql.execute(strn)
+    db.commit()
 
-  #Add fields to each table in the database
-  for j in range(0,len(fs.tables)):
-    for i in range(0,(len(fs.table_fields[j]))):
-      utils.add_field(fs.tables[j],
-                      fs.table_fields[j][i][0], fs.table_fields[j][i][1], args)
+if __name__ == '__main__':
 
-if __name__ == "__main__":
-  #args = get_args.get_args()
-  
-  parser = argparse.ArgumentParser()
-  parser.add_argument('--lite', action='store_true', default=False)
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--lite', default=None, type=str)
+    parser.add_argument('--test_database', action='store_true', default=False)
+    args = parser.parse_args()
+    
+    cred_file = os.path.dirname(os.path.abspath(__file__)) + \
+                '/../msqlrw.txt'
+    cred_file = os.path.normpath(cred_file)
+    username, password = database.load_database_credentials(cred_file)
 
-  #create_database(args)
-  create_new_database(args)
+    if args.lite is not None:
+        database_name = args.lite
+    else:
+        if args.test_database:
+            database_name = "CLAS12TEST"
+        else:
+            database_name = "CLAS12OCR"
+
+    use_mysql = False if args.lite else True
+    db_conn, sql = database.get_database_connection(
+        use_mysql=use_mysql,
+        database_name=database_name,
+        username=username,
+        password=password,
+        hostname='jsubmit.jlab.org'
+    )
+
+    # Create tables
+    for table, primary_key, foreign_keys, fields in zip(
+            fs.tables, fs.pks, fs.foreign_keys,
+            fs.table_fields):
+        create_table(db_conn, sql, table, primary_key, foreign_keys)
+
+        for field, field_type in fields:
+            add_field(db_conn, sql, table, field, field_type)
+
+    db_conn.close()

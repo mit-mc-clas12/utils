@@ -67,12 +67,12 @@ cw_obj.file_text_fieldname = 'condor_wrapper_text'
 -------------------------  DB Schema Specification -----------------------------
 *****************************************************************************"""
 
-new_tables = ['users', 'submissions', 'job_queue']
-new_pks = ['user_id', 'user_submission_id', 'entry']
-new_user_fields = (('user','TEXT'), ('domain_name','TEXT'), ('join_date','TEXT'),
+tables = ['users', 'submissions', 'job_queue']
+pks = ['user_id', 'user_submission_id', 'entry']
+user_fields = (('user','TEXT'), ('domain_name','TEXT'), ('join_date','TEXT'),
                    ('total_submissions','INT'),
                    ('total_events','INT'), ('priority','INT'))
-new_submissions_fields = (
+submissions_fields = (
   ('user','TEXT'), ('client_time','TEXT'), ('scard','TEXT'),
   ('client_ip','TEXT'), ('server_time','TEXT'),
   ('pool_node','TEXT'), ('run_status','TEXT'),
@@ -80,75 +80,16 @@ new_submissions_fields = (
   (condor_file_obj.file_text_fieldname,'TEXT'),
   (run_job_obj.file_text_fieldname,'TEXT')
 )
-new_job_queue_fields = (('total','INT'), ('update_time','TEXT'), 
+job_queue_fields = (('total','INT'), ('update_time','TEXT'), 
                         ('run', 'INT'), ('hold', 'INT'), ('idle', 'INT'),
                         ('done', 'INT'), ('osg_id', 'INT'), ('submitted', 'INT'))
 
-new_user_foreign_keys = ""
-new_submission_foreign_keys = """, user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id)"""
-new_job_queue_keys = """, user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id)"""
-new_foreign_keys = [new_user_foreign_keys, new_submission_foreign_keys, new_job_queue_keys]
-new_table_fields = [new_user_fields, new_submissions_fields, new_job_queue_fields]
+user_foreign_keys = ""
+submission_foreign_keys = """, user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id)"""
+job_queue_keys = """, user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id)"""
+foreign_keys = [user_foreign_keys, submission_foreign_keys, job_queue_keys]
+table_fields = [user_fields, submissions_fields, job_queue_fields]
 
-tables = ['Users','UserSubmissions','Scards','Gcards','FarmSubmissions','JobsLog']
-
-#Primary Key definitions:
-PKs = ['UserID','UserSubmissionID','ScardID','GcardID','FarmSubmissionID','JobID']
-
-users_fields = (('domain_name','TEXT'),('JoinDateStamp','TEXT'),('Total_UserSubmissions','INT'),
-                ('Total_Jobs','INT'),('Total_Events','INT'),('Most_Recent_Active_Date','TEXT'))
-
-
-UserSubmissions_fields = (('User','TEXT'),('timestamp','TEXT'),('scard','TEXT'),('client_ip','TEXT'))
-
-# Since there is only 1 scard / UserSubmission, in princple this entire scard table should be deleted
-# The submission scripts can be completely written using just the text in the VARCHAR 'scard' field in the UserSubmissions table
-# Importantly, this is not yet implemented. It should be straightforward to do so, but time consuming
-scards_fields = (('group_name','TEXT'),('farm_name','TEXT'),('Nevents','INT'),
-                ('Generator','TEXT'),('genExecutable','TEXT'),('genOutput','TEXT'),
-                ('GenOptions','TEXT'),('Gcards','TEXT'),('Jobs','INT'),
-                ('Project','TEXT'),('Luminosity','INT'),('Tcurrent','INT'),('Pcurrent','INT'),
-                 ('Cores_Req','INT'),('Mem_Req','INT'),('timestamp','TEXT'), 
-                 ('generatorOUT','TEXT'), ('reconstructionOUT','TEXT'), ('gemcEvioOUT','TEXT'), 
-                 ('gemcHipoOUT','TEXT'), ('dstOUT', 'TEXT'))
-
-gcards_fields = (('gcard_text','TEXT'),)
-
-FarmSubmissions_fields = (('submission_pool','TEXT'),('submission_timestamp','TEXT'),
-                      ('pool_node','TEXT'),
-                      ('run_status','TEXT'),('completion_timestamp','TEXT'),
-                      (runscript_file_obj.file_text_fieldname,'TEXT'),
-                      (condor_file_obj.file_text_fieldname,'TEXT'),
-                      (run_job_obj.file_text_fieldname,'TEXT'),
-                      (cw_obj.file_text_fieldname,'TEXT'))
-
-joblogs_fields = (('Job_Submission_Datestamp','TEXT'),
-                  ('Job_Completion_Datestamp','TEXT'),('Output_file_directory','TEXT'),
-                  ('Output_file_size','INT'),('Number_Job_failures','INT'))
-
-table_fields = [users_fields,UserSubmissions_fields, scards_fields, gcards_fields, FarmSubmissions_fields, joblogs_fields]
-
-#Below defines foreign key relations. There is a more succinet way to do this but as we have
-#only a few relations, I did not spend the time to modifiy this code.
-users_special_relations = """, User TEXT NOT NULL"""
-UserSubmissions_foreign_keys = """, UserID INT,
-                      FOREIGN KEY(UserID) REFERENCES Users(UserID)"""
-scards_foreign_keys = """, UserSubmissionID INTEGER,
-                      FOREIGN KEY(UserSubmissionID) REFERENCES UserSubmissions(UserSubmissionID)"""
-gcards_foreign_keys = """, UserSubmissionID INTEGER,
-                      FOREIGN KEY(UserSubmissionID) REFERENCES UserSubmissions(UserSubmissionID)"""
-FarmSubmissions_foreign_keys = """, UserSubmissionID INTEGER, GcardID INTEGER,
-                      FOREIGN KEY(UserSubmissionID) REFERENCES UserSubmissions(UserSubmissionID),
-                      FOREIGN KEY(GcardID) REFERENCES Gcards(GcardID)"""
-joblogs_foreign_keys = """, UserID INTEGER, UserSubmissionID INTEGER, FarmSubmissionID INTEGER,
-                      FOREIGN KEY(UserID) REFERENCES Users(UserID),
-                      FOREIGN KEY(UserSubmissionID) REFERENCES UserSubmissions(UserSubmissionID),
-                      FOREIGN KEY(FarmSubmissionID) REFERENCES FarmSubmissions(FarmSubmissionID)"""
-#create table yourtablename (_id  integer primary key autoincrement, column1 text not null unique, column2 text);
-
-foreign_key_relations = [users_special_relations, UserSubmissions_foreign_keys,
-                        scards_foreign_keys, gcards_foreign_keys,
-                        FarmSubmissions_foreign_keys, joblogs_foreign_keys]
 """*****************************************************************************
 -------------------- Scard and Runscripts Specifications -----------------------
 *****************************************************************************"""
