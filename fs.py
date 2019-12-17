@@ -71,7 +71,7 @@ tables = ['users', 'submissions', 'job_queue']
 pks = ['user_id', 'user_submission_id', 'entry']
 user_fields = (('user','TEXT'), ('domain_name','TEXT'), ('join_date','TEXT'),
                    ('total_submissions','INT'),
-                   ('total_events','INT'), ('priority','INT'))
+                   ('total_events','INT'), ('priority','INT'), ('total_running_jobs','INT'))
 submissions_fields = (
   ('user','TEXT'), ('client_time','TEXT'), ('scard','TEXT'),
   ('client_ip','TEXT'), ('server_time','TEXT'),
