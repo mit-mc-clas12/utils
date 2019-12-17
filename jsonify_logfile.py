@@ -123,7 +123,7 @@ if __name__ == '__main__':
             line = [l.replace('_','0') for l in line]
             osg_id = line[-1].split('.')[0]
 
-            sql.execute("SELECT COUNT(pool_node) FROM FarmSubmissions WHERE pool_node = {}".format(
+            sql.execute("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(
                 osg_id
             ))
             count = sql.fetchall()[0][0]
