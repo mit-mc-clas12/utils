@@ -1,6 +1,14 @@
 #!/bin/csh -f
 
+
+this will install a particular tag
+it will clean up the director "test"
+
+
 set grepo = https://github.com/mit-mc-clas12
+
+
+
 
 set destination=/group/clas/www/gemc/html
 
