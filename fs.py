@@ -42,7 +42,7 @@ class sub_file():
     self.overwrite_vals = -1
     self.file_text_fieldname = -1
 
-#There might be a more succient way to create these objects, but for now this works
+# There might be a more succient way to create these objects, but for now this works
 runscript_file_obj = sub_file('runscript.sh')
 runscript_file_obj.file_base = 'runscript'
 runscript_file_obj.file_end = '.sh'
@@ -53,15 +53,15 @@ condor_file_obj.file_base = 'clas12'
 condor_file_obj.file_end = '.condor'
 condor_file_obj.file_text_fieldname = 'clas12_condor_text'
 
-run_job_obj = sub_file('run_job')
-run_job_obj.file_base = 'run_job'
-run_job_obj.file_end = '.sh'
-run_job_obj.file_text_fieldname = 'run_job_text'
-
-cw_obj = sub_file('condor_wrapper')
-cw_obj.file_base = 'condor_wrapper'
-cw_obj.file_end = ''
-cw_obj.file_text_fieldname = 'condor_wrapper_text'
+#run_job_obj = sub_file('run_job')
+#run_job_obj.file_base = 'run_job'
+#run_job_obj.file_end = '.sh'
+#run_job_obj.file_text_fieldname = 'run_job_text'
+#
+#cw_obj = sub_file('condor_wrapper')
+#cw_obj.file_base = 'condor_wrapper'
+#cw_obj.file_end = ''
+#cw_obj.file_text_fieldname = 'condor_wrapper_text'
 
 """*****************************************************************************
 -------------------------  DB Schema Specification -----------------------------
@@ -70,8 +70,7 @@ cw_obj.file_text_fieldname = 'condor_wrapper_text'
 tables = ['users', 'submissions', 'job_queue']
 pks = ['user_id', 'user_submission_id', 'entry']
 user_fields = (('user','TEXT'), ('domain_name','TEXT'), ('join_date','TEXT'),
-                   ('total_submissions','INT'),
-                   ('total_events','INT'), ('priority','INT'), ('total_running_jobs','INT'))
+                   ('priority','INT'), ('total_running_jobs','INT'))
 submissions_fields = (
   ('user','TEXT'), ('client_time','TEXT'), ('scard','TEXT'),
   ('client_ip','TEXT'), ('server_time','TEXT'),
