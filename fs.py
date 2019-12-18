@@ -76,8 +76,7 @@ submissions_fields = (
   ('client_ip','TEXT'), ('server_time','TEXT'),
   ('pool_node','TEXT'), ('run_status','TEXT'),
   (runscript_file_obj.file_text_fieldname,'TEXT'),
-  (condor_file_obj.file_text_fieldname,'TEXT'),
-  (run_job_obj.file_text_fieldname,'TEXT')
+  (condor_file_obj.file_text_fieldname,'TEXT')
 )
 job_queue_fields = (('total','INT'), ('update_time','TEXT'), 
                         ('run', 'INT'), ('hold', 'INT'), ('idle', 'INT'),
