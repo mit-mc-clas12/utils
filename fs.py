@@ -103,10 +103,11 @@ condor_file_obj.overwrite_vals = {'project_scard':'project','jobs_scard':'jobs',
 
 #This does not go through the database, but instead just replaces runscript.overwrite with the file location
 #Note that the value here is unimportant, as the overwrite value that is used is generated in sub_script_generator.py
-run_job_obj.overwrite_vals  = {'runscript.overwrite': 'rs_overwrite_unused'}
+# obsolete?
+#run_job_obj.overwrite_vals  = {'runscript.overwrite': 'rs_overwrite_unused'}
 
 #This is unused currently as the condor_wrapper does not need any unique filenames
-cw_obj.overwrite_vals = {}
+# cw_obj.overwrite_vals = {}
 
 """*****************************************************************************
 ------------------------- File Path Specifications -----------------------------
@@ -141,8 +142,8 @@ scard_name = 'scard.txt'
 gcards_dir = 'gcards/'
 condor_file_obj.file_path    = sub_files_path+'condor_files/'
 runscript_file_obj.file_path = sub_files_path+'runscript_files/'
-run_job_obj.file_path        = sub_files_path+'run_job_files/'
-cw_obj.file_path             = sub_files_path+'condor_wrapper_files/' # This is not currently used / needed, but included for completeness
+#run_job_obj.file_path        = sub_files_path+'run_job_files/'
+# cw_obj.file_path             = sub_files_path+'condor_wrapper_files/' # This is not currently used / needed, but included for completeness
 
 """*****************************************************************************
 ---------------------------- Other Specifications ------------------------------
