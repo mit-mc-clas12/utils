@@ -125,7 +125,7 @@ if __name__ == '__main__':
     else:
         for (user, job_ids), rank in zip(sorted_items, ranking):
             for job_id in job_ids:
-                print('condor_prio +{} {}'.format(rank, job_id))
+                print('-p +{} {}'.format(rank, job_id))
 
     #if args.update:
     #    for (u,_),w,r in zip(sorted_items, sorted_weights, ranking):
