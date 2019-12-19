@@ -1,5 +1,5 @@
-"""
-Priority calculation for users. 
+B"""
+P1;95;0criority calculation for users. 
 """
 
 import argparse 
@@ -127,12 +127,29 @@ if __name__ == '__main__':
             for job_id in job_ids:
                 print('-p +{} {}'.format(rank, job_id))
 
-    #if args.update:
-    #    for (u,_),w,r in zip(sorted_items, sorted_weights, ranking):
-    #        command = """
-    #        UPDATE users SET (total_running_jobs, priority_weight, condor_rank)
-    #        = ({},{},{}) WHERE user = '{}';
-    #        """.format()
+    if args.update:
+        for (u,_),w,r in zip(sorted_items, sorted_weights, ranking):
+
+            command = """
+            UPDATE users SET priority_weight
+            = {} WHERE user = '{}';
+            """.format(w, u)
+            sql.execute(command)
+
+            command = """
+            UPDATE users SET condor_rank
+            = {} WHERE user = '{}';
+            """.format(r, u)
+            sql.execute(command)
+            db_conn.commit()
+
+        for u in jobs:
+            command = """
+            UPDATE users SET total_running_jobs
+            = {} WHERE user = '{}';
+            """.format(jobs[u]['njobs'], u)
+            sql.execute(command)
+            db_conn.commit()
 
     db_conn.close()
     
