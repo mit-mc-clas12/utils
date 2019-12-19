@@ -70,7 +70,8 @@ condor_file_obj.file_text_fieldname = 'clas12_condor_text'
 tables = ['users', 'submissions', 'job_queue']
 pks = ['user_id', 'user_submission_id', 'entry']
 user_fields = (('user','TEXT'), ('domain_name','TEXT'), ('join_date','TEXT'),
-                   ('priority','INT'), ('total_running_jobs','INT'))
+               ('priority','INT'), ('total_running_jobs','INT'), 
+               ('priority_weight','FLOAT'), ('condor_rank','INT'))
 submissions_fields = (
   ('user','TEXT'), ('client_time','TEXT'), ('scard','TEXT'),
   ('client_ip','TEXT'), ('server_time','TEXT'),

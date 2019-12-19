@@ -69,6 +69,7 @@ if __name__ == '__main__':
 
     ap = argparse.ArgumentParser() 
     ap.add_argument('-j', '--jsonfile', required=True)
+    ap.add_argument('-d', '--debug', action='store_true')
     ap.add_argument('-u', '--update', action='store_true')
     args = ap.parse_args()
 
@@ -117,14 +118,21 @@ if __name__ == '__main__':
     )
     ranking = range(len(sorted_weights), 0, -1)
 
-    if args.update:
-        for (user, job_ids), rank in zip(sorted_items, ranking):
-            for job_id in job_ids:
-                print(['/usr/bin/condor_prio', '+{}'.format(rank), job_id])
-    else:
+    if args.debug:
         print(sorted_items)
         print(sorted_weights)
         print(ranking)
+    else:
+        for (user, job_ids), rank in zip(sorted_items, ranking):
+            for job_id in job_ids:
+                print('condor_prio +{} {}'.format(rank, job_id))
+
+    #if args.update:
+    #    for (u,_),w,r in zip(sorted_items, sorted_weights, ranking):
+    #        command = """
+    #        UPDATE users SET (total_running_jobs, priority_weight, condor_rank)
+    #        = ({},{},{}) WHERE user = '{}';
+    #        """.format()
 
     db_conn.close()
     
