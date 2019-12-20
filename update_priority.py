@@ -181,6 +181,34 @@ def demote_users_with_no_pending(users):
             user.rank = rank
             rank -= 1 
 
+def clear_database(db_conn, sql):
+    """ Reset ranks to zero.  """
+    query = """
+    SELECT user FROM users
+    """
+    sql.execute(query)
+    users = [tup[0] for tup in sql.fetchall()]
+
+    for u in users:
+        command = """
+        UPDATE users SET priority_weight
+        = {} WHERE user = '{}';
+        """.format(0.0, u)
+        sql.execute(command)
+        
+        command = """
+        UPDATE users SET condor_rank
+        = {} WHERE user = '{}';
+        """.format(0, u)
+        sql.execute(command)
+
+        command = """
+        UPDATE users SET total_running_jobs
+        = {} WHERE user = '{}';
+        """.format(0, u)
+        sql.execute(command)
+        db_conn.commit()
+
 def update_database(users, db_conn, sql):
     """ Set database status variables based on the
     analysis in this script.  """
@@ -239,6 +267,7 @@ if __name__ == '__main__':
         print_commands(users)
 
     if args.update:
+        clear_database(db_conn, sql)
         update_database(users, db_conn, sql)
 
     db_conn.close()
