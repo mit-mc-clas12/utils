@@ -56,13 +56,20 @@ foreach repo (utils server client)
 end
 echo
 
-# copy indexMaintanance.php to index.php
+# copy indexMaintanance.php to index.php, and stats_results
 echo
 echo Maintainance mode: cp indexMaintanance.php index.php
 echo
 cd /u/group/clas/www/gemc/html/web_interface
 cp indexMaintanance.php index.php
+cp stats_results/* ../test/web_interface/stats_results/
+
+# copy  copy permissions files into test dir
+cd /u/group/clas/www/gemc/html/test/SubMit
+cp ../../SubMit/*.txt .
+
 echo done
 echo
+
 
 
