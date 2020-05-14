@@ -1,5 +1,9 @@
 #!/bin/csh -f
 
+# TODO:
+# Change this to install release, accept argument PRODUCTION or TEST
+# if TEST, need to modify some lines to use different DB
+
 set grepo = https://github.com/mit-mc-clas12
 
 
@@ -56,16 +60,20 @@ foreach repo (utils server client)
 end
 echo
 
+# making sure gemc can write to web_interface
 # copy indexMaintanance.php to index.php, and stats_results
 echo
 echo Maintainance mode: cp indexMaintanance.php index.php
 echo
-cd /u/group/clas/www/gemc/html/web_interface
+cd /group/clas/www/gemc/html/web_interface
 cp indexMaintanance.php index.php
 cp stats_results/* ../test/web_interface/stats_results/
 
 # copy  copy permissions files into test dir
-cd /u/group/clas/www/gemc/html/test/SubMit
+cd /u/group/clas/www/gemc/html/test
+chmod g+w -R *
+
+cd SubMit
 cp ../../SubMit/*.txt .
 
 echo done
