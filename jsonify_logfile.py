@@ -118,8 +118,8 @@ if __name__ == '__main__':
     # Don't read header/columns/footer 
     for line in log_text[1:-1]:
         
-        # Don't process empty lists 
-        if line:
+        # Don't process empty lists. The second piece of logic is a bug fix to stop from reading the bottom two lines of gemcRunning.log 
+        if (line and len(line)<12):
             line = [l.replace('_','0') for l in line]
             osg_id = line[-1].split('.')[0]
 
