@@ -1,0 +1,22 @@
+This dir contains various shell scripts used for the OSG portal:
+
+
+
+
+### osgQuery.sh
+
+- run by user "ungaro" on scosg16.jlab.org
+- 2 minutes crontab: */2 * * * * ~/osgQuery.sh
+- this script produces 2 outputs inside  /group/clas/www/gemc/html/web_interface/stats_results :
+	a. gemcRunning.log that contains the output of condor
+	b. osgLog.json, a JSON file containiing the breakdown of usage per user
+
+
+
+
+
+
+
+
+
+
