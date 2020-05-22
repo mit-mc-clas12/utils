@@ -7,13 +7,37 @@ This dir contains various shell scripts used for the OSG portal:
 
 - run by user "ungaro" on scosg16.jlab.org
 - 2 minutes crontab: */2 * * * * ~/osgQuery.sh
-- this script produces 2 outputs inside  /group/clas/www/gemc/html/web_interface/stats_results :
+- this script produces 2 outputs inside  /group/clas/www/gemc/html/web_interface/stats_results:
 	a. gemcRunning.log that contains the output of condor
 	b. osgLog.json, a JSON file containiing the breakdown of usage per user
 
 
 
 
+### volatileQuery.sh
+
+- run by user "ungaro" on a CUE machine, NOT scosg16.jlab.org (so it's not to slow it down)
+- 4 hours crontab: 44 */4 * * * ~/volatileQuery.sh
+- this script produces 2 outputs inside  /group/clas/www/gemc/html/web_interface/stats_results:
+	a. volatile.log: a summary of disk usage (output of du)
+	b. disk.json: a JSON file containiing the breakdown of disk usage per user
+
+
+
+
+ ### gemcSubmitCron.sh
+- run by user "gemc" on on scosg16.jlab.org
+- 1 minute crontab: */1 * * * * ~/gemcSubmitCron.sh >& ~/submitCron.log
+- runs python src/Submit_UserSubmission.py : browse DB for non submitted jobs, and submit to OSG
+
+
+
+
+ ### priorityCron.sh
+- run by user "gemc" on on scosg16.jlab.org
+- 2 minute crontab: */2 * * * * ~/priorityCron.sh >& ~/priorityCron.log
+- runs /group/clas12/SubMit/utils/update_priority.py with /group/clas/www/gemc/html/web_interface/stats_results/osgLog.json as input
+- produces 3 lines piped to condor_prior to increase priority according to number of jobs
 
 
 
