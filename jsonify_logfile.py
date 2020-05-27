@@ -133,34 +133,30 @@ if __name__ == '__main__':
 
     # Don't read header/columns/footer
     for line in log_text[1:-1]:
-        print("line is  {0}".format(line))
-        print("length of line is {0}".format(len(line)))
-        # Don't process empty lists
+
+        # Don't process empty lists. The second piece of logic is a bug fix to stop from reading the bottom two lines of gemcRunning.log
         if (line and len(line)<12):
-            #if len(line)<12:
-                line = [word.replace('_','0') for word in line]
-                osg_id = line[-1].split('.')[0]
+            line = [l.replace('_','0') for l in line]
+            osg_id = line[-1].split('.')[0]
 
-                print("osg_id is {0}".format(osg_id))
+            sql.execute("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(
+                osg_id
+            ))
+            count = sql.fetchall()[0][0]
 
-                sql.execute("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(osg_id))
-                count = sql.fetchall()[0][0]
+            if count > 0:
+                # Get information from database to connect with this job
+                sql.execute(USER_QUERY.format(osg_id))
+                user, farm_sub_id = sql.fetchall()[0]
+                user_data = build_user_data(columns, line, user,
+                                            farm_sub_id, osg_id, farm_sub_id)
+                user_data = enforce_preferential_key_ordering(user_data, ORDERING)
+                json_dict['user_data'].append(user_data)
 
-                print(count)
-                if count > 0:
-                    # Get information from database to connect with this job
-                    sql.execute(USER_QUERY.format(osg_id))
-                    user, farm_sub_id = sql.fetchall()[0]
-                    user_data = build_user_data(columns, line, user,
-                                                farm_sub_id, osg_id, farm_sub_id)
-                    user_data = enforce_preferential_key_ordering(user_data, ORDERING)
-                    json_dict['user_data'].append(user_data)
-
-                else:
-                    print('Skipping {}'.format(osg_id))
+            else:
+                print('Skipping {}'.format(osg_id))
 
     db_conn.close()
-
 
     # Nothing was added
     if not json_dict['user_data']:
