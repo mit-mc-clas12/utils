@@ -1,15 +1,16 @@
-""" 
+"""
 
 Create new database tables.
 
 """
-import argparse 
+import argparse
 import os
 import sqlite3
-import sys 
+import sys
 
-import database 
-import fs 
+import database
+import fs
+import get_args
 
 def add_field(db, sql, tablename, field_name, field_type):
     strn = "ALTER TABLE {0} ADD COLUMN {1} {2}".format(
@@ -27,18 +28,15 @@ def create_table(db, sql, tablename, PKname, FKargs):
         strn = ("CREATE TABLE IF NOT EXISTS {0}({1} "
                 "INT AUTO_INCREMENT, PRIMARY KEY ({1}) {2});").format(
                     tablename, PKname, FKargs)
-        
+
     print(strn)
     sql.execute(strn)
     db.commit()
 
 if __name__ == '__main__':
 
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--lite', default=None, type=str)
-    parser.add_argument('--test_database', action='store_true', default=False)
-    args = parser.parse_args()
-    
+    args = get_args.get_args()
+
     cred_file = os.path.dirname(os.path.abspath(__file__)) + \
                 '/../msqlrw.txt'
     cred_file = os.path.normpath(cred_file)
