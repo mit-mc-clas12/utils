@@ -155,7 +155,7 @@ valid_scard_types = [1, 2, 3, 4]
 # This defines a mapping between 'generator' in scard, the genOutput and genExecutable
 #genOutput     =  {'clasdis': 'sidis.dat', 'dvcs': 'dvcsgen1.dat', 'disrad':'dis-rad.dat' , 'genKYandOnePion': 'genKYandOnePion.dat', 'gemc': 'gemc'}
 #genExecutable =  {'clasdis': 'clasdis'  , 'dvcs': 'dvcsgen'     , 'disrad':'generate-dis', 'genKYandOnePion': 'eg_ky'              , 'gemc': 'gemc'}
-genOutput     =  {'clasdis': 'sidis.dat', 'claspyth': 'claspyth.dat', 'dvcsgen': 'dvcsgen1.dat', 'genKYandOnePion': 'genKYandOnePion.dat', 'inclusive-dis-rad':'dis-rad.dat' ,      'jpsigen': 'jpsigen.dat', 'tcsgen': 'tcsgen.dat', 'gemc': 'gemc'}
+genOutput     =  {'clasdis': 'sidis.dat', 'claspyth': 'claspyth.dat', 'dvcsgen': 'dvcsgen.dat', 'genKYandOnePion': 'genKYandOnePion.dat', 'inclusive-dis-rad':'dis-rad.dat' ,      'jpsigen': 'jpsigen.dat', 'tcsgen': 'tcsgen.dat', 'gemc': 'gemc'}
 genExecutable =  {'clasdis': 'clasdis'  , 'claspyth': 'claspyth',     'dvcsgen': 'dvcsgen'     , 'genKYandOnePion': 'genKYandOnePion'    , 'inclusive-dis-rad':'inclusive-dis-rad', 'jpsigen': 'jpsigen',     'tcsgen': 'tcsgen',     'gemc': 'gemc'}
 
 # This is the debug variable for print statments - 0 = no messages, 1 = some, 2 = all messages. Initalized to 1
