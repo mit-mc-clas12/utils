@@ -18,13 +18,14 @@ def get_htcondor_q():
     for job in schedd.xquery(): #look through all jobs in condor
             if job.get("owner") == "gemc": #look only at jobs submitted by gemcRunning
                 batch_id = str(job.get("ClusterID")) #get cluster id (batch ID) and convert from Long to string
-                job_status = job["JobStatus"] #gets if the job is running (2) or idle (1)
-
+                job_status = int(job["JobStatus"]) #gets if the job is running (2) or idle (1)
+		#print(type(job_status))
+		#print(job_status)
                 if batch_id in batch_ids:
                     total_jobs_manual_counter[batch_ids.index(batch_id)] += 1
                     if job_status == 1:
                         idle_jobs_counter[batch_ids.index(batch_id)] += 1
-                    if job_status == 2:
+                    elif job_status == 2:
                         running_jobs_counter[batch_ids.index(batch_id)] += 1
                     else:
                         print("anomylous job status of {0}, investigate more".format(job_status))
@@ -38,12 +39,14 @@ def get_htcondor_q():
                     jobs_start_dates.append(start_date_unix)
 
                     total_jobs_manual_counter.append(1) #initialzie entry for manual job counting
-                    if job_status ==1:
+                    if job_status == 1:
                         idle_jobs_counter.append(1)
-                    if job_status == 2:
+                    	running_jobs_counter.append(0)
+		    elif job_status == 2:
                         running_jobs_counter.append(1)
+			idle_jobs_counter.append(0)
                     else:
-                        print("anomylous job status of {0}, investigate more".format(job_status))
+                        print("XXX anomylous job status of {0}, investigate more".format(job_status))
 
 
     print(batch_ids)
@@ -53,6 +56,6 @@ def get_htcondor_q():
     print(running_jobs_counter)
     print(jobs_start_dates)
 
-    return batch_ids, num_jobs
+    return batch_ids
 
 get_htcondor_q()
