@@ -1,12 +1,16 @@
 import htcondor
 import classad
 
-echo = htcondor.Submit({
-    "request_cpus": "1",
-    "request_memory": "128MB",
-    "request_disk": "128MB",
-})
+users = []
+jobs = []
 
-schedd = htcondor.Schedd()
-with schedd.transaction() as txn:
-    cluster_id = echo.queue(txn, 1)
+sched = htcondor.Schedd()
+
+for job in schedd.xquery():
+        if job.get("owner") == "gemc":
+            user = str(job.get("ClusterID"))
+            if user in users:
+                jobs[users.index(user)] +=1
+            else:
+                users.append(user)
+                jobs.append(1)

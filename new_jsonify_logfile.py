@@ -7,6 +7,8 @@ import json
 import os
 import sys
 from collections import OrderedDict
+import htcondor
+import classad
 
 # This project
 import fs
@@ -33,7 +35,6 @@ def connect_to_database(sqlite_db_name):
     mysql=True
     db_name="CLAS12OCR"
     if sqlite_db_name != None:
-        print("mysql false")
         mysql=False
         db_name = "CLAS12OCR.db"
 
@@ -97,19 +98,28 @@ def enforce_preferential_key_ordering(input_data, ordering):
 if __name__ == '__main__':
 
     ap = argparse.ArgumentParser()
-    ap.add_argument('-l', '--logfile', required=True)
-    ap.add_argument('-o', '--output', required=True)
+    ap.add_argument('-o', '--output', required=False, default="osgLog.json")
     ap.add_argument('-q', '--lite', required=False)
     args = ap.parse_args()
 
-    print(args.lite)
     # Connect to our database with read/write access.
     db_conn, sql = connect_to_database(args.lite)
 
-    print(db_conn,sql)
 
-    logfile = args.logfile
-    logtime = gettime()
+    users = []
+    jobs = []
+
+    sched = htcondor.Schedd()
+
+    for job in schedd.xquery():
+            if job.get("owner") == "gemc":
+                user = str(job.get("ClusterID"))
+                if user in users:
+                    jobs[users.index(user)] +=1
+                else:
+                    users.append(user)
+                    jobs.append(1)
+
 
     with open(logfile, 'r') as raw_log:
         log_text = raw_log.readlines()
@@ -119,10 +129,10 @@ if __name__ == '__main__':
     columns = log_text[0]
     footer = log_text[-1]
 
-    print("columns:")
-    print(columns)
-    print("footer")
-    print(footer)
+
+    logtime = gettime()
+    footer_placeholder_text = "Total for all users: 14598 jobs; 0 completed, 0 removed, 12378 idle, 1903 running, 317 held, 0 suspended"
+    footer = footer_placeholder_text
 
     json_dict = {}
     json_dict['metadata'] = {
@@ -131,18 +141,9 @@ if __name__ == '__main__':
     }
     json_dict['user_data'] = []
 
+    for osg_id in users:
 
-    # Don't read header/columns/footer
-    for line in log_text[1:-1]:
-
-        # Don't process empty lists. The second piece of logic is a bug fix to stop from reading the bottom two lines of gemcRunning.log
-        if (line and len(line)<12):
-            line = [l.replace('_','0') for l in line]
-            osg_id = line[-1].split('.')[0]
-
-            sql.execute("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(
-                osg_id
-            ))
+            sql.execute("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(osg_id))
             count = sql.fetchall()[0][0]
 
             if count > 0:
