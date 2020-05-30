@@ -16,17 +16,6 @@ from database import (get_database_connection,
                       load_database_credentials)
 from utils import gettime
 
-USER_QUERY = """
-SELECT user,user_submission_id FROM submissions
-WHERE pool_node = {}
-"""
-
-COLS_TO_SPLIT = ['submitted', 'batch_name']
-COLS_TO_SKIP = ['batch_name', 'owner', 'job_ids']
-ORDERING = ['user', 'job id', 'submitted', 'total',
-            'done', 'run', 'idle', 'hold',
-            'osg id']
-
 def connect_to_database(sqlite_db_name):
 
     creds_file = os.path.abspath(os.path.dirname(os.path.abspath(__file__)) + '/../msqlrw.txt')
@@ -95,17 +84,8 @@ def enforce_preferential_key_ordering(input_data, ordering):
 
     return data
 
-if __name__ == '__main__':
 
-    ap = argparse.ArgumentParser()
-    ap.add_argument('-o', '--output', required=False, default="osgLog.json")
-    ap.add_argument('-q', '--lite', required=False)
-    args = ap.parse_args()
-
-    # Connect to our database with read/write access.
-    db_conn, sql = connect_to_database(args.lite)
-
-
+def get_htcondor_q():
     users = []
     jobs = []
 
@@ -120,15 +100,34 @@ if __name__ == '__main__':
                     users.append(user)
                     jobs.append(1)
 
+    return users, jobs
 
-    with open(logfile, 'r') as raw_log:
-        log_text = raw_log.readlines()
+if __name__ == '__main__':
 
-    log_text = [l.strip().split() for l in log_text]
-    log_text = [l for l in log_text if l]
-    columns = log_text[0]
-    footer = log_text[-1]
 
+    USER_QUERY = """
+    SELECT user,user_submission_id FROM submissions
+    WHERE pool_node = {}
+    """
+
+    COLS_TO_SPLIT = ['submitted', 'batch_name']
+    COLS_TO_SKIP = ['batch_name', 'owner', 'job_ids']
+    ORDERING = ['user', 'job id', 'submitted', 'total',
+                'done', 'run', 'idle', 'hold',
+                'osg id']
+
+
+    ap = argparse.ArgumentParser()
+    ap.add_argument('-o', '--output', required=False, default="osgLog.json")
+    ap.add_argument('-q', '--lite', required=False)
+    args = ap.parse_args()
+
+    # Connect to our database with read/write access.
+    db_conn, sql = connect_to_database(args.lite)
+
+    users, jobs = get_htcondor_q()
+
+    columns = ['OWNER', 'BATCH_NAME', 'SUBMITTED', 'DONE', 'RUN', 'IDLE', 'TOTAL', 'JOB_IDS']
 
     logtime = gettime()
     footer_placeholder_text = "Total for all users: 14598 jobs; 0 completed, 0 removed, 12378 idle, 1903 running, 317 held, 0 suspended"
