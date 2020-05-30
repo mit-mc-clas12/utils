@@ -86,21 +86,27 @@ def enforce_preferential_key_ordering(input_data, ordering):
 
 
 def get_htcondor_q():
-    users = []
-    jobs = []
+    batch_ids = []
+    num_jobs = []
+    qdates = []
+    total_jobs = []
+    done_jobs = []
+    running_jobs = []
+    idle_jobs = []
 
-    sched = htcondor.Schedd()
+    schedd = htcondor.Schedd()
 
     for job in schedd.xquery():
             if job.get("owner") == "gemc":
-                user = str(job.get("ClusterID"))
-                if user in users:
-                    jobs[users.index(user)] +=1
+                batch_id = str(job.get("ClusterID"))
+                if batch_id in batch_ids:
+                    num_jobs[batch_ids.index(batch_id)] +=1 #increment number of jobs
                 else:
-                    users.append(user)
-                    jobs.append(1)
+                    batch_ids.append(batch_id)
+                    num_jobs.append(1)
 
-    return users, jobs
+
+    return batch_ids, num_jobs
 
 if __name__ == '__main__':
 
