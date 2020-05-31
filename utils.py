@@ -27,9 +27,9 @@ def getPythonVersion():
 def gettime():
   return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-def unixtimeconvert(time):
+def unixtimeconvert(time,timezone):
     utc = datetime.datetime.utcfromtimestamp(time)
-    if tz == 'eastern':
+    if timezone == 'eastern':
         local_tz = pytz.timezone('America/New_York')
     else:
         print("please specifiy a supported timezone")
