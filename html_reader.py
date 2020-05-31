@@ -7,8 +7,11 @@
 
 from __future__ import print_function
 import utils, fs
-from HTMLParser import HTMLParser
-import urllib2, argparse
+#from HTMLParser import HTMLParser #this seems not to work in python3
+from html.parser import HTMLParser
+#import urllib2, argparse
+#urllib2 only works for pyton2. For python3 it seems we need to do the following:
+from urllib.request import urlopen
 
 def html_reader(url_dir,data_identifyier):
   # create a subclass and override the handler methods
@@ -24,7 +27,8 @@ def html_reader(url_dir,data_identifyier):
           if data_identifyier in data:
             urls.append(data)
 
-  response = urllib2.urlopen(url_dir)
+  #response = urllib2.urlopen(url_dir) #for python2
+  response = urlopen(url_dir) #for python 3, havne't tested this yet tho
   raw_html = response.read()
   parser = MyHTMLParser()
   parser.feed(raw_html)
