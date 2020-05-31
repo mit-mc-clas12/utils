@@ -67,6 +67,8 @@ def get_htcondor_q():
 
 def get_htcondor_q_simulated():
 
+    #This is just for testing purposes when not on an osg node
+
     batch_ids = [2131234, 2131237, 2131238, 2131239, 2131240, 2103366]
     total_jobs_submitted = [1000, 1000, 1000, 621, 1000, 1]
     total_jobs_running = [9, 4, 436, 604, 992, 1]

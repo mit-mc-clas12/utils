@@ -76,12 +76,13 @@ def create_json_dict(args):
             jobs_idle = idle_jobs[index]
             jobs_running = running_jobs[index]
             jobs_start = utils.unixtimeconvert(jobs_start_dates[index])
-            print(jobs_start)
+
             sql.execute("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(osg_id))
             count = sql.fetchall()[0][0]
             print("count is {0}".format(count))
 
             #I dont get exactly what is going on here. How can we have a zero in the DB but nonzero  in condor?
+            #looking at this more, it is only 1 if exists in db, or 0 if not in db
             if count > 0:
                 # Get information from database to connect with this job
                 sql.execute("SELECT user,user_submission_id FROM submissions WHERE pool_node = {}".format(osg_id))
