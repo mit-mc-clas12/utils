@@ -5,6 +5,7 @@ import htcondor
 import classad
 
 import get_args
+import utils
 
 def get_htcondor_q():
     schedd = htcondor.Schedd()

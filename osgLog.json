@@ -1,58 +1,18 @@
 {
+    "metadata": {
+        "update_timestamp": "2020-05-31 02:16:36",
+        "footer": "Total for all users: 14598 jobs; 0 completed, 0 removed, 12378 idle, 1903 running, 317 held, 0 suspended"
+    },
     "user_data": [
         {
-            "user": "jcarv", 
-            "job id": 641, 
-            "submitted": "5/18 12:39", 
-            "total": "1", 
-            "done": "0", 
-            "run": "1", 
-            "idle": "0", 
-            "osg id": "2103366"
-        }, 
-        {
-            "user": "fxgirod", 
-            "job id": 658, 
-            "submitted": "5/29 13:42", 
-            "total": "1000", 
-            "done": "13", 
-            "run": "677", 
-            "idle": "310", 
-            "osg id": "2131234"
-        }, 
-        {
-            "user": "gangel", 
-            "job id": 659, 
-            "submitted": "5/29 15:06", 
-            "total": "1000", 
-            "done": "1", 
-            "run": "418", 
-            "idle": "581", 
-            "osg id": "2131237"
-        }, 
-        {
-            "user": "gangel", 
-            "job id": 660, 
-            "submitted": "5/29 15:11", 
-            "total": "1000", 
-            "done": "0", 
-            "run": "0", 
-            "idle": "1000", 
-            "osg id": "2131238"
-        }, 
-        {
-            "user": "gangel", 
-            "job id": 661, 
-            "submitted": "5/29 15:15", 
-            "total": "621", 
-            "done": "0", 
-            "run": "0", 
-            "idle": "621", 
-            "osg id": "2131239"
+            "user": "No user",
+            "job id": "No ID",
+            "submitted": "No data",
+            "total": "No data",
+            "done": "No data",
+            "run": "No data",
+            "idle": "No data",
+            "osg id": "No ID"
         }
-    ], 
-    "metadata": {
-        "update_timestamp": "2020-05-29 18:34:45", 
-        "footer": "Total for all users: 14598 jobs; 0 completed, 0 removed, 12378 idle, 1903 running, 317 held, 0 suspended"
-    }
+    ]
 }

@@ -70,7 +70,7 @@ condor_file_obj.file_text_fieldname = 'clas12_condor_text'
 tables = ['users', 'submissions', 'job_queue']
 pks = ['user_id', 'user_submission_id', 'entry']
 user_fields = (('user','TEXT'), ('domain_name','TEXT'), ('join_date','TEXT'),
-               ('priority','INT'), ('total_running_jobs','INT'), 
+               ('priority','INT'), ('total_running_jobs','INT'),
                ('priority_weight','FLOAT'), ('condor_rank','INT'))
 submissions_fields = (
   ('user','TEXT'), ('client_time','TEXT'), ('scard','TEXT'),
@@ -79,7 +79,7 @@ submissions_fields = (
   (runscript_file_obj.file_text_fieldname,'TEXT'),
   (condor_file_obj.file_text_fieldname,'TEXT')
 )
-job_queue_fields = (('total','INT'), ('update_time','TEXT'), 
+job_queue_fields = (('total','INT'), ('update_time','TEXT'),
                         ('run', 'INT'), ('hold', 'INT'), ('idle', 'INT'),
                         ('done', 'INT'), ('osg_id', 'INT'), ('submitted', 'INT'))
 
@@ -151,6 +151,12 @@ runscript_file_obj.file_path = sub_files_path+'runscript_files/'
 *****************************************************************************"""
 # Definition of valid scard types. Explainations for these types can be found in the documentation.
 valid_scard_types = [1, 2, 3, 4]
+
+#Below is for gemc json logging
+default_osg_json_log = "osgLog.json"
+user_data_keys = ["user",  "job id","submitted", "total", "done", "run", "idle", "osg id"]
+null_user_info = ["No user", "No ID", "No data", "No data","No data" ,"No data","No data","No ID"]
+
 
 # This defines a mapping between 'generator' in scard, the genOutput and genExecutable
 #genOutput     =  {'clasdis': 'sidis.dat', 'dvcs': 'dvcsgen1.dat', 'disrad':'dis-rad.dat' , 'genKYandOnePion': 'genKYandOnePion.dat', 'gemc': 'gemc'}
