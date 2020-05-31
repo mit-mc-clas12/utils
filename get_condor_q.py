@@ -32,7 +32,7 @@ def get_htcondor_q():
                     else:
                         print("anomylous job status of {0}, investigate more".format(job_status))
                 else:
-                    utils.printer("found new batch: {0}".format(batch_id),1)
+                    utils.printer("found new batch: {0}".format(batch_id))
                     total_jobs_for_batch = job.get("TotalSubmitProcs") #Get total number of jobs in batch submitted
                     start_date_unix = job.get("QDate")  #Get submitted date
 
