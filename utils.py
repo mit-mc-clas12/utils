@@ -13,11 +13,14 @@
 from __future__ import print_function
 import datetime
 import logging
+import sys
 
 import fs
 import MySQLdb
 import sqlite3
 
+def getPythonVersion():
+    return sys.version_info[0] #element 0 is the major release, e.g. python 2 or python 3
 
 def gettime():
   return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
