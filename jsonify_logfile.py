@@ -1,5 +1,7 @@
 """
-Logfile jsonification for monitoring.
+AS OF JUNE 1 2020 THIS FILE IS OLD
+
+please remove entire file once it is verified that gemc_json_logging.py works satisfactorily as a replacement
 """
 
 import argparse
