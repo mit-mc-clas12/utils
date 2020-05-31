@@ -14,6 +14,8 @@ from __future__ import print_function
 import datetime
 import logging
 import sys
+import calendar
+import pytz
 
 import fs
 import MySQLdb
@@ -26,7 +28,21 @@ def gettime():
   return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 def unixtimeconvert(time):
-    return datetime.datetime.utcfromtimestamp(time).strftime('%m/%d %H:%M')
+    utc = datetime.datetime.utcfromtimestamp(time)
+    if tz == 'eastern':
+        local_tz = pytz.timezone('America/New_York')
+    else"
+        print("please specifiy a supported timezone")
+
+    ## You could use `tzlocal` module to get local timezone on Unix and Win32
+    # from tzlocal import get_localzone # $ pip install tzlocal
+    # # get local timezone
+    # local_tz = get_localzone()
+    #Y You might not want to do this though if servers are running in different timezones
+
+    local_dt = utc.replace(tzinfo=pytz.utc).astimezone(local_tz).strftime('%m/%d %H:%M')
+
+    return local_dt
 
 def printer(strn): # Can't call the function print because it already exists in python
   if (int(fs.DEBUG) == 1) or (int(fs.DEBUG) == 2):

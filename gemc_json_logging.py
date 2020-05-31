@@ -75,7 +75,7 @@ def create_json_dict(args):
             jobs_done = jobs_total - total_jobs_running[index]
             jobs_idle = idle_jobs[index]
             jobs_running = running_jobs[index]
-            jobs_start = utils.unixtimeconvert(jobs_start_dates[index])
+            jobs_start = utils.unixtimeconvert(jobs_start_dates[index],"eastern")
 
             sql.execute("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(osg_id))
             count = sql.fetchall()[0][0]
