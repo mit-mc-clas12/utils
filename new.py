@@ -59,3 +59,11 @@ def get_htcondor_q():
     return batch_ids
 
 get_htcondor_q()
+
+
+batch_ids = ['2131234', '2131237', '2131238', '2131239', '2131240', '2103366']
+total_jobs_auto_counter = [1000L, 1000L, 1000L, 621L, 1000L, 1L]
+total_jobs_manual_counter = [9, 4, 436, 604, 992, 1]
+idle_jobs_counter = [4, 4, 436, 604, 985, 1]
+running_jobs_counter = [5, 0, 0, 0, 7, 0]
+jobs_start_dates = [1590774145L, 1590779217L, 1590779518L, 1590779702L, 1590838003L, 1589819944L]
