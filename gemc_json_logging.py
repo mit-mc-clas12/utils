@@ -11,6 +11,8 @@ import htcondor
 import classad
 
 # This project
+import get_condor_q
+import get_args
 import fs
 from database import (get_database_connection,
                       load_database_credentials)
@@ -30,43 +32,6 @@ def connect_to_database(sqlite_db_name):
     return get_database_connection(use_mysql=mysql, username=uname, password=pword,
                                    hostname='jsubmit.jlab.org', database_name=db_name)
 
-def build_user_data(columns, line, user, job_id, osg_id, farm_sub_id):
-    """
-    Sample input from the logfile.  This output is not standard, sometimes
-    the hold column is missing.  For that reason, there is an if statement
-    on the length of the line.
-    """
-    user_data = {}
-
-    icol = 0
-    for col in columns:
-
-        col = col.lower()
-        if col in COLS_TO_SPLIT:
-            entry = ' '.join(line[icol:icol+2])
-            icol += 2
-        else:
-            entry = line[icol]
-            icol += 1
-
-        if col not in COLS_TO_SKIP:
-            user_data[col] = entry
-
-    user_data['user'] = user
-    user_data['osg id'] = osg_id
-    user_data['job id'] = job_id
-    return user_data
-
-def build_dummy_user_data(columns):
-
-    user_data = {}
-    for col in columns:
-        user_data[col.lower()] = "No data"
-
-    user_data['user'] = "No user"
-    user_data['osg id'] = "No ID"
-    user_data['job id'] = "No ID"
-    return user_data
 
 def enforce_preferential_key_ordering(input_data, ordering):
     """ Order the keys of a dictionary according
@@ -85,29 +50,6 @@ def enforce_preferential_key_ordering(input_data, ordering):
     return data
 
 
-def get_htcondor_q():
-    batch_ids = []
-    num_jobs = []
-    qdates = []
-    total_jobs = []
-    done_jobs = []
-    running_jobs = []
-    idle_jobs = []
-
-    schedd = htcondor.Schedd()
-
-    for job in schedd.xquery():
-            if job.get("owner") == "gemc":
-                batch_id = str(job.get("ClusterID"))
-                if batch_id in batch_ids:
-                    num_jobs[batch_ids.index(batch_id)] +=1 #increment number of jobs
-                else:
-                    batch_ids.append(batch_id)
-                    num_jobs.append(1)
-
-
-    return batch_ids, num_jobs
-
 if __name__ == '__main__':
 
 
@@ -122,41 +64,56 @@ if __name__ == '__main__':
                 'done', 'run', 'idle', 'hold',
                 'osg id']
 
+    Default_osgLog = "osgLog.json"
 
-    ap = argparse.ArgumentParser()
-    ap.add_argument('-o', '--output', required=False, default="osgLog.json")
-    ap.add_argument('-q', '--lite', required=False)
-    args = ap.parse_args()
+    args = get_args.get_args()
+    if args.OutputDir == None : args.OutputDir == Default_osgLog
 
     # Connect to our database with read/write access.
     db_conn, sql = connect_to_database(args.lite)
 
-    users, jobs = get_htcondor_q()
+    condor_info = get_condor_q.get_condor_q()
+    batch_ids = condor_info[0]
+    total_jobs_submitted = condor_info[1]
+    total_jobs_running = condor_info[2]
+    idle_jobs = condor_info[3]
+    running_jobs = condor_info[4]
+    jobs_start_dates = condor_info[5]
 
-    columns = ['OWNER', 'BATCH_NAME', 'SUBMITTED', 'DONE', 'RUN', 'IDLE', 'TOTAL', 'JOB_IDS']
-
-    logtime = gettime()
     footer_placeholder_text = "Total for all users: 14598 jobs; 0 completed, 0 removed, 12378 idle, 1903 running, 317 held, 0 suspended"
     footer = footer_placeholder_text
 
     json_dict = {}
     json_dict['metadata'] = {
-        'update_timestamp': logtime,
+        'update_timestamp': gettime(),
         'footer': ' '.join(footer),
     }
     json_dict['user_data'] = []
 
-    for osg_id in users:
+    user_data_keys = ["user",  "job id","submitted", "total", "done", "run", "idle", "osg id"]
+
+    for index,osg_id in enumerate(batch_ids):
+            jobs_total = total_jobs_submitted[index]
+            jobs_done = jobs_total - total_jobs_running[index]
+            jobs_idle = idle_jobs[index]
+            jobs_running = running_jobs[index]
+            jobs_start = jobs_start_dates[index]
 
             sql.execute("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(osg_id))
             count = sql.fetchall()[0][0]
 
+            #I dont get exactly what is going on here. How can we have a zero in the DB but nonzero  in condor?
             if count > 0:
                 # Get information from database to connect with this job
                 sql.execute(USER_QUERY.format(osg_id))
                 user, farm_sub_id = sql.fetchall()[0]
-                user_data = build_user_data(columns, line, user,
-                                            farm_sub_id, osg_id, farm_sub_id)
+
+                user_data = {}
+                user_info = [user, farm_sub_id, jobs_start, jobs_total,jobs_done,jobs_run,jobs_idle,osg_id]
+
+                for index,key in enumerate(user_data_keys):
+                    user_data[key] = user_info[index]
+
                 user_data = enforce_preferential_key_ordering(user_data, ORDERING)
                 json_dict['user_data'].append(user_data)
 
@@ -167,8 +124,12 @@ if __name__ == '__main__':
 
     # Nothing was added
     if not json_dict['user_data']:
-        json_dict['user_data'].append(enforce_preferential_key_ordering(
-            build_dummy_user_data(columns), ORDERING))
+        user_data = {}
+        user_info = ["No user", "No ID", "No data", "No data","No data" ,"No data","No data","No ID"]
+        for index,key in enumerate(user_data_keys):
+            user_data[key] = user_info[index]
+        
+        json_dict['user_data'].append(enforce_preferential_key_ordering(user_data,ORDERING))
 
-    with open(args.output, 'w') as output_file:
+    with open(args.OutputDir, 'w') as output_file:
         json.dump(json_dict, output_file, indent=4)

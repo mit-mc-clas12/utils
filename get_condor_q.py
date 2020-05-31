@@ -66,13 +66,14 @@ def get_htcondor_q():
 
 def get_htcondor_q_simulated():
 
-    batch_ids = ['2131234', '2131237', '2131238', '2131239', '2131240', '2103366']
+    batch_ids = [2131234, 2131237, 2131238, 2131239, 2131240, 2103366]
     total_jobs_submitted = [1000, 1000, 1000, 621, 1000, 1]
     total_jobs_running = [9, 4, 436, 604, 992, 1]
     idle_jobs_counter = [4, 4, 436, 604, 985, 1]
     running_jobs_counter = [5, 0, 0, 0, 7, 0]
     jobs_start_dates = [1590774145, 1590779217, 1590779518, 1590779702, 1590838003, 1589819944]
 
+    #might make this into a dictionary
     condor_info = [batch_ids, total_jobs_submitted, total_jobs_running,
                     idle_jobs_counter, running_jobs_counter, jobs_start_dates]
 
@@ -92,13 +93,18 @@ def check_condor_info(condor_info):
 
     #Should add other tests if can think of some (empty lists, etc)
 
+def get_condor_q(args):
+    if args.test:
+        data = get_htcondor_q_simulated()
+        #print(data)
+    else:
+        data = get_htcondor_q()
+
+    check_condor_info(data)
+
+    return(data)
+
 if __name__ == '__main__':
     args = get_args.get_args()
 
-    if args.test:
-        data = get_htcondor_q_simulated()
-        check_condor_info(data)
-        print(data)
-    else:
-        data = get_htcondor_q()
-        check_condor_info(data)
+    get_condor_q(args)
