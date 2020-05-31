@@ -31,7 +31,7 @@ def unixtimeconvert(time):
     utc = datetime.datetime.utcfromtimestamp(time)
     if tz == 'eastern':
         local_tz = pytz.timezone('America/New_York')
-    else"
+    else:
         print("please specifiy a supported timezone")
 
     ## You could use `tzlocal` module to get local timezone on Unix and Win32
