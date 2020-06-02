@@ -5,6 +5,7 @@
 *.err
 *.pyc
 *.gcard
+__pycache__/*
 /database/*.db
 
 # emacs files that I leave laying around 

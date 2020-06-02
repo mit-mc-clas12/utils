@@ -1,7 +1,12 @@
 #!/bin/csh -f
 
-# Crontab command for every 1 minute 
+# Crontab command for every 1 minute
 # */2 * * * * ~/osgQuery.sh
+
+##This file should be modified to only include the following command:
+#python /group/clas12/SubMit/utils/gemc_json_logging.py
+## the default output file, as specified in the "Other Specifications" section of fs.py, is osgLog.json
+
 
 ### going to web interface stats_results
 cd /group/clas/www/gemc/html/web_interface/stats_results

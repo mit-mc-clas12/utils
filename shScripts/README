@@ -9,7 +9,7 @@ This dir contains various shell scripts used for the OSG portal:
 - 2 minutes crontab: */2 * * * * ~/osgQuery.sh
 - this script produces 2 outputs inside  /group/clas/www/gemc/html/web_interface/stats_results:
 	a. gemcRunning.log that contains the output of condor
-	b. osgLog.json, a JSON file containiing the breakdown of usage per user
+	b. osgLog.json, a JSON file containing the breakdown of usage per user
 
 
 
@@ -38,9 +38,3 @@ This dir contains various shell scripts used for the OSG portal:
 - 2 minute crontab: */2 * * * * ~/priorityCron.sh >& ~/priorityCron.log
 - runs /group/clas12/SubMit/utils/update_priority.py with /group/clas/www/gemc/html/web_interface/stats_results/osgLog.json as input
 - produces 3 lines piped to condor_prior to increase priority according to number of jobs
-
-
-
-
-
-

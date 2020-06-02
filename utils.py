@@ -2,7 +2,7 @@
     the flow of this software. Commonly used functions are defined here and
     reference in most parts of the code. The functions are:
     printer and printer2 - prints strings depending on value of DEBUG variable
-    overwrite_file - overwrites a template file to a newfile based off old 
+    overwrite_file - overwrites a template file to a newfile based off old
     and new value lists (this will be replaced in the future with functions to
     generate scripts directly) grab_DB_data - creates lists by grabbing values
     from the DB based on a dictionary add_field  and create_table - functions
@@ -11,16 +11,38 @@
 """
 
 from __future__ import print_function
-import datetime 
-import logging 
+import datetime
+import logging
+import sys
+import calendar
+import pytz
 
 import fs
 import MySQLdb
 import sqlite3
 
+def getPythonVersion():
+    return sys.version_info[0] #element 0 is the major release, e.g. python 2 or python 3
 
 def gettime():
   return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+def unixtimeconvert(time,timezone):
+    utc = datetime.datetime.utcfromtimestamp(time)
+    if timezone == 'eastern':
+        local_tz = pytz.timezone('America/New_York')
+    else:
+        print("please specifiy a supported timezone")
+
+    ## You could use `tzlocal` module to get local timezone on Unix and Win32
+    # from tzlocal import get_localzone # $ pip install tzlocal
+    # # get local timezone
+    # local_tz = get_localzone()
+    #Y You might not want to do this though if servers are running in different timezones
+
+    local_dt = utc.replace(tzinfo=pytz.utc).astimezone(local_tz).strftime('%m/%d %H:%M')
+
+    return local_dt
 
 def printer(strn): # Can't call the function print because it already exists in python
   if (int(fs.DEBUG) == 1) or (int(fs.DEBUG) == 2):
@@ -49,7 +71,7 @@ def grab_DB_data(table,dictionary,UserSubmissionID): #DB_name, table = str, dict
       newvals.append(value)
     return oldvals, newvals
 
-# Add a field to an existing DB. Need to add error statements if DB 
+# Add a field to an existing DB. Need to add error statements if DB
 # or table does not exist
 def add_field(tablename,field_name,field_type,args):
   strn = "ALTER TABLE {0} ADD COLUMN {1} {2}".format(tablename,field_name, field_type)
@@ -66,7 +88,7 @@ def create_table(tablename,PKname,FKargs,args):
   printer('In database {0}, table {1} has succesfully been created with primary key {2}'.format(fs.DB_name,
         tablename,PKname))
 
-# Executes writing commands to DB. To return data from DB, use db_grab(), 
+# Executes writing commands to DB. To return data from DB, use db_grab(),
 # defined below
 def db_write(strn):
   if fs.use_mysql:
@@ -90,7 +112,7 @@ def db_write(strn):
   conn.close()
   return insertion_id
 
-# Executes reading commands to DB. Cannot currently be used to return 
+# Executes reading commands to DB. Cannot currently be used to return
 # data from DB.
 def db_grab(strn):
 
@@ -121,7 +143,7 @@ def configure_logger(args):
     level = logging.DEBUG if (args.debug > 0) else logging.INFO
     logger.setLevel(level)
 
-    # Can be changed to output file                                                                                                   
+    # Can be changed to output file
     console_log = logging.StreamHandler()
     console_log.setLevel(level)
 

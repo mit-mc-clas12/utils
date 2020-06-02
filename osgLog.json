@@ -1,0 +1,18 @@
+{
+    "metadata": {
+        "update_timestamp": "2020-05-31 10:59:04",
+        "footer": "Total for all users: 14598 jobs; 0 completed, 0 removed, 12378 idle, 1903 running, 317 held, 0 suspended"
+    },
+    "user_data": [
+        {
+            "user": "No user",
+            "job id": "No ID",
+            "submitted": "No data",
+            "total": "No data",
+            "done": "No data",
+            "run": "No data",
+            "idle": "No data",
+            "osg id": "No ID"
+        }
+    ]
+}
