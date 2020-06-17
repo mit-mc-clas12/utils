@@ -41,6 +41,13 @@ class scard_class:
 
 
 
+    def print(self):
+        print("Here are all the attributes of {}".format(self.name))
+        #print(self.__dict__)
+        for key in self.__dict__:
+            print('"{}" has value "{}"'.format(key,self.__dict__[key]))
+
+
 
 
 
