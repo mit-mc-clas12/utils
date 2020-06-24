@@ -19,7 +19,16 @@ class scard_class:
         self.project = None
         self.group = None
         self.group_name = None #needed as group is a keyword in SQL
+        
+
+
+
+        #This is likely not needed anymore
         self.farm_name = None
+
+
+
+        
         self.gcards = None
         self.generator = None
         self.generatorOUT = None
@@ -38,7 +47,6 @@ class scard_class:
 
         self.parse_scard(scard_text)
         self.raw_text = None
-
 
 
     def print(self):
