@@ -1,6 +1,6 @@
 #!/bin/csh -f
 
-# Crontab command for every 1 minute
+# Crontab command for every 2 minute
 # */2 * * * * ~/osgQuery.sh
 
 ##This file should be modified to only include the following command:
