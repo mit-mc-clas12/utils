@@ -28,6 +28,5 @@ if __name__ == '__main__':
     except IndexError:
         directory = "/work/osgpool/hallb/clas12/backgroundfiles/"
 
-#    with open('xrootd.json', 'w') as f:
-    with open('/group/clas/www/gemc/html/web_interface/xrootd/xrootd.json', 'w') as f:
+    with open('/group/clas/www/gemc/html/web_interface/data/xrootd.json', 'w') as f:
         print(json.dump(path_hierarchy(directory), f, indent=2, sort_keys=False))

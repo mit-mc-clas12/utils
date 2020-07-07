@@ -61,13 +61,12 @@ end
 echo
 
 # making sure gemc can write to web_interface
-# copy indexMaintanance.php to index.php, and stats_results
+# copy indexMaintanance.php to index.php (option for this?)
 echo
 echo Maintainance mode: cp indexMaintanance.php index.php
 echo
 cd /group/clas/www/gemc/html/web_interface
-cp indexMaintanance.php index.php
-cp stats_results/* ../test/web_interface/stats_results/
+# cp indexMaintanance.php index.php
 
 # copy  copy permissions files into test dir
 cd /u/group/clas/www/gemc/html/test

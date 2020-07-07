@@ -8,8 +8,8 @@
 ## the default output file, as specified in the "Other Specifications" section of fs.py, is osgLog.json
 
 
-### going to web interface stats_results
-cd /group/clas/www/gemc/html/web_interface/stats_results
+### going to web interface data
+cd /group/clas/www/gemc/html/web_interface/data
 rm gemcRunning.log osgLog.json
 
 condor_q -submitter gemc | grep OWNER -A100 > gemcRunning.log
