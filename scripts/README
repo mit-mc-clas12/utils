@@ -36,4 +36,6 @@ This dir contains various shell scripts used for the OSG portal:
 
 - run to produce the json file needed by the web_interface to load the configuration. Output in web_interface/data/xrootd.json
 
+### gemc_json_logging
 
+0
