@@ -41,8 +41,7 @@ def get_htcondor_q():
             if job.get("owner") == "gemc": #look only at jobs submitted by gemcRunning
                 batch_id = str(job.get("ClusterID")) #get cluster id (batch ID) and convert from Long to string. Can also turn to int if want.
                 job_status = int(job["JobStatus"]) #gets if the job is running (2) or idle (1)
-
-                print(valid_job_stati)
+                
                 if job_status not in valid_job_stati: #Just error handling, should pipe to a central log
                     print("HTCondor returned an invalid job status of {0}, investigate more".format(job_status))
                 else:
