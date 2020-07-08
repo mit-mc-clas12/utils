@@ -58,7 +58,7 @@ def get_htcondor_q():
 
                         #initialize a new counter value in job counter arrays 
                         job_counting_set[job_status].append(1)
-                        null_jc = valid_job_stati
+                        null_jc = [0,1,2,3,4,5,6]
                         null_jc.remove(job_status)
                         for jc in null_jc:  #set all other jc counter arrays to 0 
                             job_counting_set[jc].append(0)
