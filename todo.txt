@@ -1,0 +1,30 @@
+Current gcard (to be renamed: configuration)
+
+project:  CLAS12           #
+group: RGA             #
+farm_name: OSG                   #
+gcards: /jlab/clas12Tags/gcards/rga-fall2018.gcard              #
+genOptions: -USE_GUI=0       #
+generator: gemc        #
+nevents: 10            #
+jobs: 10                  #
+client_ip: 74.99.92.250        #
+generatorOUT: no  #
+gemcEvioOUT: no    #
+gemcHipoOUT: no    #
+reconstructionOUT: no #
+dstOUT: yes   #
+fields: tor-1.00_sol-1.00	#
+
+
+
+
+Changes needed:
+
+1. remove mention of "group" - dont need this anymore
+2. fields should be parsed in the configuration as two entries, torus and solenoid.
+   for example: tor-1.00_sol-1.00 is:
+   torus: -1
+   solenoid -1
+3. a new variable (missing now) will be backgroundMerging, and it will be a string
+4 (not urgent). can we remove the need if "#"
