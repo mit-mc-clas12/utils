@@ -56,9 +56,9 @@ def create_json_dict(args):
     batch_ids = condor_info[0]
     total_jobs_submitted = condor_info[1]
     total_jobs_running = condor_info[2]
-    idle_jobs = condor_info[3]
-    running_jobs = condor_info[4]
-    jobs_start_dates = condor_info[5]
+    jobs_start_dates = condor_info[3]
+    idle_jobs = condor_info[4][1]
+    running_jobs = condor_info[4][2]
 
     footer_placeholder_text = "Total for all users: 14598 jobs; 0 completed, 0 removed, 12378 idle, 1903 running, 317 held, 0 suspended"
     footer = footer_placeholder_text

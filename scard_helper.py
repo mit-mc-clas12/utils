@@ -14,9 +14,50 @@ import utils, fs
 class scard_class:
     def __init__(self,scard_text):
         self.name = 'scard.txt'
-        self.data = {}
+
+        #Define scard properties:
+        self.project = None
+        self.group = None
+        self.group_name = None #needed as group is a keyword in SQL
+        
+
+
+
+        #This is likely not needed anymore
+        self.farm_name = None
+
+
+
+        
+        self.gcards = None
+        self.generator = None
+        self.generatorOUT = None
+        self.gemcEvioOUT = None
+        self.gemcHipoOUT = None
+        self.reconstructionOUT = None
+        self.dstOUT = None
+        self.jobs = None
+        self.genOptions = None
+        self.nevents = None
+
+        self.scardID = None
+        self.userSubmissionID = None
+        self.client_ip = None
+
+
         self.parse_scard(scard_text)
-        self.raw_text = None 
+        self.raw_text = None
+
+
+    def print(self):
+        print("Here are all the attributes of {}".format(self.name))
+        #print(self.__dict__)
+        for key in self.__dict__:
+            print('"{}" has value "{}"'.format(key,self.__dict__[key]))
+
+
+
+
 
     def parse_scard(self, scard_text):
         scard_lines = scard_text.split("\n")
@@ -34,30 +75,37 @@ class scard_class:
                   # utils.printer("ERROR: Line {0} of the steering card has the key '{1}''.".format(linenum+1,key))
                   # utils.printer("That line must have the key '{0}'.".format(fs.scard_key[linenum]))
 
-            self.data[key] = value
+            setattr(self,key,value)
 
 
-        """                                                                           
-        This block was moved from scard_helper to this parse_scard function.
-        It seems like this is a better place to handle the correction of these 
-        fields. 
+            #print(self.jobs)
 
-        'group' is a protected word in SQL so we can't use the field title "group"    
-        For more information on protected words in SQL, see:                          
-        https://docs.intersystems.com/irislatest/csp/docbook/                         
-        DocBook.UI.Page.cls?KEY=RSQL_reservedwords                                    
+
         """
-        self.data['group_name'] = self.data.pop('group')
-            
-        # Set event generator executable and output to null if the                    
-        # generator doesn't exist in our container.  We are                           
-        # trying to keep the client agnostic to SCard type.                           
+        This block was moved from scard_helper to this parse_scard function.
+        It seems like this is a better place to handle the correction of these
+        fields.
+
+        'group' is a protected word in SQL so we can't use the field title "group"
+        For more information on protected words in SQL, see:
+        https://docs.intersystems.com/irislatest/csp/docbook/
+        DocBook.UI.Page.cls?KEY=RSQL_reservedwords
+        """
+
+        self.group_name = self.group
+
+        # Set event generator executable and output to null if the
+        # generator doesn't exist in our container.  We are
+        # trying to keep the client agnostic to SCard type.
+
+        """this needs to be reworked for converting from dict to attributes
         self.data['genExecutable'] = fs.genExecutable.get(
             self.data.get('generator'), 'Null'
         )
         self.data['genOutput'] = fs.genOutput.get(
             self.data.get('generator'), 'Null'
         )
+        """
 
     def validate_scard_line(self, linenum, line):
         if line.count("#") ==0:
