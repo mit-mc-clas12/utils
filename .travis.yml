@@ -4,7 +4,8 @@ python:
   - "3.6"      # current default Python on Travis CI
 # command to install dependencies
 install:
-  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then pip install -r req-py2.txt; fi
-  - pip install -r requirements.txt
+#  - if [[ $TRAVIS_PYTHON_VERSION == 2.7 ]]; then pip install -r req-py2.txt; fi
+ - pip install -r req-py2.txt; python_version == "2.7" 
+ - pip install -r requirements.txt; python_version == "3.6"
 # command to run tests
 script: python2 testapp.py || python3 testapp.py
