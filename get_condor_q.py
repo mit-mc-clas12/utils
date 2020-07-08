@@ -35,7 +35,7 @@ def get_htcondor_q():
 
 
     valid_job_stati = [0,1,2,3,4,5,6]
-    job_counting_set = [unexpanded_jc, idle_jc, running_jc, removed_jc, completed_jc, held_jc, submission_err_jc, other_jc]
+    job_counting_set = [unexpanded_jc, idle_jc, running_jc, removed_jc, completed_jc, held_jc, submission_err_jc]
 
     for job in schedd.xquery(): #look through all jobs in condor
             if job.get("owner") == "gemc": #look only at jobs submitted by gemcRunning
@@ -95,7 +95,7 @@ def get_htcondor_q_simulated():
 
 
 
-    job_counting_set = [unexpanded_jc, idle_jc, running_jc, removed_jc, completed_jc, held_jc, submission_err_jc, other_jc]
+    job_counting_set = [unexpanded_jc, idle_jc, running_jc, removed_jc, completed_jc, held_jc, submission_err_jc]
 
     #might make this into a dictionary
     condor_info = [batch_ids, total_jobs_submitted, total_jobs_running, jobs_start_dates, job_counting_set]
