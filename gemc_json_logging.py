@@ -59,6 +59,7 @@ def create_json_dict(args):
     jobs_start_dates = condor_info[3]
     idle_jobs = condor_info[4][1]
     running_jobs = condor_info[4][2]
+    held_jobs = condor_info[4][5]
 
     footer_placeholder_text = "Total for all users: 14598 jobs; 0 completed, 0 removed, 12378 idle, 1903 running, 317 held, 0 suspended"
     footer = footer_placeholder_text
@@ -75,6 +76,7 @@ def create_json_dict(args):
             jobs_done = jobs_total - total_jobs_running[index]
             jobs_idle = idle_jobs[index]
             jobs_running = running_jobs[index]
+            jobs_held = held_jobs[index]
             jobs_start = utils.unixtimeconvert(jobs_start_dates[index],"eastern")
 
             sql.execute("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(osg_id))

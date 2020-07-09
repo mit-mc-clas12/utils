@@ -60,15 +60,16 @@ class scard_class:
 
 
     def parse_scard(self, scard_text):
+        print("i am called")
         scard_lines = scard_text.split("\n")
         for linenum, line in enumerate(scard_lines):
             if not line:
               print("Reached end of scard")
               break
             pos_delimeter_colon = line.find(":")
-            pos_delimeter_hash = line.find("#")
             key   =  line[:pos_delimeter_colon].strip()
-            value =  line[pos_delimeter_colon+1:pos_delimeter_hash].strip()
+            value =  line[pos_delimeter_colon+1:].strip()
+            print(key,value)
             if key == "generator" and not 'http' in value:
               if key != fs.scard_key[linenum]:
                   pass
@@ -113,7 +114,7 @@ class scard_class:
         elif line.count("#")>1:
             utils.printer("ERROR: number of hashes>1 in line {0}".format(linenum+1))
             utils.printer("# can be used only as a delimeter and only once per line. Edit scard to fix.")
-            exit()
+            #exit() No longer mandating hastags as a format as of 20200708
         if line.count(":") ==0:
             utils.printer("ERROR: No colon in line {0}".format(linenum+1))
             utils.printer("The data cannot be interpreted. Stopped.")
