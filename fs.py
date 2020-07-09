@@ -94,9 +94,9 @@ table_fields = [user_fields, submissions_fields, job_queue_fields]
 *****************************************************************************"""
 #This defines the ordering and items that need to be in scard.txt
 
-scard_key = ('scardID', 'userSubmissionID', 'project',   'group',    'farm_name', 'generator',
+scard_key = ('scardID', 'userSubmissionID', 'project',   'farm_name', 'generator',
             'genOptions', 'nevents',  'gcards',    'luminosity',
-				'tcurrent',   'pcurrent', 'cores_req',' mem_req','jobs')
+				'tcurrent',   'pcurrent', 'cores_req',' mem_req','jobs', 'fields', 'backgroundMerging')
 
 #This defines the variables that will be written out to submission scripts and maps to DB values
 condor_file_obj.overwrite_vals = {'project_scard':'project','jobs_scard':'jobs',

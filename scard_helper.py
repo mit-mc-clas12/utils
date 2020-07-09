@@ -17,10 +17,6 @@ class scard_class:
 
         #Define scard properties:
         self.project = None
-        self.group = None
-        self.group_name = None #needed as group is a keyword in SQL
-        
-
 
 
         #This is likely not needed anymore
@@ -47,6 +43,8 @@ class scard_class:
 
         self.parse_scard(scard_text)
         self.raw_text = None
+        self.fields = None
+        self.backgroundMerging = None
 
 
     def print(self):
@@ -76,24 +74,14 @@ class scard_class:
                   # utils.printer("ERROR: Line {0} of the steering card has the key '{1}''.".format(linenum+1,key))
                   # utils.printer("That line must have the key '{0}'.".format(fs.scard_key[linenum]))
 
+            print("now setting {0} to {1}".format(key,value))
             setattr(self,key,value)
+
+            print(getattr(self,key))
 
 
             #print(self.jobs)
 
-
-        """
-        This block was moved from scard_helper to this parse_scard function.
-        It seems like this is a better place to handle the correction of these
-        fields.
-
-        'group' is a protected word in SQL so we can't use the field title "group"
-        For more information on protected words in SQL, see:
-        https://docs.intersystems.com/irislatest/csp/docbook/
-        DocBook.UI.Page.cls?KEY=RSQL_reservedwords
-        """
-
-        self.group_name = self.group
 
         # Set event generator executable and output to null if the
         # generator doesn't exist in our container.  We are
