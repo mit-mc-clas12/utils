@@ -1,4 +1,0 @@
-matplotlib>=3.2.1; python_version > "3.0"
-matplotlib>=1.2.0; python_version == "2.7"
-numpy>=1.18.5; python_version > "3.0"
-numpy>=1.7.1; python_version == "2.7"
