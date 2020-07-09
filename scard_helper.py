@@ -48,7 +48,7 @@ class scard_class:
 
         self.parse_scard(scard_text)
 
-    def print(self):
+    def printer(self):
         print("Here are all the attributes of {}".format(self.name))
         #print(self.__dict__)
         for key in self.__dict__:
