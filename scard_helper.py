@@ -17,10 +17,6 @@ class scard_class:
 
         #Define scard properties:
         self.project = None
-        self.group = None
-        self.group_name = None #needed as group is a keyword in SQL
-        
-
 
 
         #This is likely not needed anymore
@@ -29,7 +25,7 @@ class scard_class:
 
 
         
-        self.gcards = None
+        self.configuration = None
         self.generator = None
         self.generatorOUT = None
         self.gemcEvioOUT = None
@@ -45,17 +41,18 @@ class scard_class:
         self.client_ip = None
 
 
-        self.parse_scard(scard_text)
+        
         self.raw_text = None
+        self.fields = None
+        self.backgroundMerging = None
 
+        self.parse_scard(scard_text)
 
-    def print(self):
+    def printer(self):
         print("Here are all the attributes of {}".format(self.name))
         #print(self.__dict__)
         for key in self.__dict__:
             print('"{}" has value "{}"'.format(key,self.__dict__[key]))
-
-
 
 
 
@@ -66,33 +63,20 @@ class scard_class:
               print("Reached end of scard")
               break
             pos_delimeter_colon = line.find(":")
-            pos_delimeter_hash = line.find("#")
             key   =  line[:pos_delimeter_colon].strip()
-            value =  line[pos_delimeter_colon+1:pos_delimeter_hash].strip()
+            value =  line[pos_delimeter_colon+1:].strip()
             if key == "generator" and not 'http' in value:
               if key != fs.scard_key[linenum]:
                   pass
                   # utils.printer("ERROR: Line {0} of the steering card has the key '{1}''.".format(linenum+1,key))
                   # utils.printer("That line must have the key '{0}'.".format(fs.scard_key[linenum]))
 
+    
             setattr(self,key,value)
 
 
             #print(self.jobs)
 
-
-        """
-        This block was moved from scard_helper to this parse_scard function.
-        It seems like this is a better place to handle the correction of these
-        fields.
-
-        'group' is a protected word in SQL so we can't use the field title "group"
-        For more information on protected words in SQL, see:
-        https://docs.intersystems.com/irislatest/csp/docbook/
-        DocBook.UI.Page.cls?KEY=RSQL_reservedwords
-        """
-
-        self.group_name = self.group
 
         # Set event generator executable and output to null if the
         # generator doesn't exist in our container.  We are
@@ -113,7 +97,7 @@ class scard_class:
         elif line.count("#")>1:
             utils.printer("ERROR: number of hashes>1 in line {0}".format(linenum+1))
             utils.printer("# can be used only as a delimeter and only once per line. Edit scard to fix.")
-            exit()
+            #exit() No longer mandating hastags as a format as of 20200708
         if line.count(":") ==0:
             utils.printer("ERROR: No colon in line {0}".format(linenum+1))
             utils.printer("The data cannot be interpreted. Stopped.")

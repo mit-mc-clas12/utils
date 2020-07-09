@@ -94,9 +94,9 @@ table_fields = [user_fields, submissions_fields, job_queue_fields]
 *****************************************************************************"""
 #This defines the ordering and items that need to be in scard.txt
 
-scard_key = ('scardID', 'userSubmissionID', 'project',   'group',    'farm_name', 'generator',
-            'genOptions', 'nevents',  'gcards',    'luminosity',
-				'tcurrent',   'pcurrent', 'cores_req',' mem_req','jobs')
+scard_key = ('scardID', 'userSubmissionID', 'project',   'farm_name', 'generator',
+            'genOptions', 'nevents',  'configuration',    'luminosity',
+				'tcurrent',   'pcurrent', 'cores_req',' mem_req','jobs', 'fields', 'bkmerging','client_ip',)
 
 #This defines the variables that will be written out to submission scripts and maps to DB values
 condor_file_obj.overwrite_vals = {'project_scard':'project','jobs_scard':'jobs',
@@ -154,8 +154,8 @@ valid_scard_types = [1, 2, 3, 4]
 
 #Below is for gemc json logging
 default_osg_json_log = "osgLog.json"
-user_data_keys = ["user",  "job id","submitted", "total", "done", "run", "idle", "osg id"]
-null_user_info = ["No user", "No ID", "No data", "No data","No data" ,"No data","No data","No ID"]
+user_data_keys = ["user",  "job id","submitted", "total", "done", "run", "idle", "hold","osg id"]
+null_user_info = ["No user", "No ID", "No data", "No data","No data" ,"No data","No data","No data","No ID"]
 
 
 # This defines a mapping between 'generator' in scard, the genOutput and genExecutable
@@ -175,8 +175,6 @@ debug_help = help = """0 (default) - no messages,1 - general messages,
 
 gcard_identifying_text = '.gcard' # For use in gcard_helper.py
 gcard_default = '/jlab/clas12Tags/gcards/clas12-default.gcard'
-container_gcards = gcard_helper.get_valid_gcards(
-  os.path.dirname(os.path.abspath(__file__)) + '/valid_gcards.txt'
-)
+
 lund_identifying_text = '.txt' #For use in gcard_helper.py
 lund_default = ""
