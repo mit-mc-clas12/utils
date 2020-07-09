@@ -154,8 +154,8 @@ valid_scard_types = [1, 2, 3, 4]
 
 #Below is for gemc json logging
 default_osg_json_log = "osgLog.json"
-user_data_keys = ["user",  "job id","submitted", "total", "done", "run", "idle", "osg id"]
-null_user_info = ["No user", "No ID", "No data", "No data","No data" ,"No data","No data","No ID"]
+user_data_keys = ["user",  "job id","submitted", "total", "done", "run", "idle", "hold","osg id"]
+null_user_info = ["No user", "No ID", "No data", "No data","No data" ,"No data","No data","No data","No ID"]
 
 
 # This defines a mapping between 'generator' in scard, the genOutput and genExecutable

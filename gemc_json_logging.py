@@ -89,7 +89,7 @@ def create_json_dict(args):
                 sql.execute("SELECT user,user_submission_id FROM submissions WHERE pool_node = {}".format(osg_id))
                 user, farm_sub_id = sql.fetchall()[0]
 
-                user_info = [user, farm_sub_id, jobs_start, jobs_total,jobs_done,jobs_running,jobs_idle,osg_id]
+                user_info = [user, farm_sub_id, jobs_start, jobs_total,jobs_done,jobs_running,jobs_idle,jobs_held,osg_id]
 
                 user_data = {}
                 for index,key in enumerate(fs.user_data_keys):
