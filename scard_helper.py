@@ -25,7 +25,7 @@ class scard_class:
 
 
         
-        self.gcards = None
+        self.configuration = None
         self.generator = None
         self.generatorOUT = None
         self.gemcEvioOUT = None
@@ -41,11 +41,12 @@ class scard_class:
         self.client_ip = None
 
 
-        self.parse_scard(scard_text)
+        
         self.raw_text = None
         self.fields = None
         self.backgroundMerging = None
 
+        self.parse_scard(scard_text)
 
     def print(self):
         print("Here are all the attributes of {}".format(self.name))
@@ -55,10 +56,7 @@ class scard_class:
 
 
 
-
-
     def parse_scard(self, scard_text):
-        print("i am called")
         scard_lines = scard_text.split("\n")
         for linenum, line in enumerate(scard_lines):
             if not line:
@@ -67,17 +65,14 @@ class scard_class:
             pos_delimeter_colon = line.find(":")
             key   =  line[:pos_delimeter_colon].strip()
             value =  line[pos_delimeter_colon+1:].strip()
-            print(key,value)
             if key == "generator" and not 'http' in value:
               if key != fs.scard_key[linenum]:
                   pass
                   # utils.printer("ERROR: Line {0} of the steering card has the key '{1}''.".format(linenum+1,key))
                   # utils.printer("That line must have the key '{0}'.".format(fs.scard_key[linenum]))
 
-            print("now setting {0} to {1}".format(key,value))
+    
             setattr(self,key,value)
-
-            print(getattr(self,key))
 
 
             #print(self.jobs)
