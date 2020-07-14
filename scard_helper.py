@@ -21,9 +21,6 @@ class scard_class:
 
         #This is likely not needed anymore
         self.farm_name = None
-
-
-
         
         self.configuration = None
         self.generator = None
@@ -44,7 +41,7 @@ class scard_class:
         
         self.raw_text = None
         self.fields = None
-        self.backgroundMerging = None
+        self.__backgroundMerging = None
 
         self.parse_scard(scard_text)
 
