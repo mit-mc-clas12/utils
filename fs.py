@@ -136,6 +136,10 @@ scard_path = dirname+"/../client/"
 # Specifiy Database name:
 DB_name = 'CLAS12_OCRDB.db'
 
+MySQL_Prod_DB_Name = "CLAS12OCR"
+MySQL_Test_DB_Name = "CLAS12Test"
+SQLite_Test_DB_Name = "CLAS12OCR.db"
+
 # Specify scard name
 scard_name = 'scard.txt'
 
