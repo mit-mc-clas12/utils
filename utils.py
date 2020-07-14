@@ -15,8 +15,6 @@ import datetime
 import logging
 import sys
 import calendar
-import pytz
-
 import fs
 import MySQLdb
 import sqlite3
@@ -24,25 +22,61 @@ import sqlite3
 def getPythonVersion():
     return sys.version_info[0] #element 0 is the major release, e.g. python 2 or python 3
 
+
+
+
+#For some very, very annoying reason, pytz is not a supported module on ifarm for python3
+#Therefore, if we are using python3, we will just do a hard-coded time conversion, which is not optimal
+pyversion = getPythonVersion()
+if pyversion == 2:
+    import pytz
+
+    def unixtimeconvert(time,timezone):
+      utc = datetime.datetime.utcfromtimestamp(time)
+      if timezone == 'eastern':
+          local_tz = pytz.timezone('America/New_York')
+      else:
+          print("please specifiy a supported timezone")
+
+      ## You could use `tzlocal` module to get local timezone on Unix and Win32
+      # from tzlocal import get_localzone # $ pip install tzlocal
+      # # get local timezone
+      # local_tz = get_localzone()
+      #Y You might not want to do this though if servers are running in different timezones
+
+      local_dt = utc.replace(tzinfo=pytz.utc).astimezone(local_tz).strftime('%m/%d %H:%M')
+
+      return local_dt
+
+elif pyversion == 3:
+
+      def unixtimeconvert(time,timezone):
+        
+        if timezone == 'eastern':
+            local_tz_shift = 4*3600 #Easter timezone is 4 hours off UTC. This might get messed up around daylight saving times
+        else:
+            print("please specifiy a supported timezone")
+
+        utc = datetime.datetime.utcfromtimestamp(time-local_tz_shift)
+        ## You could use `tzlocal` module to get local timezone on Unix and Win32
+        # from tzlocal import get_localzone # $ pip install tzlocal
+        # # get local timezone
+        # local_tz = get_localzone()
+        #Y You might not want to do this though if servers are running in different timezones
+
+        local_dt = utc.strftime('%m/%d %H:%M')
+
+        return local_dt
+else:
+    print("This code only works with python version 2 or 3")
+    print("Python version is listed as {0}, please change".format(pyversion))
+    exit()
+
+
 def gettime():
   return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-def unixtimeconvert(time,timezone):
-    utc = datetime.datetime.utcfromtimestamp(time)
-    if timezone == 'eastern':
-        local_tz = pytz.timezone('America/New_York')
-    else:
-        print("please specifiy a supported timezone")
 
-    ## You could use `tzlocal` module to get local timezone on Unix and Win32
-    # from tzlocal import get_localzone # $ pip install tzlocal
-    # # get local timezone
-    # local_tz = get_localzone()
-    #Y You might not want to do this though if servers are running in different timezones
-
-    local_dt = utc.replace(tzinfo=pytz.utc).astimezone(local_tz).strftime('%m/%d %H:%M')
-
-    return local_dt
 
 def printer(strn): # Can't call the function print because it already exists in python
   if (int(fs.DEBUG) == 1) or (int(fs.DEBUG) == 2):
