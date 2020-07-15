@@ -133,11 +133,8 @@ SQLite_DB_path = dirname + '/../tests/test.sqlite'
 # Specify the location of the scard
 scard_path = dirname+"/../client/"
 
-# Specifiy Database name:
-DB_name = 'CLAS12_OCRDB.db'
-
 MySQL_Prod_DB_Name = "CLAS12OCR"
-MySQL_Test_DB_Name = "CLAS12Test"
+MySQL_Test_DB_Name = "CLAS12TEST"
 SQLite_Test_DB_Name = "CLAS12OCR.db"
 
 # Specify scard name
