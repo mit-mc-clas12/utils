@@ -66,6 +66,11 @@ condor_file_obj.file_text_fieldname = 'clas12_condor_text'
 """*****************************************************************************
 -------------------------  DB Schema Specification -----------------------------
 *****************************************************************************"""
+MySQL_Prod_DB_Name = "CLAS12OCR"
+MySQL_Test_DB_Name = "CLAS12TEST2"
+SQLite_Test_DB_Name = "CLAS12OCR.db"
+
+
 
 tables = ['users', 'submissions', 'job_queue']
 pks = ['user_id', 'user_submission_id', 'entry']
@@ -133,12 +138,6 @@ SQLite_DB_path = dirname + '/../tests/test.sqlite'
 # Specify the location of the scard
 scard_path = dirname+"/../client/"
 
-# Specifiy Database name:
-DB_name = 'CLAS12_OCRDB.db'
-
-MySQL_Prod_DB_Name = "CLAS12OCR"
-MySQL_Test_DB_Name = "CLAS12Test"
-SQLite_Test_DB_Name = "CLAS12OCR.db"
 
 # Specify scard name
 scard_name = 'scard.txt'
