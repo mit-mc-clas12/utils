@@ -46,14 +46,16 @@ if __name__ == '__main__':
     else:
         username, password = "none", "none"
 
-    if args.lite is not None:
-        database_name = args.lite
-    else:
-        if args.test_database:
-            database_name = "CLAS12TEST"
-        else:
-            database_name = "CLAS12OCR"
+    #if args.lite is not None:
+    #    database_name = args.lite
+    #else:
+    #    if args.test_database:
+    #        database_name = "CLAS12TEST"
+    #    else:
+    #        database_name = "CLAS12OCRtest"
 
+    database_name = "CLAS12TEST"
+    
     use_mysql = False if args.lite else True
     db_conn, sql = database.get_database_connection(
         use_mysql=use_mysql,
