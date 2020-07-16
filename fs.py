@@ -67,7 +67,7 @@ condor_file_obj.file_text_fieldname = 'clas12_condor_text'
 -------------------------  DB Schema Specification -----------------------------
 *****************************************************************************"""
 MySQL_Prod_DB_Name = "CLAS12OCR"
-MySQL_Test_DB_Name = "CLAS12TEST2"
+MySQL_Test_DB_Name = "CLAS12TEST"
 SQLite_Test_DB_Name = "CLAS12OCR.db"
 
 
