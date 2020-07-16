@@ -57,10 +57,9 @@ os.chdir(dname)
 folders = ['utils','server','client']
 for folder in folders:
 	folder_name= os.path.dirname(os.path.abspath(__file__))+'/'+folder
-	print(folder_name+" is present, not re-cloning")
 	if not os.path.isdir(folder_name):
 		print('{0} not found, cloning from github'.format(folder))
-		substring = 'git@github.com:robertej19/{0}.git'.format(folder)
+		substring = 'https://github.com/robertej19/{0}.git'.format(folder)
 		subprocess.call(['git','clone',substring])
 
 
