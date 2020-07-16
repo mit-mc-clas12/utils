@@ -50,8 +50,8 @@ dname = os.path.dirname(abspath)+'/clas12-test'
 os.chdir(dname)
 
 f = open('msqlrw.txt',"w")
-f.write("username\n")
-f.write("password")
+f.write("dev\n")
+f.write("devpassword")
 f.close()
 
 #subprocess.call(['cd','clas12-test'])
