@@ -29,15 +29,35 @@ def test_function(command):
 	else:
 		return(stdout,stderr)
 
+
+
+test_folder= os.path.dirname(os.path.abspath(__file__))+'/clas12-test'
+print(test_folder+" is present, not re-cloning")
+if os.path.isdir(test_folder):
+	print('removing previous database file')
+	subprocess.call(['rm','-rf',test_folder])
+if os.path.isdir(test_folder):
+	print('removing previous database file')
+	subprocess.call(['rm','-rf',test_folder])
+
+
+
 subprocess.call(['mkdir','-p','clas12-test'])
-subprocess.call(['cd','clas12-test'])
+
+
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)+'/clas12-test'
+os.chdir(dname)
+
+
+#subprocess.call(['cd','clas12-test'])
 
 
 
 folders = ['utils','server','client']
 for folder in folders:
 	folder_name= os.path.dirname(os.path.abspath(__file__))+'/'+folder
-	print(folder_name)
+	print(folder_name+" is present, not re-cloning")
 	if not os.path.isdir(folder_name):
 		print('{0} not found, cloning from github'.format(folder))
 		substring = 'git@github.com:robertej19/{0}.git'.format(folder)
@@ -50,6 +70,7 @@ if os.path.isfile(filename):
 	print('removing previous database file')
 	subprocess.call(['rm',filename])
 
+"""
 
 create_sqlite_db = command_class('Create SQLite DB',
 								['python2', 'utils/create_database.py','--lite=utils/CLAS12OCR.db'],
@@ -102,6 +123,7 @@ else:
 	exit(0)
 
 
+"""
 """
 #which condor_submit if val = 0, do not submit, print not found message
 """
