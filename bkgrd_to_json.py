@@ -22,12 +22,23 @@ def path_hierarchy(path):
 if __name__ == '__main__':
     import json
     import sys
+    import argparse
 
-    try:
-        directory = sys.argv[1]
-    except IndexError:
-        directory = "/work/osgpool/hallb/clas12/backgroundfiles/"
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument("-b", "--bkgrd", help="background files location", default="/work/osgpool/hallb/clas12/backgroundfiles/")
+    parser.add_argument("-test", "--outdir", help="output directory location", default="/group/clas/www/gemc/html/web_interface/xrootd/")
+
+    args = parser.parse_args()
+
+#    try:
+#        directory = sys.argv[1]
+#        directory = args.outdir
+#    except IndexError:
+#        directory = "/work/osgpool/hallb/clas12/backgroundfiles/"
+
+    
 
 #    with open('xrootd.json', 'w') as f:
-    with open('/group/clas/www/gemc/html/web_interface/xrootd/xrootd.json', 'w') as f:
-        print(json.dump(path_hierarchy(directory), f, indent=2, sort_keys=False))
+    with open(os.path.join(args.outdir,'xrootd.json'), 'w') as f:
+        print(json.dump(path_hierarchy(args.bkgrd), f, indent=2, sort_keys=False))
