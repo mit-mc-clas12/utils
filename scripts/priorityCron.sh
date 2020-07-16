@@ -13,7 +13,7 @@ if ($nrunning != "2") then
         echo running: $nrunning                                       
 	echo priorityCron already running. Nothing to do. 
 else
-	python /group/clas12/SubMit/utils/update_priority.py -j /u/group/clas/www/gemc/html/web_interface/stats_results/osgLog.json -u | xargs -n3 condor_prio
+	python /group/clas12/SubMit/utils/update_priority.py -j /u/group/clas/www/gemc/html/web_interface/data/osgLog.json -u | xargs -n3 condor_prio
 endif
 
 

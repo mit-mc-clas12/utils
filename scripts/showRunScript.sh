@@ -1,7 +1,5 @@
 #!/bin/bash 
 
-#!/bin/bash
-
 submissionID=$1
 
 echo
