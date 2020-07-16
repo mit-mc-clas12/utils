@@ -33,24 +33,6 @@ if __name__ == '__main__':
     #collect command line options
     args = parser.parse_args()
 
-<<<<<<< Updated upstream:scripts/bkgrd_to_json.py
-#    try:
-#        directory = sys.argv[1]
-#        directory = args.outdir
-#    except IndexError:
-#        directory = "/work/osgpool/hallb/clas12/backgroundfiles/"
-
-    
-
-<<<<<<< HEAD:bkgrd_to_json.py
-#    with open('xrootd.json', 'w') as f:
-    with open(os.path.join(args.outdir,'xrootd.json'), 'w') as f:
-        print(json.dump(path_hierarchy(args.bkgrd), f, indent=2, sort_keys=False))
-=======
-    with open('/group/clas/www/gemc/html/web_interface/data/xrootd.json', 'w') as f:
-        print(json.dump(path_hierarchy(directory), f, indent=2, sort_keys=False))
->>>>>>> upstream/master:scripts/bkgrd_to_json.py
-=======
     with open(os.path.join(args.outdir,'xrootd.json'), 'w') as f: #open xrootd.json
         print(json.dump(path_hierarchy(args.bkgrd), f, indent=2, sort_keys=False)) #call main function and print output in json format
->>>>>>> Stashed changes:bkgrd_to_json.py
+
