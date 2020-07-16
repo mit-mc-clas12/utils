@@ -69,7 +69,6 @@ if os.path.isfile(filename):
 	print('removing previous database file')
 	subprocess.call(['rm',filename])
 
-"""
 
 create_sqlite_db = command_class('Create SQLite DB',
 								['python2', 'utils/create_database.py','--lite=utils/CLAS12OCR.db'],
@@ -122,7 +121,7 @@ else:
 	exit(0)
 
 
-"""
+
 """
 #which condor_submit if val = 0, do not submit, print not found message
 """
