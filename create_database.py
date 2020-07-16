@@ -45,14 +45,16 @@ if __name__ == '__main__':
     else:
         use_mysql = True
         if args.test_database:
-            cred_file_name = '/../../msqlrw_test.txt'
+            cred_file_name = '/../msqlrw_test.txt'
             database_name = fs.MySQL_Test_DB_Name
         else:
-            cred_file_name = '/../../msqlrw.txt'
+            cred_file_name = '/../msqlrw.txt'
             database_name = fs.MySQL_Prod_DB_Name
             
         cred_file_loc = os.path.dirname(os.path.abspath(__file__)) + cred_file_name
+        print(cred_file_loc)
         cred_file = os.path.normpath(cred_file_loc)
+        print(cred_file)
         username, password = database.load_database_credentials(cred_file)
 
     

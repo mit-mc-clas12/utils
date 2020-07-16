@@ -50,7 +50,7 @@ dname = os.path.dirname(abspath)+'/clas12-test'
 os.chdir(dname)
 
 f = open('msqlrw.txt',"w")
-f.write("username")
+f.write("username\n")
 f.write("password")
 f.close()
 
