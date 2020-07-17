@@ -54,7 +54,7 @@ os.chdir(test_folder)
 
 f = open('msqlrw.txt',"w")
 f.write("root\n")
-f.write("")
+f.write(" ")
 f.close()
 
 #subprocess.call(['cd','clas12-test'])
