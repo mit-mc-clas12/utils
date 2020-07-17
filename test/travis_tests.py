@@ -32,22 +32,25 @@ def test_function(command):
 
 
 test_folder= os.path.dirname(os.path.abspath(__file__))+'/clas12-test'
-print(test_folder+" is present, not re-cloning")
 if os.path.isdir(test_folder):
 	print('removing previous database file')
 	subprocess.call(['rm','-rf',test_folder])
 if os.path.isdir(test_folder):
 	print('removing previous database file')
 	subprocess.call(['rm','-rf',test_folder])
+else:
+	print(test_folder+" is not present, not deleteing")
 
 
 
-subprocess.call(['mkdir','-p','clas12-test'])
+subprocess.call(['mkdir','-p',test_folder])
+print(test_folder+" is now present")
 
 
-abspath = os.path.abspath(__file__)
-dname = os.path.dirname(abspath)+'/clas12-test'
-os.chdir(dname)
+
+#abspath = os.path.abspath(__file__)
+#dname = os.path.dirname(abspath)+'/clas12-test'
+os.chdir(test_folder)
 
 f = open('msqlrw.txt',"w")
 f.write("root\n")
