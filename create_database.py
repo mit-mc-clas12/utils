@@ -40,7 +40,7 @@ if __name__ == '__main__':
 
     if args.lite:
             use_mysql = False
-            username, password = "none", "none"
+            username, password = "none", "none" #sqlite doesnt need passwords
             database_name = args.lite
     else:
         use_mysql = True
