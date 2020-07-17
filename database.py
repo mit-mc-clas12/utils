@@ -14,9 +14,10 @@ import MySQLdb
 
 def connect_to_mysql(host, username, password, db_name):
   """Return a MySQL database connection. """
-  print("trying to connect to mysql database")
-  print("hots: {0}".format(host))
 
+  print("username is {0}".format(username))
+  if username == 'root':
+    host='localhost'
 
   return MySQLdb.connect(host, username, password, db_name)
 
