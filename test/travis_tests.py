@@ -107,15 +107,23 @@ verify_submission_success = command_class('Verify scard submission success',
 								'robertej\n')
 
 
+submit_server_jobs_test_db = command_class('Submit jobs from server on CLAS12TEST',
+								['python2', 'server/src/Submit_UserSubmission.py', '-b','1', '--test_database', '-w', '-s', '-t'],
+								'0')
 
-submit_server_jobs = command_class('Submit jobs from server',
+submit_server_jobs_prod_db = command_class('Submit jobs from server on CLAS12OCR',
+								['python2', 'server/src/Submit_UserSubmission.py', '-b','1', '-w', '-s', '-t'],
+								'0')
+
+submit_server_jobs_sqlite = command_class('Submit jobs from server',
 								['python2', 'server/src/Submit_UserSubmission.py', '-b','1', '--lite=utils/CLAS12OCR.db', '-w', '-s', '-t'],
 								'0')
 
 
 command_sequence = [create_mysql_db,create_mysql_db_test,create_sqlite_db, 
 			submit_scard_1, submit_scard_1_mysql, submit_scard_1_mysql_test,
-			 verify_submission_success,submit_server_jobs]
+			 verify_submission_success,submit_server_jobs_sqlite, 
+			 submit_server_jobs_test_db, submit_server_jobs_prod_db]
 
 
 def run_through_tests(command_sequence):
