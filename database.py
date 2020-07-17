@@ -17,7 +17,7 @@ def connect_to_mysql(host, username, password, db_name):
 
   print("username is {0}".format(username))
   if username == 'root':
-    host='localhost'
+    host='localhost' #This is so tests work on travis-ci, where we ue root user
 
   return MySQLdb.connect(host, username, password, db_name)
 
