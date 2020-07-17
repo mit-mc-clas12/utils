@@ -33,7 +33,7 @@ def get_args():
       fs.mysql_uname = login_params[0]
 
       #Need to handle the case where the password is null
-      if len(login_params < 2):
+      if len(login_params) < 2:
         fs.mysql_psswrd = ""      
       else:
         fs.mysql_psswrd =  login_params[1]
