@@ -57,9 +57,6 @@ f.write("root\n")
 f.write(" ")
 f.close()
 
-#subprocess.call(['cd','clas12-test'])
-
-
 
 folders = ['utils','server','client']
 for folder in folders:
