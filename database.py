@@ -12,9 +12,9 @@ import datetime
 import fs, sqlite3
 import MySQLdb
 
-def connect_to_mysql(host, username, password, db_name):
+def connect_to_mysql(host, username, password, db_name, port):
   """Return a MySQL database connection. """
-  return MySQLdb.connect(host, username, password, db_name)
+  return MySQLdb.connect(host, username, password, db_name, port)
 
 def connect_to_sqlite(db_name):
   """Return an sqlite database connection. """
@@ -38,7 +38,7 @@ def load_database_credentials(cred_file):
 
 def get_database_connection(use_mysql=True, hostname=None,
                             database_name=None, username=None,
-                            password=None):
+                            password=None, port=None):
   """ 
 
   Authenticate to the database as done in the db_write and db_grab
@@ -67,7 +67,7 @@ def get_database_connection(use_mysql=True, hostname=None,
   # Configure for MySQL
   if use_mysql:
     db_connection = connect_to_mysql(hostname, username,
-                                     password, database_name)
+                                     password, database_name, 8886)
   # Configure for sqlite
   else:
     db_connection = connect_to_sqlite(database_name)
