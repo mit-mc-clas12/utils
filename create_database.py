@@ -42,18 +42,18 @@ if __name__ == '__main__':
             use_mysql = False
             username, password = "none", "none"
             database_name = args.lite
+    else:
+        use_mysql = True
+        if args.test_database:
+            cred_file_name = fs.test_db_cred_file
+            database_name = fs.MySQL_Test_DB_Name
         else:
-            use_mysql = True
-            if args.test_database:
-                cred_file_name = fs.test_db_cred_file
-                database_name = fs.MySQL_Test_DB_Name
-            else:
-                cred_file_name = fs.prod_db_cred_file
-                database_name = fs.MySQL_Prod_DB_Name
+            cred_file_name = fs.prod_db_cred_file
+            database_name = fs.MySQL_Prod_DB_Name
                 
-            cred_file_loc = os.path.dirname(os.path.abspath(__file__)) + cred_file_name
-            cred_file = os.path.normpath(cred_file_loc)
-            username, password = database.load_database_credentials(cred_file)
+        cred_file_loc = os.path.dirname(os.path.abspath(__file__)) + cred_file_name
+        cred_file = os.path.normpath(cred_file_loc)
+        username, password = database.load_database_credentials(cred_file)
 
     db_conn, sql = database.get_database_connection(
         use_mysql=use_mysql,
