@@ -36,7 +36,7 @@ def load_database_credentials(cred_file):
     if len(login) < 2:
       #raise ValueError(("Credential file must contain username and password,"
       #                  " separated by a space and nothing else."))
-      return (login[0], "")
+      return (login[0], "") #root user on travis does not need password
       
 
     return (login[0], login[1])
