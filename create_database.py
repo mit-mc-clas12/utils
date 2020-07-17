@@ -45,7 +45,7 @@ if __name__ == '__main__':
     else:
         use_mysql = True
         if args.test_database:
-            cred_file_name = '/../msqlrw_test.txt'
+            cred_file_name = '/../msqlrw.txt'
             database_name = fs.MySQL_Test_DB_Name
         else:
             cred_file_name = '/../msqlrw.txt'
