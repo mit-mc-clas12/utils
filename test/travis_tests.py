@@ -77,8 +77,12 @@ if os.path.isfile(filename):
 	subprocess.call(['rm',filename])
 
 
-create_mysql_db = command_class('Create SQLite DB',
+create_mysql_db = command_class('Create MySQL DB',
 								['python2', 'utils/create_database.py'],
+								'0')
+
+create_mysql_db_test = command_class('Create MySQL DB',
+								['python2', 'utils/create_database.py','--test_database'],
 								'0')
 
 create_sqlite_db = command_class('Create SQLite DB',
@@ -87,6 +91,10 @@ create_sqlite_db = command_class('Create SQLite DB',
 
 submit_scard_1 = command_class('Submit scard 1 on client',
 								['python2', 'client/src/SubMit.py','--lite=utils/CLAS12OCR.db','-u=robertej','client/scards/scard_type1.txt'],
+								'0')
+								
+submit_scard_1_mysql = command_class('Submit scard 1 on client',
+								['python2', 'client/src/SubMit.py','-u=robertej','client/scards/scard_type1.txt'],
 								'0')
 
 #submit_scard_2 = command_class('Create scard 2 on client',
@@ -104,7 +112,8 @@ submit_server_jobs = command_class('Submit jobs from server',
 								'0')
 
 
-command_sequence = [create_mysql_db,create_sqlite_db, submit_scard_1, verify_submission_success,submit_server_jobs]
+command_sequence = [create_mysql_db,create_mysql_db_test,create_sqlite_db, 
+			submit_scard_1, submit_scard_1_mysql, verify_submission_success,submit_server_jobs]
 
 
 def run_through_tests(command_sequence):
