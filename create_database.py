@@ -67,7 +67,8 @@ if __name__ == '__main__':
         database_name=database_name,
         username=username,
         password=password,
-        hostname='jsubmit.jlab.org'
+        hostname='localhost'
+        #hostname='jsubmit.jlab.org'
     )
 
     # Create tables

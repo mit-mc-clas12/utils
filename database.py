@@ -12,9 +12,9 @@ import datetime
 import fs, sqlite3
 import MySQLdb
 
-def connect_to_mysql(host, username, password, db_name, port):
+def connect_to_mysql(host, username, password, db_name):
   """Return a MySQL database connection. """
-  return MySQLdb.connect(host, username, password, db_name, 8886)
+  return MySQLdb.connect(host, username, password, db_name)
 
 def connect_to_sqlite(db_name):
   """Return an sqlite database connection. """
