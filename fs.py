@@ -71,8 +71,8 @@ MySQL_Test_DB_Name = "CLAS12TEST"
 SQLite_Test_DB_Name = "CLAS12OCR.db"
 
 db_hostname = 'jsubmit.jlab.org'
-prod_db_cred_file = '/../../msqlrw.txt'
-test_db_cred_file = '/../../msqlrw.txt'
+prod_db_cred_file = '/../msqlrw.txt'
+test_db_cred_file = '/../msqlrw.txt'
 
 
 tables = ['users', 'submissions', 'job_queue']
