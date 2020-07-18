@@ -122,8 +122,7 @@ submit_server_jobs_sqlite = command_class('Submit jobs from server',
 
 command_sequence = [create_mysql_db,create_mysql_db_test,create_sqlite_db, 
 			submit_scard_1, submit_scard_1_mysql, submit_scard_1_mysql_test,
-			 verify_submission_success,submit_server_jobs_sqlite, 
-			 submit_server_jobs_test_db, submit_server_jobs_prod_db]
+			 verify_submission_success,submit_server_jobs_sqlite]
 
 
 def run_through_tests(command_sequence):
