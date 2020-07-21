@@ -1,0 +1,5 @@
+title = Create MySQL DB
+command = python2 utils/create_database.py
+output = 0
+
+
