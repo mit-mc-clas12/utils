@@ -1,8 +1,11 @@
 #!/bin/csh -f
 
+# this scripts needs to be run outside the repo dir (for example, from the home dir)
+
 # TODO:
 # Change this to install release, accept argument PRODUCTION or TEST
 # if TEST, need to modify some lines to use different DB
+# Also, change this to zsh
 
 set grepo = https://github.com/mit-mc-clas12
 
@@ -66,12 +69,17 @@ echo Maintainance mode: remember to change index.php to reflect messages
 echo
 
 # copy  copy permissions files into test dir
+echo Adjusting permissions...
 cd /u/group/clas/www/gemc/html/test
 chmod g+w -R *
 
 cd SubMit
 cp ../../SubMit/*.txt .
 
+cd /group/clas12/SubMit/test/SubMit
+cp ../../*.txt .
+
+echo
 echo done
 echo
 
