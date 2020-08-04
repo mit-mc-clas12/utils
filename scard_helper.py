@@ -41,6 +41,7 @@ class scard_class:
         
         self.raw_text = None
         self.fields = None
+        self.submission = None
         self.__backgroundMerging = None
 
         self.parse_scard(scard_text)
