@@ -52,7 +52,7 @@ def create_commands():
                                     '0')
 
     submit_server_jobs_sqlite = command_class('Submit jobs from server',
-                                    ['python2', 'server/src/Submit_UserSubmission.py', '-b','1', '--lite=utils/CLAS12OCR.db', '-w', '-s', '-t'],
+                                    ['python2', 'server/src/Submit_UserSubmission.py', '-b','1', '--lite=utils/CLAS12OCR.db', '-w', '-s', '-t','-o=TestOutputDir'],
                                     '0')
 
     command_sequence = [create_mysql_db,create_mysql_db_test,create_sqlite_db, 
