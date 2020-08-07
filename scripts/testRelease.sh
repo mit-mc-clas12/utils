@@ -79,6 +79,10 @@ cp ../../SubMit/*.txt .
 cd /group/clas12/SubMit/test/SubMit
 cp ../../*.txt .
 
+cp /group/clas12/SubMit/msql_conn.txt /group/clas12/SubMit/test/SubMit/msql_conn_test.txt
+cd /group/clas12/SubMit/test/SubMit/
+sed -i s/CLAS12OCR/CLAS12TEST/ msql_conn_test.txt
+
 echo
 echo done
 echo
