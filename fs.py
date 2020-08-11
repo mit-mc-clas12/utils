@@ -163,10 +163,7 @@ default_osg_json_log = "osgLog.json"
 user_data_keys = ["user",  "job id","submitted", "total", "done", "run", "idle", "hold","osg id"]
 null_user_info = ["No user", "No ID", "No data", "No data","No data" ,"No data","No data","No data","No ID"]
 
-
-# This defines a mapping between 'generator' in scard, the genOutput and genExecutable
-#genOutput     =  {'clasdis': 'sidis.dat', 'dvcs': 'dvcsgen1.dat', 'disrad':'dis-rad.dat' , 'genKYandOnePion': 'genKYandOnePion.dat', 'gemc': 'gemc'}
-#genExecutable =  {'clasdis': 'clasdis'  , 'dvcs': 'dvcsgen'     , 'disrad':'generate-dis', 'genKYandOnePion': 'eg_ky'              , 'gemc': 'gemc'}
+# Notice: we need to remove all this now that the generators satisfy naming requirements
 genOutput     =  {'clasdis': 'clasdis.dat', 'claspyth': 'claspyth.dat', 'dvcsgen': 'dvcsgen.dat', 'genKYandOnePion': 'genKYandOnePion.dat', 'inclusive-dis-rad':'inclusive-dis-rad.dat' , 'jpsigen': 'jpsigen.dat', 'tcsgen': 'tcsgen.dat', 'gemc': 'gemc'}
 genExecutable =  {'clasdis': 'clasdis'  ,   'claspyth': 'claspyth',     'dvcsgen': 'dvcsgen'    , 'genKYandOnePion': 'genKYandOnePion'    , 'inclusive-dis-rad':'inclusive-dis-rad',      'jpsigen': 'jpsigen',     'tcsgen': 'tcsgen',     'gemc': 'gemc'}
 
