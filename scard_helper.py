@@ -44,7 +44,7 @@ class scard_class:
         self.torus = None
         self.solenoid = None
         self.submission = None
-        self.__backgroundMerging = None
+        self.bkmerging = None
 
         self.parse_scard(scard_text)
 
