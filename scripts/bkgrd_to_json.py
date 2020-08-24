@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-
+#
+# useful commands:
+# python bkgrd_to_json.py -b=/work/osgpool/hallb/clas12/backgroundfiles -test=.
+# cp xrootd.json osgw/../test/web_interface/data/xrootd.json
+# cp xrootd.json osgw/data/xrootd.json
 import os
 
 def path_hierarchy(path):

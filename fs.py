@@ -156,7 +156,7 @@ runscript_file_obj.file_path = sub_files_path+'runscript_files/'
 ---------------------------- Other Specifications ------------------------------
 *****************************************************************************"""
 
-coatjavaVersion =  {"rga_fall2018":"6.5.9", "rga_spring2018":"6.5.9","rga_spring2019":"6.5.9","rgb_spring2019":"6.5.9","rgk_fall2018":"6.5.9"}
+coatjavaVersion =  {"rga_fall2018":"6.5.6.1", "rga_spring2018":"6.5.6.1", "rga_spring2019":"6.5.6.1", "rgb_spring2019":"6.5.9", "rgk_fall2018_FTOn":"6.5.6.1", "rgk_fall2018_FTOff":"6.5.6.1"}
 
 # Definition of valid scard types. Explainations for these types can be found in the documentation.
 valid_scard_types = [1, 2, 3, 4]
