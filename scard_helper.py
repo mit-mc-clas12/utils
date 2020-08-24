@@ -37,7 +37,7 @@ class scard_class:
         self.userSubmissionID = None
         self.client_ip = None
 
-
+        self.coatjavaVersion = "0.0.0"
         
         self.raw_text = None
         self.fields = None
@@ -76,18 +76,17 @@ class scard_class:
         
         
         magfields = getattr(self,"fields")
-        #print("magfield type {0}0magfields))
         tor, sol = magfields.split("_")
         tor_val = tor[3:]
         sol_val = sol[3:]
 
         self.torus = tor_val
         self.solenoid = sol_val
-        #print("tor is {0}".format(torval))
-        #print("sol is {0}".format(solval))
 
-            #print(self.jobs)
+        #set coatjava version attribute
+        self.coatjavaVersion = fs.coatjavaVersion[getattr(self,"configuration")]
 
+        print(self.coatjavaVersion)
 
         # Set event generator executable and output to null if the
         # generator doesn't exist in our container.  We are
