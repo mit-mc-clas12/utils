@@ -1,0 +1,12 @@
+project:  CLAS12
+configuration: rgb_spring2019
+generator:  https://userweb.jlab.org/~ungaro/lund/
+client_ip: 108.39.38.124
+generatorOUT: no
+gemcEvioOUT: no
+gemcHipoOUT: no
+reconstructionOUT: no
+dstOUT: yes
+fields: tor-1.00_sol-1.00
+bkmerging: no
+submission: devel
