@@ -3,8 +3,8 @@
 # cd /group/clas12/SubMit/test/SubMit/utils/scardTests
 # ./runTests.sh
 
-gcards="rga_fall2018_bgmerging.txt rga_spring2018_nobg.txt rgb_spring2019_nobg.txt rgk_fall2018_FTOn_nobg.txt \
-        rga_fall2018_nobg.txt      rga_spring2019_nobg.txt rgk_fall2018_FTOff_nobg.txt"
+gcards="rga_fall2018_bgmerging.txt rga_fall2018_nobg.txt   rga_spring2018_nobg.txt   rgb_spring2019_nobg.txt  \
+        rgk_fall2018_FTOn_nobg.txt rga_spring2019_nobg.txt rgk_fall2018_FTOff_nobg.txt"
 
 cd /group/clas/www/gemc/html/test/web_interface
 
@@ -23,13 +23,13 @@ python src/Submit_UserSubmission.py -s -t --test_database
 echo
 
 # Output:
-# job_/output/simu_0/   rga_fall2018_bgmerging
-# job_/output/simu_0/   rga_spring2018_nobg
-# job_/output/simu_0/   rgb_spring2019_nobg
-# job_/output/simu_0/   rgk_fall2018_FTOn_nobg
-# job_/output/simu_0/   rga_fall2018_nobg
-# job_/output/simu_0/   rga_spring2019_nobg
-# job_/output/simu_0/   rgk_fall2018_FTOff_nobg
+# job_91/output/simu_0/   rga_fall2018_bgmerging
+# job_92/output/simu_0/   rga_fall2018_nobg
+# job_93/output/simu_0/   rga_spring2018_nobg
+# job_94/output/simu_0/   rgb_spring2019_nobg
+# job_95/output/simu_0/   rgk_fall2018_FTOn_nobg
+# job_96/output/simu_0/   rga_spring2019_nobg
+# job_97/output/simu_0/   rgk_fall2018_FTOff_nobg
 
 
 
