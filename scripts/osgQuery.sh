@@ -20,10 +20,6 @@ mkdir -p $dataDir
 
 ### going to web interface data
 cd $dataDir
-rm gemcRunning.log osgLog.json
-
-# creates gemcRunning.log from condor_q
-condor_q -submitter gemc | grep OWNER -A100 > gemcRunning.log
 
 # parsing onto gemcRunning.log osgLog.json
-python $scriptDir/jsonify_logfile.py --logfile=gemcRunning.log --output=osgLog.json
+python $scriptDir/gemc_json_logging.py
