@@ -11,11 +11,12 @@ set nrunning =  `ps -ef | grep gemc | grep volatileQuery | grep -v grep | grep -
 
 # running this cronjob abounts for 2 of the above running
 if ($nrunning != "2") then
-        echo running: $nrunning
+	echo running: $nrunning
 	echo volatileQuery already running. Nothing to do.
 else
 	set dataDir   = /group/clas/www/gemc/html/web_interface/data
 	set scriptDir = /group/clas12/SubMit/utils/
+	set osgOutput = /volatile/clas12/osg
 
 	if($1 == 'test') then
 		echo running test
@@ -25,8 +26,10 @@ else
 
 	### going to web interface data
 	rm $dataDir/volatile.log
-	cd /volatile/clas12/osg
+	cd $osgOutput
+
 	nice +20 du -B G -d 2 -t 1 | grep -v lund | grep -v gemc | grep -v test > $dataDir/volatile.log
+
 	cd $dataDir
 	python $scriptDir/jsonify_disk_usage.py --logfile volatile.log --output disk.json
 
