@@ -28,10 +28,14 @@ else
 	rm $dataDir/volatile.log
 	cd $osgOutput
 
-	nice +20 du -B G -d 2 -t 1 | grep -v lund | grep -v gemc | grep -v test > $dataDir/volatile.log
+	# du takes too long
+	# nice +20 du -B G -d 2 -t 1 | grep -v lund | grep -v gemc | grep -v test
+
+	find -maxdepth 2 -type d -ls | awk '{print $11}' > $dataDir/volatile.log
 
 	cd $dataDir
-	python $scriptDir/jsonify_disk_usage.py --logfile volatile.log --output disk.json
+	pwd
+	# python $scriptDir/jsonify_disk_usage.py --logfile volatile.log --output disk.json
 
 endif
 
