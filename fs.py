@@ -168,7 +168,7 @@ null_user_info = ["No user", "No ID", "No data", "No data","No data" ,"No data",
 
 # Notice: we need to remove all this now that the generators satisfy naming requirements
 genOutput     =  {'clasdis': 'clasdis.dat', 'claspyth': 'claspyth.dat', 'dvcsgen': 'dvcsgen.dat', 'genKYandOnePion': 'genKYandOnePion.dat', 'inclusive-dis-rad':'inclusive-dis-rad.dat' , 'JPsiGen':'JPsiGen.dat', 'TCSGen':'TCSGen.dat', 'twopeg':'twopeg.dat', 'gemc': 'gemc'}
-genExecutable =  {'clasdis': 'clasdis'  ,   'claspyth': 'claspyth',     'dvcsgen': 'dvcsgen'    , 'genKYandOnePion': 'genKYandOnePion'    , 'inclusive-dis-rad':'inclusive-dis-rad',      'JPsiGen':'JPsiGen',     'TCSGen':'TCSGen',     'twopeg':'twopeg.dat', 'gemc': 'gemc'}
+genExecutable =  {'clasdis': 'clasdis'  ,   'claspyth': 'claspyth',     'dvcsgen': 'dvcsgen'    , 'genKYandOnePion': 'genKYandOnePion'    , 'inclusive-dis-rad':'inclusive-dis-rad',      'JPsiGen':'JPsiGen',     'TCSGen':'TCSGen',     'twopeg':'twopeg',     'gemc': 'gemc'}
 
 # This is the debug variable for print statments - 0 = no messages, 1 = some, 2 = all messages. Initalized to 1
 DEBUG = 0
