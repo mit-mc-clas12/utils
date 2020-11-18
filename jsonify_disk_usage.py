@@ -14,9 +14,9 @@ def tokenize(line):
 def line_is_accepted(line):
     tokens = tokenize(line)
     
-    if len(tokens) != 2:
+    if len(tokens) != 1:
         return False 
-    if tokens[1] == '.':
+    if tokens[0] == '.':
         return False
 
     return True
@@ -54,8 +54,7 @@ if __name__ == '__main__':
 
     lines = [tokenize(line) for line in log if line_is_accepted(line)]
     for line in lines:
-        size = line[0]
-        user_dir = line[1]
+        user_dir = line[0]
         user = user_dir.split('/')[1]
         
         if user not in json_dict:
@@ -64,10 +63,9 @@ if __name__ == '__main__':
 
         if is_subdir(user_dir):
             json_dict[user]['sub_directories'].append(
-                {'name': user_dir.split('/')[2], 'size': size}
+                {'name': user_dir.split('/')[2]}
             )
-        else:
-            json_dict[user]['total_size'] = size
 
     with open(args.output, 'w') as json_file:
+#        json.dump(json_dict, json_file, indent=4)
         json.dump(create_ordered_dict(json_dict), json_file, indent=4)
