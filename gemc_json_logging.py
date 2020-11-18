@@ -56,9 +56,10 @@ def create_json_dict(args):
     batch_ids = condor_info[0]
     total_jobs_submitted = condor_info[1]
     total_jobs_running = condor_info[2]
-    idle_jobs = condor_info[3]
-    running_jobs = condor_info[4]
-    jobs_start_dates = condor_info[5]
+    jobs_start_dates = condor_info[3]
+    idle_jobs = condor_info[4][1]
+    running_jobs = condor_info[4][2]
+    held_jobs = condor_info[4][5]
 
     footer_placeholder_text = "Total for all users: 14598 jobs; 0 completed, 0 removed, 12378 idle, 1903 running, 317 held, 0 suspended"
     footer = footer_placeholder_text
@@ -75,6 +76,7 @@ def create_json_dict(args):
             jobs_done = jobs_total - total_jobs_running[index]
             jobs_idle = idle_jobs[index]
             jobs_running = running_jobs[index]
+            jobs_held = held_jobs[index]
             jobs_start = utils.unixtimeconvert(jobs_start_dates[index],"eastern")
 
             sql.execute("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(osg_id))
@@ -87,7 +89,7 @@ def create_json_dict(args):
                 sql.execute("SELECT user,user_submission_id FROM submissions WHERE pool_node = {}".format(osg_id))
                 user, farm_sub_id = sql.fetchall()[0]
 
-                user_info = [user, farm_sub_id, jobs_start, jobs_total,jobs_done,jobs_running,jobs_idle,osg_id]
+                user_info = [user, farm_sub_id, jobs_start, jobs_total,jobs_done,jobs_running,jobs_idle,jobs_held,osg_id]
 
                 user_data = {}
                 for index,key in enumerate(fs.user_data_keys):

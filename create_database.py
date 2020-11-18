@@ -37,26 +37,30 @@ if __name__ == '__main__':
 
     args = get_args.get_args()
 
-    cred_file = os.path.dirname(os.path.abspath(__file__)) + \
-                '/../msqlrw.txt'
-    cred_file = os.path.normpath(cred_file)
-    username, password = database.load_database_credentials(cred_file)
 
-    if args.lite is not None:
-        database_name = args.lite
+    if args.lite:
+            use_mysql = False
+            username, password = "none", "none" #sqlite doesnt need passwords
+            database_name = args.lite
     else:
+        use_mysql = True
         if args.test_database:
-            database_name = "CLAS12TEST"
+            cred_file_name = fs.test_db_cred_file
+            database_name = fs.MySQL_Test_DB_Name
         else:
-            database_name = "CLAS12OCR"
+            cred_file_name = fs.prod_db_cred_file
+            database_name = fs.MySQL_Prod_DB_Name
+                
+        cred_file_loc = os.path.dirname(os.path.abspath(__file__)) + cred_file_name
+        cred_file = os.path.normpath(cred_file_loc)
+        username, password = database.load_database_credentials(cred_file)
 
-    use_mysql = False if args.lite else True
     db_conn, sql = database.get_database_connection(
         use_mysql=use_mysql,
         database_name=database_name,
         username=username,
         password=password,
-        hostname='jsubmit.jlab.org'
+        hostname=fs.db_hostname
     )
 
     # Create tables

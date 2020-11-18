@@ -1,0 +1,12 @@
+project:  CLAS12
+configuration: rga_spring2018
+generator:  https://userweb.jlab.org/~ungaro/lund/
+client_ip: 108.39.38.124
+generatorOUT: no
+gemcEvioOUT: no
+gemcHipoOUT: no
+reconstructionOUT: yes
+dstOUT: yes
+fields: tor-1.00_sol-1.00
+bkmerging: 50nA_10594MeV
+submission: devel
