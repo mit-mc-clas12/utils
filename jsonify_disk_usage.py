@@ -67,5 +67,5 @@ if __name__ == '__main__':
             )
 
     with open(args.output, 'w') as json_file:
-#        json.dump(json_dict, json_file, indent=4)
-        json.dump(create_ordered_dict(json_dict), json_file, indent=4)
+        json.dump(json_dict, json_file, indent=4)
+#        json.dump(create_ordered_dict(json_dict), json_file, indent=4)
