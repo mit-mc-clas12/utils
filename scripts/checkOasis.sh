@@ -1,5 +1,11 @@
 #!/bin/csh -f
 
+echo
+echo Ticket:
+echo https://support.opensciencegrid.org/support/home
+echo Subject: report of problems on site CRUSH
+echo
+
 rm -f ~/oasisMissing.txt
 grep "Transport endpoint is not connected" log/*.err | awk -F. '{print $3}' | sort -u > ~/oasisMissing.txt
 
