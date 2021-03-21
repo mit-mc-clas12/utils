@@ -16,7 +16,7 @@ if ($nrunning != "2") then
 else
 	set dataDir   = /group/clas/www/gemc/html/web_interface/data
 	set scriptDir = /group/clas12/SubMit/utils/
-	set osgOutput = /volatile/clas12/osg
+	set osgOutput = /volatile/clas12/osg2
 
 	if($1 == 'test') then
 		echo running test
