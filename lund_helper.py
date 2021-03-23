@@ -40,6 +40,8 @@ def Lund_Downloader(url_dir,lund_urls,lund_dir):
             filename = lund_dir+"/"+url_ending
             with open(filename,"a") as file: file.write(lund_text_db)
 
+# General error handling:
+# https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess
 def Lund_Entry(url_dir, target_dir):
     """ Download or copy lund files and return the name of 
     the target directory. 
@@ -108,7 +110,9 @@ def Lund_Entry(url_dir, target_dir):
         if any([ext in url_dir for ext in lund_extensions]):
             subprocess.call(['cp', url_dir, lund_dir + '/'])
 
-        # Local directory, many files 
+        # Local directory, many files
+        # to be replaced with: rsync -a gemc@dtn1902-ib:/lustre19/.../x.txt
+        # to be replaced with: rsync -a gemc@dtn1902-ib:/lustre19/.../   for directories with content
         else:
             print('Downloading all files in {}'.format(url_dir))
 
@@ -118,7 +122,6 @@ def Lund_Entry(url_dir, target_dir):
             for lf in lund_files:
                 if any([ext in lf for ext in lund_extensions]):
                     subprocess.call(['cp', lf, lund_dir+'/'])
-
     return lund_dir
                 
 def count_files(url_dir):
