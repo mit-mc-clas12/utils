@@ -7,7 +7,9 @@ echo Subject: report of problems on site CRUSH
 echo
 
 rm -f ~/oasisMissing.txt
-grep "Transport endpoint is not connected" log/*.err | awk -F. '{print $3}' | sort -u > ~/oasisMissing.txt
+grep "Transport endpoint is not connected"      log/*.err | awk -F. '{print $3}' | sort -u > ~/oasisMissing.txt
+grep "No such file or directory"                log/*.err | awk -F. '{print $3}' | sort -u >> ~/oasisMissing.txt
+grep "Loaded environment state is inconsistent" log/*.err | awk -F. '{print $3}' | sort -u >> ~/oasisMissing.txt
 
 echo
 echo Jobs with missing oasis:
