@@ -61,7 +61,8 @@ def create_json_dict(args):
     running_jobs = condor_info[4][2]
     held_jobs = condor_info[4][5]
 
-    footer_placeholder_text = "Total for all users: 14598 jobs; 0 completed, 0 removed, 12378 idle, 1903 running, 317 held, 0 suspended"
+#    footer_placeholder_text = "Total for all users: 14598 jobs; 0 completed, 0 removed, 12378 idle, 1903 running, 317 held, 0 suspended"
+    footer_placeholder_text = ""
     footer = footer_placeholder_text
     json_dict = {}
     json_dict['metadata'] = {
