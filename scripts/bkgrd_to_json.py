@@ -19,7 +19,10 @@ def path_hierarchy(path):
                     subhierarchy[contents2] = list
                     for contents3 in os.listdir(os.path.join(path, contents, contents2)): #loop over contents of granddaughter directory
                         if os.path.isdir(os.path.join(path, contents, contents2,contents3)): #check if content of granddaughter directory is a directory
-                            list.append(contents3) #add granddaughter directory to list
+                            if os.path.isdir(os.path.join(path, contents, contents2,contents3, "10k")):
+                                list.append(contents3) #add granddaughter directory to list
+                            else:
+                                list.append("no")
             hierarchy[contents] = subhierarchy #add daughter array to main array
 
     return hierarchy
