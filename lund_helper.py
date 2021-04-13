@@ -100,7 +100,7 @@ def Lund_Entry(lund_location, lund_download_dir="downloaded_lunds/"):
                     lund_location += "/"
             lund_location ='/lustre19/expphy'+lund_location
             print("trying to rsync {}".format(lund_location))
-            lund_copy_path = 'gemc@dtn1902-ib:'+lund_location+lund_file
+            lund_copy_path = 'gemc@dtn1902-ib:'+lund_location
             subprocess.call(['rsync', '-a', lund_copy_path, lund_download_dir])
 
             files = os.listdir(lund_download_dir)
