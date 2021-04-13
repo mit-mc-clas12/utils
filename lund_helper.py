@@ -1,54 +1,6 @@
 #****************************************************************
 """
-### THE BELOW TEXT IS OUTDATED and needs to be updated
-
-#This replaces a previous version of gcard_helper.py by using the HTMLParser class
-#This allows for more robust parsing of the html mother directory to find gcard files
-#Even better would be to use BeautifulSoup, which would allow for the code to be condensed as:
-#```import requests
-#from bs4 import BeautifulSoup
-#page = requests.get('http://www.website.com')
-#bs = BeautifulSoup(page.content, features='lxml')
-#for link in bs.findAll('a'):
-#    print(link.get('href'))```
-#Unfortunately, this module must be imported and cannot be gaurannted that it will be on whatever
-#server this software will live on, so it is safer to instead use HTMLParser which is more common
-####
-#This file takes in a UserSubmissionID and gcard url from db_batch_entry and passes it through
-#a few functions to download the gcards from the specified location and to enter them into the
-#appropriate gcard table in the database.
-# Some effort should be developed to sanitize the gcard files to prevent
-# against sql injection attacks
-"""
-#***************************************************************
-from __future__ import print_function
-import argparse, subprocess, os
-import utils, fs, html_reader
-import glob 
-
-def Lund_Downloader(url_dir,lund_urls,lund_dir):
-    if len(lund_urls) == 0:
-        print("No Lund files found (they must end in '{0}'). Is the online repository correct?".format(fs.lund_identifying_text ))
-        exit()
-    else:
-        try:
-            for url_ending in lund_urls:
-                print('Lund URL name is: '+url_ending)
-                lund_text = html_reader.html_reader(url_dir+'/'+url_ending,'')[0]#This returns a tuple, we need the contents of the tuple
-                print('Content of lund file is: {0}'.format(lund_text))
-                lund_text = str(lund_text) #This might not be needed, converts from bytes to strings
-                lund_text_db = lund_text.replace('"',"'") #This isn't strictly needed but SQLite can't read " into data fields, only ' characters
-                print("\t Gathered lund file '{0}'".format(url_ending))
-                filename = lund_dir+"/"+url_ending
-                with open(filename,"a") as file: file.write(lund_text_db)
-        except Exception as e:
-            print("The process was unable to complete sucessfully.")
-            print("The error encountered was: \n {}".format(e))
-
-# General error handling:
-# https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess
-def Lund_Entry(url_dir, target_dir):
-    """ Download or copy lund files and return the name of 
+ Download or copy lund files and return the name of 
     the target directory. 
 
     Inputs: 
@@ -68,79 +20,135 @@ def Lund_Entry(url_dir, target_dir):
     3) One web file, extension will be .txt, .dat, or .lund and the string 
        will contain http. 
     4) Many web files, no extension will be given.  The string will contain http. 
+"""
+#***************************************************************
+from __future__ import print_function
+import argparse, subprocess, os, sys
+import utils, fs, html_reader
+import glob 
 
-    """
-
-    lund_extensions = ['.dat', '.txt', '.lund']
-    lund_dir = target_dir
+def Lund_Entry(lund_location, lund_download_dir="downloaded_lunds/"):
+    valid_lund_extensions = ['.dat', '.txt', '.lund']
 
     # A case used to work around not downloading for types 1/3
-    if url_dir == "no_download":
+    if lund_location == "no_download":
         print('Not downloading files due to SCard type.')
-        return lund_dir
+        return lund_location
+    #elif os.path.exists(lund_download_dir):
+    #    print('Lund directory already exists, not downloading again.')
+    #    return lund_download_dir 
 
-    if os.path.exists(lund_dir):
-        print('Lund directory already exists, not downloading again.')
-        return lund_dir 
-
-    # Create dir. to download files into 
+ 
+    # Create dir. to download / copy files into 
     try:
-        subprocess.call(['mkdir', '-p', lund_dir])
+        subprocess.call(['mkdir', '-p', lund_download_dir])
     except Exception as e:
-            print("WARNING: unable to make directory {}".format(lund_dir))
+            print("WARNING: unable to make directory {}".format(lund_download_dir))
             print("The error encountered was: \n {}".format(e))
 
-
-    # Case 3/4
-    if 'http' in url_dir:
-        # Single web file 
-        if any([ext in url_dir for ext in lund_extensions]): 
-            lund_dir_unformatted = url_dir.split("/")
-            filename = lund_dir_unformatted[len(lund_dir_unformatted)-1]
-
-            lund_text = html_reader.html_reader(url_dir,'')[0]#This returns a tuple, we need the contents of the tuple
-            print('HTML from lund link is: {0}'.format(lund_text))
-            lund_text_db = lund_text.replace('"',"'") #This isn't strictly needed but SQLite can't read " into data fields, only ' characters
-            print("\t Gathered lund file '{0}'".format(url_dir))
-            with open(lund_dir+"/"+filename,"a") as file: 
-                    file.write(lund_text_db)    
-        # Web directory 
+    sys.exit()
+    ##################################################################
+    # Case 3/4 - download single / multiple files from online location
+    ##################################################################
+    if 'http' in lund_location:
+        # Download single web file 
+        if any([ext in lund_location for ext in valid_lund_extensions]): 
+            lund_dir_unformatted = lund_location.split("/")
+            lund_filename = lund_dir_unformatted[-1] # the gets the name of the lund file, assuming the format is http......./lund_file_name
+            #Pass the location, file, and download dir to the downloader function
+            Lund_Downloader(lund_url_base = lund_location,lund_download_dir = lund_download_dir, lund_filename = lund_filename)  
+        # Download entire web directory
         else:
             try:
-                raw_html, lund_urls = html_reader.html_reader(url_dir, fs.lund_identifying_text)
+                #Read the given location to find all the lund files
+                raw_html, lund_filenames = html_reader.html_reader(lund_location, valid_lund_extensions)
             except Exception as e:
-                print("ERROR: unable to download lund files from {}".format(url_dir))
+                print("ERROR: unable to download lund files from {}".format(lund_location))
                 print("The error encountered was: \n {}".format(e))
-                print("Exiting")
-                return
-            lund_dir_unformatted = url_dir.split("//")[1] #Remove the "http(s)://" from the string
-            Lund_Downloader(url_dir,lund_urls,lund_dir) #Loop through downloading every LUND file in directory
-    # Case 1/2
+                exit()
+
+            if len(lund_filenames) == 0:
+                print("No Lund files found (they must end in '{}'). Is the online repository correct?".format(valid_lund_extensions))
+                exit()
+            #Loop through downloading every LUND file in directory
+            for lund_filename in lund_filenames:
+                Lund_Downloader(lund_url_base = lund_location,lund_download_dir = lund_download_dir, lund_filename = lund_filename, single_file = False)  
+   
+   
+    ################################################################
+    # Case 1/2 - Use RSync to copy files from a jlab location to OSG
+    ################################################################    
     else:
         # Single local file 
-        if any([ext in url_dir for ext in lund_extensions]):
+        if any([ext in lund_location for ext in valid_lund_extensions]):
             try:
-                print("Trying to copy Lund file from {}".format(lund_dir))
-                subprocess.call(['cp', url_dir, lund_dir + '/'])
+                print("Trying to copy Lund file from {}".format(lund_location))
+                if lund_location[0] is not "/":
+                    lund_location = "/"+lund_location
+                
+                #Example full filepath: gemc@dtn1902-ib:/lustre19/expphy/volatile/clas12/robertej/testlund.txt
+                lund_copy_path = 'gemc@dtn1902-ib:/lustre19/expphy'+lund_location
+                subprocess.call(['rsync', '-a', lund_copy_path, lund_download_dir])
             except Exception as e:
-                print("ERROR: unable to copy lund files from {}".format(url_dir))
+                print("ERROR: unable to copy lund files from {}".format(lund_location))
                 print("The error encountered was: \n {}".format(e))
         # Local directory, many files
-        # to be replaced with: rsync -a gemc@dtn1902-ib:/lustre19/.../x.txt
-        # to be replaced with: rsync -a gemc@dtn1902-ib:/lustre19/.../   for directories with content
         else:
-            print('Downloading all files in {}'.format(url_dir))
-            lund_files = glob.glob(url_dir + '*')
+            if lund_location[0] is not "/":
+                    lund_location = "/"+lund_location
+            if lund_location[-1] is not "/":
+                    lund_location += "/"
+            print('Downloading all files in {}'.format(lund_location))
+            lund_files = glob.glob(lund_location + '*')
             print('The following files will be downloaded: {}'.format(lund_files))
             try:
-                for lf in lund_files:
-                    if any([ext in lf for ext in lund_extensions]):
-                        subprocess.call(['cp', lf, lund_dir+'/'])
+                for lund_file in lund_files:
+                    if any([ext in lund_file for ext in valid_lund_extensions]):
+                        print("trying to rsync {}".format(lund_file))
+                        lund_copy_path = 'gemc@dtn1902-ib:/lustre19/expphy'+lund_file
+                        subprocess.call(['rsync', '-a', lund_copy_path, lund_download_dir])
+                        #Could possibly use the following instead: rsync -a gemc@dtn1902-ib:/lustre19/.../   for directories with content
+                        #But then wouldn't be able to check if each file had proper extension name
             except Exception as e:
-                print("ERROR: unable to copy lund files from {}".format(url_dir))
+                print("ERROR: unable to copy lund files from {}".format(lund_location))
                 print("The error encountered was: \n {}".format(e))
-    return lund_dir
-                
+    return lund_download_dir
+
+
+# Lund_Downloader() is a helper function which takes as input:
+# lund_url_base - the full url to an online lund file directory (e.g. )
+# lund_filename - the name of the lund file
+# lund_download_dir - the full path to where the lund file should be downloaded to
+def Lund_Downloader(lund_url_base,lund_download_dir,lund_filename,single_file=True):
+        lund_content = ""
+        try:
+            print("Trying to download {} file from {}".format(lund_filename,lund_url_base))
+            full_lund_path = lund_url_base
+            if not single_file:
+                full_lund_path += "/"+lund_filename
+            lund_raw_text = html_reader.html_reader(full_lund_path)[0]#This returns a tuple, we need the contents of the tuple
+            lund_raw_text = str(lund_raw_text) #This might not be needed, converts from bytes to strings
+            lund_content = lund_raw_text.replace('"',"'") #This isn't strictly needed but SQLite can't read " into data fields, only ' characters
+            print("Downloaded {}".format(full_lund_path))
+        except Exception as e:
+            print("Unable to download lund file sucessfully.")
+            print("The error encountered was: \n {}".format(e))
+        if len(lund_content)>0:
+            try:
+                print("Trying to save {}".format(lund_filename))
+                filename = lund_download_dir+"/"+lund_filename
+                with open(filename,"a") as file: file.write(lund_content)
+                print("Saved {} to {}{}".format(lund_filename,lund_download_dir,lund_filename))
+            except Exception as e:
+                print("Unable to save lund file sucessfully.")
+                print("The error encountered was: \n {}".format(e))
+
+
+
+
+#Comment regarding the count_files() function below:
+#I'm not sure where or if this function is still used in the codebase,
+#But I didn't touch it. robertej@mit.edu - 4/13/21
 def count_files(url_dir):
     """ 
     We need to know how many files are going 
@@ -193,4 +201,28 @@ def count_files(url_dir):
 
 if __name__ == '__main__':
     """For testing purposes"""
-    Lund_Entry('http://www.lns.mit.edu/~robertej/CLAS12/','./lunds/')
+    # Web test - Single File
+    #Lund_Entry('http://www.lns.mit.edu/~robertej/CLAS12/test.txt') 
+    
+    # Web test - Directory
+    #Lund_Entry('http://www.lns.mit.edu/~robertej/CLAS12/')
+    # Web test - Directory with backslash missing
+    #Lund_Entry('http://www.lns.mit.edu/~robertej/CLAS12')
+    
+    
+    # Local test - Single File
+    #Lund_Entry('/volatile/clas12/robertej/testlund.txt')
+    
+    # Local test - Single File with first backslash missing
+    #Lund_Entry('volatile/clas12/robertej/testlund.txt')
+    
+    
+    # Local test - Directory
+    #/volatile/clas12/robertej/testlund.txt
+    # Local test - Directory with first backslash missing
+    #/volatile/clas12/robertej/testlund.txt
+    # Local test - Directory with trailing backslash missing
+    #/volatile/clas12/robertej/testlund.txt
+     
+    #Location of real lund file to test with
+    #Lund_Entry('http://www.lns.mit.edu/~robertej/CLAS12/aao_norad.lund')
