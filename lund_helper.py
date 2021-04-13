@@ -99,20 +99,15 @@ def Lund_Entry(lund_location, lund_download_dir="downloaded_lunds/"):
             if lund_location[-1] is not "/":
                     lund_location += "/"
             lund_location ='/lustre19/expphy'+lund_location
-            print('Downloading all files in {}'.format(lund_location))
-            lund_files = os.listdir(lund_location)
-            print('The following files will be downloaded: {}'.format(lund_files))
-            try:
-                for lund_file in lund_files:
-                    if any([ext in lund_file for ext in valid_lund_extensions]):
-                        print("trying to rsync {}".format(lund_file))
-                        lund_copy_path = 'gemc@dtn1902-ib:'+lund_location+lund_file
-                        subprocess.call(['rsync', '-a', lund_copy_path, lund_download_dir])
-                        #Could possibly use the following instead: rsync -a gemc@dtn1902-ib:/lustre19/.../   for directories with content
-                        #But then wouldn't be able to check if each file had proper extension name
-            except Exception as e:
-                print("ERROR: unable to copy lund files from {}".format(lund_location))
-                print("The error encountered was: \n {}".format(e))
+            print("trying to rsync {}".format(lund_location))
+            lund_copy_path = 'gemc@dtn1902-ib:'+lund_location+lund_file
+            subprocess.call(['rsync', '-a', lund_copy_path, lund_download_dir])
+
+            files = os.listdir(lund_download_dir)
+            for f in files:
+                if not any([ext in f for ext in valid_lund_extensions]):
+                    os.remove(lund_download_dir+f)
+                    
     return lund_download_dir
 
 
@@ -212,7 +207,7 @@ if __name__ == '__main__':
     
     
     # Local test - Single File
-    #Lund_Entry('/volatile/clas12/robertej/testlund.txt')
+    Lund_Entry('/volatile/clas12/robertej/trans_test/')
     
     # Local test - Single File with first backslash missing
     #Lund_Entry('volatile/clas12/robertej/testlund.txt')
