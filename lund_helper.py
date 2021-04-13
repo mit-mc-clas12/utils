@@ -31,14 +31,19 @@ def Lund_Downloader(url_dir,lund_urls,lund_dir):
         print("No Lund files found (they must end in '{0}'). Is the online repository correct?".format(fs.lund_identifying_text ))
         exit()
     else:
-        for url_ending in lund_urls:
-            utils.printer('Lund URL name is: '+url_ending)
-            lund_text = html_reader.html_reader(url_dir+'/'+url_ending,'')[0]#This returns a tuple, we need the contents of the tuple
-            utils.printer2('HTML from lund link is: {0}'.format(lund_text))
-            lund_text_db = lund_text.replace('"',"'") #This isn't strictly needed but SQLite can't read " into data fields, only ' characters
-            print("\t Gathered lund file '{0}'".format(url_ending))
-            filename = lund_dir+"/"+url_ending
-            with open(filename,"a") as file: file.write(lund_text_db)
+        try:
+            for url_ending in lund_urls:
+                print('Lund URL name is: '+url_ending)
+                lund_text = html_reader.html_reader(url_dir+'/'+url_ending,'')[0]#This returns a tuple, we need the contents of the tuple
+                print('Content of lund file is: {0}'.format(lund_text))
+                lund_text = str(lund_text) #This might not be needed, converts from bytes to strings
+                lund_text_db = lund_text.replace('"',"'") #This isn't strictly needed but SQLite can't read " into data fields, only ' characters
+                print("\t Gathered lund file '{0}'".format(url_ending))
+                filename = lund_dir+"/"+url_ending
+                with open(filename,"a") as file: file.write(lund_text_db)
+        except Exception as e:
+            print("The process was unable to complete sucessfully.")
+            print("The error encountered was: \n {}".format(e))
 
 # General error handling:
 # https://docs.python.org/3/library/subprocess.html#subprocess.CompletedProcess
@@ -78,50 +83,62 @@ def Lund_Entry(url_dir, target_dir):
         print('Lund directory already exists, not downloading again.')
         return lund_dir 
 
-    # Create dir. 
-    subprocess.call(['mkdir', '-p', lund_dir])
+    # Create dir. to download files into 
+    try:
+        subprocess.call(['mkdir', '-p', lund_dir])
+    except Exception as e:
+            print("WARNING: unable to make directory {}".format(lund_dir))
+            print("The error encountered was: \n {}".format(e))
+
 
     # Case 3/4
     if 'http' in url_dir:
-        
         # Single web file 
-        if any([ext in url_dir for ext in lund_extensions]):
+        if any([ext in url_dir for ext in lund_extensions]): 
             lund_dir_unformatted = url_dir.split("/")
             filename = lund_dir_unformatted[len(lund_dir_unformatted)-1]
 
             lund_text = html_reader.html_reader(url_dir,'')[0]#This returns a tuple, we need the contents of the tuple
-            utils.printer2('HTML from lund link is: {0}'.format(lund_text))
+            print('HTML from lund link is: {0}'.format(lund_text))
             lund_text_db = lund_text.replace('"',"'") #This isn't strictly needed but SQLite can't read " into data fields, only ' characters
             print("\t Gathered lund file '{0}'".format(url_dir))
             with open(lund_dir+"/"+filename,"a") as file: 
-                    file.write(lund_text_db)
-                    
+                    file.write(lund_text_db)    
         # Web directory 
         else:
-            raw_html, lund_urls = html_reader.html_reader(url_dir, fs.lund_identifying_text)
-            lund_dir_unformatted = url_dir.split("//")[1]
-            subprocess.call(['mkdir','-p',lund_dir])
-            Lund_Downloader(url_dir,lund_urls,lund_dir)
-
+            try:
+                raw_html, lund_urls = html_reader.html_reader(url_dir, fs.lund_identifying_text)
+            except Exception as e:
+                print("ERROR: unable to download lund files from {}".format(url_dir))
+                print("The error encountered was: \n {}".format(e))
+                print("Exiting")
+                return
+            lund_dir_unformatted = url_dir.split("//")[1] #Remove the "http(s)://" from the string
+            Lund_Downloader(url_dir,lund_urls,lund_dir) #Loop through downloading every LUND file in directory
     # Case 1/2
     else:
-
         # Single local file 
         if any([ext in url_dir for ext in lund_extensions]):
-            subprocess.call(['cp', url_dir, lund_dir + '/'])
-
+            try:
+                print("Trying to copy Lund file from {}".format(lund_dir))
+                subprocess.call(['cp', url_dir, lund_dir + '/'])
+            except Exception as e:
+                print("ERROR: unable to copy lund files from {}".format(url_dir))
+                print("The error encountered was: \n {}".format(e))
         # Local directory, many files
         # to be replaced with: rsync -a gemc@dtn1902-ib:/lustre19/.../x.txt
         # to be replaced with: rsync -a gemc@dtn1902-ib:/lustre19/.../   for directories with content
         else:
             print('Downloading all files in {}'.format(url_dir))
-
             lund_files = glob.glob(url_dir + '*')
-            print(lund_files)
-            
-            for lf in lund_files:
-                if any([ext in lf for ext in lund_extensions]):
-                    subprocess.call(['cp', lf, lund_dir+'/'])
+            print('The following files will be downloaded: {}'.format(lund_files))
+            try:
+                for lf in lund_files:
+                    if any([ext in lf for ext in lund_extensions]):
+                        subprocess.call(['cp', lf, lund_dir+'/'])
+            except Exception as e:
+                print("ERROR: unable to copy lund files from {}".format(url_dir))
+                print("The error encountered was: \n {}".format(e))
     return lund_dir
                 
 def count_files(url_dir):
@@ -173,3 +190,7 @@ def count_files(url_dir):
 
     # Something weird happened. 
     return 0 
+
+if __name__ == '__main__':
+    """For testing purposes"""
+    Lund_Entry('http://www.lns.mit.edu/~robertej/CLAS12/','./lunds/')
