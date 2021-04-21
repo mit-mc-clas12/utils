@@ -1,6 +1,6 @@
 #****************************************************************
 """
-# Commentary for this file does not yet exist
+# Helper function to parse online directorys for lund_helper.py
 """
 #****************************************************************
 

@@ -5,11 +5,11 @@
 
     Inputs: 
     -------
-    url_dir - A string containing the directory or path to lund file(s).
+    lund_location - A string containing the directory or path to lund file(s).
 
     Returns: 
     --------
-    lund_dir - A string containing the name of the downloaded directory.
+    lund_download_dir - A string containing the name of the downloaded directory.
 
     A few cases can occur: 
 
@@ -20,6 +20,20 @@
     3) One web file, extension will be .txt, .dat, or .lund and the string 
        will contain http. 
     4) Many web files, no extension will be given.  The string will contain http. 
+
+    Example values for lund_location:
+    Online Directory - 'https://userweb.jlab.org/~ungaro/lund/'
+    Online Directory typo - 'https://userweb.jlab.org/~ungaro/lund'
+    
+    Online file -   'https://userweb.jlab.org/~ungaro/lund/clasdis1.txt'
+
+    Local Directory - /volatile/clas12/robertej/trans_test/
+    Local Directory typo 1 - /volatile/clas12/robertej/trans_test/
+    Local Directory typo 2 - volatile/clas12/robertej/trans_test/
+    Local Directory typo 3 - volatile/clas12/robertej/trans_test
+
+    Local File - /volatile/clas12/robertej/trans_test/rad.lund
+    Local File typo - volatile/clas12/robertej/trans_test/rad.lund
 """
 #***************************************************************
 from __future__ import print_function
@@ -27,8 +41,12 @@ import argparse, subprocess, os, sys
 import utils, fs, html_reader
 import glob 
 
-def Lund_Entry(lund_location, lund_download_dir="downloaded_lunds/"):
+def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
     valid_lund_extensions = ['.dat', '.txt', '.lund']
+
+    #Make sure lund_download_dir ends with a /, and if not, add one.
+    if lund_download_dir[-1] is not "/":
+                    lund_download_dir += "/"
 
     # A case used to work around not downloading for types 1/3
     if lund_location == "no_download":
@@ -82,7 +100,7 @@ def Lund_Entry(lund_location, lund_download_dir="downloaded_lunds/"):
         # Single local file 
         if any([ext in lund_location for ext in valid_lund_extensions]):
             try:
-                print("Trying to copy Lund file from {}".format(lund_location))
+                #print("Trying to copy Lund file from {}".format(lund_location))
                 if lund_location[0] is not "/":
                     lund_location = "/"+lund_location
                 
@@ -99,7 +117,7 @@ def Lund_Entry(lund_location, lund_download_dir="downloaded_lunds/"):
             if lund_location[-1] is not "/":
                     lund_location += "/"
             lund_location ='/lustre19/expphy'+lund_location
-            print("trying to rsync {}".format(lund_location))
+            #print("trying to rsync {}".format(lund_location))
             lund_copy_path = 'gemc@dtn1902-ib:'+lund_location
             subprocess.call(['rsync', '-a', lund_copy_path, lund_download_dir])
 
@@ -118,23 +136,23 @@ def Lund_Entry(lund_location, lund_download_dir="downloaded_lunds/"):
 def Lund_Downloader(lund_url_base,lund_download_dir,lund_filename,single_file=True):
         lund_content = ""
         try:
-            print("Trying to download {} file from {}".format(lund_filename,lund_url_base))
+            #print("Trying to download {} file from {}".format(lund_filename,lund_url_base))
             full_lund_path = lund_url_base
             if not single_file:
                 full_lund_path += "/"+lund_filename
             lund_raw_text = html_reader.html_reader(full_lund_path)[0]#This returns a tuple, we need the contents of the tuple
             lund_raw_text = str(lund_raw_text) #This might not be needed, converts from bytes to strings
             lund_content = lund_raw_text.replace('"',"'") #This isn't strictly needed but SQLite can't read " into data fields, only ' characters
-            print("Downloaded {}".format(full_lund_path))
+            #print("Downloaded {}".format(full_lund_path))
         except Exception as e:
             print("Unable to download lund file sucessfully.")
             print("The error encountered was: \n {}".format(e))
         if len(lund_content)>0:
             try:
-                print("Trying to save {}".format(lund_filename))
+                #print("Trying to save {}".format(lund_filename))
                 filename = lund_download_dir+"/"+lund_filename
                 with open(filename,"a") as file: file.write(lund_content)
-                print("Saved {} to {}{}".format(lund_filename,lund_download_dir,lund_filename))
+                #print("Saved {} to {}{}".format(lund_filename,lund_download_dir,lund_filename))
             except Exception as e:
                 print("Unable to save lund file sucessfully.")
                 print("The error encountered was: \n {}".format(e))
@@ -197,28 +215,6 @@ def count_files(url_dir):
 
 if __name__ == '__main__':
     """For testing purposes"""
-    # Web test - Single File
-    #Lund_Entry('http://www.lns.mit.edu/~robertej/CLAS12/test.txt') 
+    # https test, full directory
+    Lund_Entry('https://userweb.jlab.org/~ungaro/lund/')
     
-    # Web test - Directory
-    #Lund_Entry('http://www.lns.mit.edu/~robertej/CLAS12/')
-    # Web test - Directory with backslash missing
-    #Lund_Entry('http://www.lns.mit.edu/~robertej/CLAS12')
-    
-    
-    # Local test - Single File
-    Lund_Entry('/volatile/clas12/robertej/trans_test/')
-    
-    # Local test - Single File with first backslash missing
-    #Lund_Entry('volatile/clas12/robertej/testlund.txt')
-    
-    
-    # Local test - Directory
-    #/volatile/clas12/robertej/testlund.txt
-    # Local test - Directory with first backslash missing
-    #/volatile/clas12/robertej/testlund.txt
-    # Local test - Directory with trailing backslash missing
-    #/volatile/clas12/robertej/testlund.txt
-     
-    #Location of real lund file to test with
-    #Lund_Entry('http://www.lns.mit.edu/~robertej/CLAS12/aao_norad.lund')
