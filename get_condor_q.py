@@ -37,8 +37,7 @@ def get_htcondor_q():
     valid_job_stati = [0,1,2,3,4,5,6]
     job_counting_set = [unexpanded_jc, idle_jc, running_jc, removed_jc, completed_jc, held_jc, submission_err_jc]
 
-    for job in schedd.xquery(): #look through all jobs in condor
-            if job.get("owner") == "gemc": #look only at jobs submitted by gemcRunning
+    for job in schedd.xquery(requirements = 'Owner =="gemc"'): #look through all jobs in condor with owner == gemc
                 batch_id = str(job.get("ClusterID")) #get cluster id (batch ID) and convert from Long to string. Can also turn to int if want.
                 job_status = int(job["JobStatus"]) #gets if the job is running (2) or idle (1)
                 
