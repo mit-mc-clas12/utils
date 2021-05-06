@@ -36,7 +36,7 @@ def json_data_update(sql, pattern, key):
     for row in sql:
        if days_between(row[2]) > 10 :
          continue
-       user_info = [row[0], row[1], row[2] ,'','','','','',pattern]
+       user_info = [row[0], row[1], row[2] ,'0','0','0','0','0',pattern]
        for index,key in enumerate(fs.user_data_keys):
            user_d[key] = user_info[index]
 
