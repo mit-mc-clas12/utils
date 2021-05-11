@@ -9,6 +9,7 @@ import sys
 from collections import OrderedDict
 import htcondor
 import classad
+from datetime import datetime
 
 # This project
 import get_condor_q
@@ -18,6 +19,30 @@ import utils
 from database import (get_database_connection,
                       load_database_credentials)
 from utils import gettime
+
+
+# calculate the time difference between the today and the submission date. 
+def days_between(date):
+    d1 = datetime.now()
+    d2 = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
+    return abs((d2 - d1).days)
+
+# go over the DB and select rows that failed to submited. Add them to the OSG table. Table is populated with entries LESS than 10 days from current time. The "key" variable used to correctly present the information in the generated json file. Maybe we should change the run_status from "Submitted to Failure Mode" to "Failed to submit"
+def json_data_update(sql, pattern, key):
+    sql.execute("SELECT user,user_submission_id,client_time FROM submissions WHERE run_status = '" + pattern+ "'")
+    user_d = {}
+    if key == 0:
+       pattern = 'Failed to submit'
+    for row in sql:
+       if days_between(row[2]) > 10 :
+         continue
+       user_info = [row[0], row[1], row[2] ,'0','0','0','0','0',pattern]
+       for index,key in enumerate(fs.user_data_keys):
+           user_d[key] = user_info[index]
+
+    user_d = enforce_preferential_key_ordering(user_d, fs.user_data_keys)
+    return user_d
+
 
 def connect_to_database(sqlite_db_name):
 
@@ -102,7 +127,16 @@ def create_json_dict(args):
             else:
                 print('Skipping {}'.format(osg_id))
 
+    # go over the DB and select rows that failed to be submited or waiting to be submitted. If conditions are needed to make sure that we don't add empty rows.
+    user_data = json_data_update(sql,"Submitted to Failure Mode", 0)
+    if user_data != {}:
+       json_dict['user_data'].append(user_data)
+    user_data = json_data_update(sql,"Not Submitted", 1)
+    if user_data != {}:
+       json_dict['user_data'].append(user_data)
     db_conn.close()
+
+
 
     # Nothing was added
     if not json_dict['user_data']:
