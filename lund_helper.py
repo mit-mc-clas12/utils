@@ -93,9 +93,12 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
                 Lund_Downloader(lund_url_base = lund_location,lund_download_dir = lund_download_dir, lund_filename = lund_filename, single_file = False)  
    
    
-    ################################################################
+    #######################################################################
     # Case 1/2 - Use RSync to copy files from a jlab location to OSG
-    ################################################################    
+    # RSYNC option: rlpgoD replaces -a (rlptgoD) so time is not preserved:
+    # When copied, the files will have a new timestamp, which will play
+    # nice with our autodeletion cronjobs
+    ######################################################################
     else:
         # Single local file 
         if any([ext in lund_location for ext in valid_lund_extensions]):
@@ -106,7 +109,7 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
                 
                 #Example full filepath: gemc@dtn1902-ib:/lustre19/expphy/volatile/clas12/robertej/testlund.txt
                 lund_copy_path = 'gemc@dtn1902-ib:/lustre19/expphy'+lund_location
-                subprocess.call(['rsync', '-a', lund_copy_path, lund_download_dir])
+                subprocess.call(['rsync', '-rlpgoD', lund_copy_path, lund_download_dir])
             except Exception as e:
                 print("ERROR: unable to copy lund files from {}".format(lund_location))
                 print("The error encountered was: \n {}".format(e))
@@ -122,7 +125,7 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
             lund_copy_path = 'gemc@dtn1902-ib:'+lund_location
 
             #subprocess.call(['rsync', '-a', lund_copy_path, lund_download_dir])
-            subprocess.call(['rsync', '-zav','--prune-empty-dirs',"--include='*.dat'",
+            subprocess.call(['rsync', '-zrlpgoDv','--prune-empty-dirs',"--include='*.dat'",
                     "--include='*.txt'","--exclude='*'",lund_copy_path, lund_download_dir])
 
             files = os.listdir(lund_download_dir)
