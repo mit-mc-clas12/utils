@@ -1,0 +1,63 @@
+{
+    "user_data": [
+        {
+            "user": "osoto", 
+            "job id": "3072", 
+            "submitted": "05/23 14:56", 
+            "total": "10000", 
+            "done": "19", 
+            "run": "30", 
+            "idle": "9951", 
+            "hold": 0,
+            "osg id": "3662645"
+        },
+        {
+            "user": "osoto", 
+            "job id": "3072", 
+            "submitted": "05/23 14:56", 
+            "total": "10000", 
+            "done": "19", 
+            "run": "30", 
+            "idle": "9807", 
+            "hold": 0,
+            "osg id": "3662645"
+        },
+        {
+            "user": "sangbaek", 
+            "job id": "3055", 
+            "submitted": "05/23 14:56", 
+            "total": "10000", 
+            "done": "19", 
+            "run": "30", 
+            "idle": "9951", 
+            "hold": 0,
+            "osg id": "3662645"
+        },
+        {
+            "user": "robertej", 
+            "job id": "3055", 
+            "submitted": "05/23 14:56", 
+            "total": "10000", 
+            "done": "19", 
+            "run": "30", 
+            "idle": "9951", 
+            "hold": 0,
+            "osg id": "3662645"
+        },
+        {
+            "user": "robertej", 
+            "job id": "3055", 
+            "submitted": "05/23 14:56", 
+            "total": "10000", 
+            "done": "19", 
+            "run": "30", 
+            "idle": "9951", 
+            "hold": 0,
+            "osg id": "3662645"
+        }
+    ], 
+    "metadata": {
+        "update_timestamp": "2020-07-08 12:27:54", 
+        "footer": ""
+    }
+}
