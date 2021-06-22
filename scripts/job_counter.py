@@ -1,7 +1,7 @@
 import json
 
 
-def shouldBeSubmitted(user_name,json_file="/u/group/clas/www/gemc/html/web_interface/data/osgLog.json",idle__limit=1000000):
+def shouldBeSubmitted(user_name,json_file="/u/group/clas/www/gemc/html/web_interface/data/osgLog.json",idle_limit=1000000):
     # Open JSON file and load as dictionary
     f = open(json_file,)
     data = json.load(f)
