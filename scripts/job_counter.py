@@ -1,7 +1,7 @@
 import json
 
 
-def shouldBeSubmitted(user_name,json_file="/u/group/clas/www/gemc/html/web_interface/data/osgLog.json",idle_limit=50000,idle_plus_running_limit=10000):
+def shouldBeSubmitted(user_name,json_file="/u/group/clas/www/gemc/html/web_interface/data/osgLog.json",idle_limit=1000000):
     # Open JSON file and load as dictionary
     f = open(json_file,)
     data = json.load(f)
@@ -22,7 +22,7 @@ def shouldBeSubmitted(user_name,json_file="/u/group/clas/www/gemc/html/web_inter
 
     # Perform logic
     user = user_info[user_name]
-    if (user['idle']+user['run'])>idle_plus_running_limit:
+    if (user['idle']+user['run'])>idle_limit:
         return True
     else:
         return False
