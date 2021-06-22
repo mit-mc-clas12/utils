@@ -20,7 +20,6 @@ def shouldBeSubmitted(user_name,json_file="/u/group/clas/www/gemc/html/web_inter
             for c in columns:
                 user_info[job['user']][c] += int(job[c])
 
-    
     # Perform logic
     user = user_info[user_name]
     if (user['idle']+user['run'])>idle_plus_running_limit:
