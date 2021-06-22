@@ -23,9 +23,9 @@ def shouldBeSubmitted(user_name,json_file="/u/group/clas/www/gemc/html/web_inter
     # Perform logic
     user = user_info[user_name]
     if (user['idle']+user['run'])>idle_limit:
-        return True
-    else:
         return False
+    else:
+        return True
 
 
 if __name__ == "__main__":
