@@ -71,10 +71,10 @@ def load_users_from_json(jsonfile):
     jobs = {}
     for user in data['user_data']:
         if user['user'] in jobs:
-		      if type(user['osg id']) == int:
+            if type(user['osg id']) == int:
                 jobs[user['user']]['njobs'] += int(user['run'])
                 jobs[user['user']]['idle'] += int(user['idle'])
-					 jobs[user['user']]['ids'].append(user['osg id'])
+                jobs[user['user']]['ids'].append(user['osg id'])
         else:
             jobs[user['user']] = {}
             jobs[user['user']]['njobs'] = 0
