@@ -71,9 +71,10 @@ def load_users_from_json(jsonfile):
     jobs = {}
     for user in data['user_data']:
         if user['user'] in jobs:
-            jobs[user['user']]['njobs'] += int(user['run'])
-            jobs[user['user']]['idle'] += int(user['idle'])
-            jobs[user['user']]['ids'].append(int(user['osg id']))
+		      if type(user['osg id']) == int
+               jobs[user['user']]['njobs'] += int(user['run'])
+               jobs[user['user']]['idle'] += int(user['idle'])
+					jobs[user['user']]['ids'].append(user['osg id'])
         else:
             jobs[user['user']] = {}
             jobs[user['user']]['njobs'] = 0
@@ -89,8 +90,7 @@ def load_users_from_json(jsonfile):
     time_format = '%m/%d %H:%M'
     for user in jobs:
         prio_user = PrioritizedUser(username=user)
-        prio_user.submission_time = datetime.datetime.strptime(
-            jobs[user]['submit_time'], time_format) 
+        prio_user.submission_time = datetime.datetime.strptime(jobs[user]['submit_time'], time_format)
         prio_user.total_jobs += jobs[user]['njobs']
         prio_user.idle_jobs += jobs[user]['idle']
         
