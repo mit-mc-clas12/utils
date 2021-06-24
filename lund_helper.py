@@ -45,7 +45,7 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
     valid_lund_extensions = ['.dat', '.txt', '.lund']
 
     #Make sure lund_download_dir ends with a /, and if not, add one.
-    if lund_download_dir[-1] is not "/":
+    if lund_download_dir[-1] != "/":
                     lund_download_dir += "/"
 
     # A case used to work around not downloading for types 1/3
@@ -63,6 +63,10 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
     except Exception as e:
             print("WARNING: unable to make directory {}".format(lund_download_dir))
             print("The error encountered was: \n {}".format(e))
+            f = open("lundException.txt", "a")
+            f.write("\n an exception was encountered at {}, see below: \n".format(utils.gettime()))
+            f.write(str(e))
+            f.close()
 
     
     ##################################################################
@@ -83,6 +87,10 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
             except Exception as e:
                 print("ERROR: unable to download lund files from {}".format(lund_location))
                 print("The error encountered was: \n {}".format(e))
+                f = open("lundException.txt", "a")
+                f.write("\n an exception was encountered at {}, see below: \n".format(utils.gettime()))
+                f.write(str(e))
+                f.close()
                 exit()
 
             if len(lund_filenames) == 0:
@@ -104,7 +112,7 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
         if any([ext in lund_location for ext in valid_lund_extensions]):
             try:
                 #print("Trying to copy Lund file from {}".format(lund_location))
-                if lund_location[0] is not "/":
+                if lund_location[0] != "/":
                     lund_location = "/"+lund_location
                 
                 #Example full filepath: gemc@dtn1902-ib:/lustre19/expphy/volatile/clas12/robertej/testlund.txt
@@ -113,11 +121,15 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
             except Exception as e:
                 print("ERROR: unable to copy lund files from {}".format(lund_location))
                 print("The error encountered was: \n {}".format(e))
+                f = open("lundException.txt", "a")
+                f.write("\n an exception was encountered at {}, see below: \n".format(utils.gettime()))
+                f.write(str(e))
+                f.close()
         # Local directory, many files
         else:
-            if lund_location[0] is not "/":
+            if lund_location[0] != "/":
                     lund_location = "/"+lund_location
-            if lund_location[-1] is not "/":
+            if lund_location[-1] != "/":
                     lund_location += "/"
             if "/lustre19/expphy" not in lund_location: 
                     lund_location ='/lustre19/expphy'+lund_location
@@ -154,6 +166,10 @@ def Lund_Downloader(lund_url_base,lund_download_dir,lund_filename,single_file=Tr
         except Exception as e:
             print("Unable to download lund file sucessfully.")
             print("The error encountered was: \n {}".format(e))
+            f = open("lundException.txt", "a")
+            f.write("\n an exception was encountered at {}, see below: \n".format(utils.gettime()))
+            f.write(str(e))
+            f.close()
         if len(lund_content)>0:
             try:
                 #print("Trying to save {}".format(lund_filename))
@@ -163,6 +179,10 @@ def Lund_Downloader(lund_url_base,lund_download_dir,lund_filename,single_file=Tr
             except Exception as e:
                 print("Unable to save lund file sucessfully.")
                 print("The error encountered was: \n {}".format(e))
+                f = open("lundException.txt", "a")
+                f.write("\n an exception was encountered at {}, see below: \n".format(utils.gettime()))
+                f.write(str(e))
+                f.close()
 
 
 
@@ -223,5 +243,6 @@ def count_files(url_dir):
 if __name__ == '__main__':
     """For testing purposes"""
     # https test, full directory
-    Lund_Entry('https://userweb.jlab.org/~ungaro/lund/')
+    #Lund_Entry('https://userweb.jlab.org/~ungaro/lund/')
+    Lund_Downloader("https://userweb.jlab.org/~ungaro/lnd/",".","test.txt",single_file=True)
     
