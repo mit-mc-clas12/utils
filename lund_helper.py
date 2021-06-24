@@ -63,6 +63,10 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
     except Exception as e:
             print("WARNING: unable to make directory {}".format(lund_download_dir))
             print("The error encountered was: \n {}".format(e))
+            f = open("lundException.txt", "a")
+            f.write("\n an exception was encountered at {}, see below: \n".format(utils.gettime()))
+            f.write(str(e))
+            f.close()
 
     
     ##################################################################
@@ -83,6 +87,10 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
             except Exception as e:
                 print("ERROR: unable to download lund files from {}".format(lund_location))
                 print("The error encountered was: \n {}".format(e))
+                f = open("lundException.txt", "a")
+                f.write("\n an exception was encountered at {}, see below: \n".format(utils.gettime()))
+                f.write(str(e))
+                f.close()
                 exit()
 
             if len(lund_filenames) == 0:
@@ -113,6 +121,10 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
             except Exception as e:
                 print("ERROR: unable to copy lund files from {}".format(lund_location))
                 print("The error encountered was: \n {}".format(e))
+                f = open("lundException.txt", "a")
+                f.write("\n an exception was encountered at {}, see below: \n".format(utils.gettime()))
+                f.write(str(e))
+                f.close()
         # Local directory, many files
         else:
             if lund_location[0] != "/":
