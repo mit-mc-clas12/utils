@@ -34,7 +34,7 @@ def json_data_update(sql, pattern, key, json_dict):
     if key == 0:
        pattern = 'Failed to submit'
     for row in sql:
-       if days_between(row[2]) > 10 :
+       if days_between(row[2]) > 1000 :
          continue
        user_info = [row[0], row[1], row[2] ,'','','','','',pattern]
        for index,key in enumerate(fs.user_data_keys):
@@ -43,8 +43,7 @@ def json_data_update(sql, pattern, key, json_dict):
        user_d = enforce_preferential_key_ordering(user_d, fs.user_data_keys)
        if user_d != {}:
          json_dict['user_data'].append(user_d)
-    return json_dict
-
+    return 
 
 def connect_to_database(sqlite_db_name):
 
@@ -130,10 +129,9 @@ def create_json_dict(args):
                 print('Skipping {}'.format(osg_id))
 
     # go over the DB and select rows that failed to be submited or waiting to be submitted. If conditions are needed to make sure that we don't add empty rows.
-    jsob_dict = json_data_update(sql,"Submitted to Failure Mode", 0,json_dict)
-    user_data = json_data_update(sql,"Not Submitted", 1,json_dict)
+    json_data_update(sql,"Submitted to Failure Mode", 0,json_dict)
+    json_data_update(sql,"Not Submitted", 1,json_dict)
     db_conn.close()
-
 
 
     # Nothing was added
@@ -141,7 +139,6 @@ def create_json_dict(args):
         user_data = {}
         for index,key in enumerate(fs.user_data_keys):
             user_data[key] = fs.null_user_info[index]
-
         json_dict['user_data'].append(enforce_preferential_key_ordering(user_data,fs.user_data_keys))
 
     return json_dict
