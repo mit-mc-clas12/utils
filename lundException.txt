@@ -1,3 +1,0 @@
-
- an exception was encountered at 2021-06-24 10:21:56, see below: 
-HTTP Error 404: Not Found
