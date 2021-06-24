@@ -130,8 +130,8 @@ def create_json_dict(args):
                 print('Skipping {}'.format(osg_id))
 
     # go over the DB and select rows that failed to be submited or waiting to be submitted. If conditions are needed to make sure that we don't add empty rows.
-    jsob_dict = json_data_update(sql,"Submitted to Failure Mode", 0,json_dict)
-    user_data = json_data_update(sql,"Not Submitted", 1,json_dict)
+    json_data_update(sql,"Submitted to Failure Mode", 0, json_dict)
+    json_data_update(sql,"Not Submitted", 1, json_dict)
     db_conn.close()
 
 
