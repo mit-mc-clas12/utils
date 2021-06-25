@@ -30,16 +30,15 @@ def days_between(date):
 # go over the DB and select rows that failed to submited. Add them to the OSG table. Table is populated with entries LESS than 10 days from current time. The "key" variable used to correctly present the information in the generated json file. Maybe we should change the run_status from "Submitted to Failure Mode" to "Failed to submit"
 def json_data_update(sql, pattern, key, json_dict):
     sql.execute("SELECT user,user_submission_id,client_time FROM submissions WHERE run_status = '" + pattern+ "'")
-    user_d = {}
     if key == 0:
        pattern = 'Failed to submit'
     for row in sql:
-       if days_between(row[2]) > 1000 :
+       user_d = {}
+       if days_between(row[2]) > 10 :
          continue
        user_info = [row[0], row[1], row[2] ,'','','','','',pattern]
        for index,key in enumerate(fs.user_data_keys):
            user_d[key] = user_info[index]
-
        user_d = enforce_preferential_key_ordering(user_d, fs.user_data_keys)
        if user_d != {}:
          json_dict['user_data'].append(user_d)
