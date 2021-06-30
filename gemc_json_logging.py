@@ -36,7 +36,9 @@ def json_data_update(sql, pattern, key, json_dict):
     for row in sql:
        if days_between(row[2]) > 4 :
          continue
-       user_info = [row[0], row[1], row[2] ,'0','0','0','0','0',pattern]
+       jstart = datetime.strptime(row[2], '%Y-%m-%d %H:%M:%S').strftime('%m/%d %H:%M')
+       #print(jstart)
+       user_info = [row[0], row[1], jstart ,'0','0','0','0','0',pattern]
        for index,key in enumerate(fs.user_data_keys):
            user_d[key] = user_info[index]
 
