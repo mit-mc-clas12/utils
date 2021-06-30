@@ -82,7 +82,9 @@ def load_users_from_json(jsonfile):
             jobs[user['user']]['ids'] = []
             jobs[user['user']]['njobs'] += int(user['run'])
             jobs[user['user']]['idle'] += int(user['idle'])
-            jobs[user['user']]['ids'].append(int(user['osg id']))
+            if type(user['osg id']) == int:
+                jobs[user['user']]['ids'].append(int(user['osg id']))
+
             jobs[user['user']]['submit_time'] = user['submitted']
     
     users = []
