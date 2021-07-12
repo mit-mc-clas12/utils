@@ -27,9 +27,11 @@ def days_between(date):
     d2 = datetime.strptime(date,'%Y-%m-%d %H:%M:%S')
     return abs((d2 - d1).days)
 
-# go over the DB and select rows that failed to submited. Add them to the OSG table. Table is populated with entries LESS than 10 days from current time. The "key" variable used to correctly present the information in the generated json file. Maybe we should change the run_status from "Submitted to Failure Mode" to "Failed to submit"
+# go over the DB and select rows that failed to submited. Add them to the OSG table.
+# Table is populated with entries LESS than 4 days from current time.
+# The "key" variable used to correctly present the information in the generated json file.
 def json_data_update(sql, pattern, key, json_dict):
-    sql.execute("SELECT user,user_submission_id,client_time FROM submissions WHERE run_status = '" + pattern+ "'")
+    sql.execute("SELECT user,user_submission_id,client_time FROM submissions WHERE run_status = '" + pattern + "'")
     user_d = {}
     if key == 0:
        pattern = 'Failed to submit'
@@ -101,7 +103,7 @@ def create_json_dict(args):
     json_dict['user_data'] = []
 
 
-    for index,osg_id in enumerate(batch_ids):
+    for index, osg_id in enumerate(batch_ids):
             jobs_total = total_jobs_submitted[index]
             jobs_done = jobs_total - total_jobs_running[index]
             jobs_idle = idle_jobs[index]
@@ -112,8 +114,8 @@ def create_json_dict(args):
             sql.execute("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(osg_id))
             count = sql.fetchall()[0][0]
 
-            #I dont get exactly what is going on here. How can we have a zero in the DB but nonzero  in condor?
-            #looking at this more, it is only 1 if exists in db, or 0 if not in db
+            # I dont get exactly what is going on here. How can we have a zero in the DB but nonzero  in condor?
+            # looking at this more, it is only 1 if exists in db, or 0 if not in db
             if count > 0:
                 # Get information from database to connect with this job
                 sql.execute("SELECT user,user_submission_id FROM submissions WHERE pool_node = {}".format(osg_id))
@@ -131,8 +133,9 @@ def create_json_dict(args):
             else:
                 print('Skipping {}'.format(osg_id))
 
-    # go over the DB and select rows that failed to be submited or waiting to be submitted. If conditions are needed to make sure that we don't add empty rows.
-    json_data_update(sql,"Submitted to Failure Mode", 0, json_dict)
+    # go over the DB and select rows that failed to be submited or waiting to be submitted.
+    # If conditions are needed to make sure that we don't add empty rows.
+    json_data_update(sql,"Failed to submit", 0, json_dict)
     json_data_update(sql,"Not Submitted", 1, json_dict)
     db_conn.close()
 
