@@ -1,7 +1,5 @@
 #!/bin/csh -f
 
-# Crontab command for every 2 minutes
-# */2 * * * * flock -n $HOME/.submit.lock $HOME/gemcSubmitCron.sh >& $HOME/submitCron.log
+set scriptDir = /home/gemc/software/Submit/server/src
 
-cd /group/clas12/SubMit/server
-python src/Submit_UserSubmission.py -s
+python $scriptDir/Submit_UserSubmission.py -s

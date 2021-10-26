@@ -1,28 +1,29 @@
 This dir contains various shell scripts used for the OSG portal:
 
 
+
+### gemcSubmitCron.sh
+
+- run by user "gemc" on on scosg20.jlab.org
+- 2 minute crontab:
+
+*/2  *  *  *  * flock -n $HOME/.submit.lock $HOME/gemcSubmitCron.sh >& $HOME/submitCron.log   >/dev/null 2>&1
+
+- runs python src/Submit_UserSubmission.py : browse DB for non submitted jobs, and submit to OSG
+
+
 ### osgQuery.sh
 
-- run by user "ungaro" on scosg16.jlab.org
-- 2 minutes crontab: */2 * * * * ~/osgQuery.sh
+- run by user "gemc" on scosg20.jlab.org
+- 5 minutes crontab:
+
+*/5 * * * * flock -n $HOME/.jlog.lock $HOME/osgQuery.sh  > $HOME/logs/`date +\%d\%m\%y_\%H\%M\%S`".log" 2>&1
+
 - this script produces 2 outputs inside web_interface/data:
 	a. gemcRunning.log that contains the output of condor
-	b. osgLog.json, a JSON file containing the breakdown of usage per user
+	b. osgLog.json, a JSON file containing the breakdown of usage per user, used by priority cron
 
 
-### volatileQuery.sh
-
-- run by user "ungaro" on a CUE machine, NOT scosg16.jlab.org (so it's not to slow it down)
-- 4 hours crontab: 44 */4 * * * ~/volatileQuery.sh
-- this script produces 2 outputs inside  web_interface/data:
-	a. volatile.log: a summary of disk usage (output of du)
-	b. disk.json: a JSON file containiing the breakdown of disk usage per user
-
- ### gemcSubmitCron.sh
-
-- run by user "gemc" on on scosg16.jlab.org
-- 1 minute crontab: */1 * * * * ~/gemcSubmitCron.sh >& ~/submitCron.log
-- runs python src/Submit_UserSubmission.py : browse DB for non submitted jobs, and submit to OSG
 
  ### priorityCron.sh
 
@@ -36,6 +37,11 @@ This dir contains various shell scripts used for the OSG portal:
 
 - run to produce the json file needed by the web_interface to load the configuration. Output in web_interface/data/xrootd.json
 
-### gemc_json_logging
 
-0
+### volatileQuery.sh
+
+- run by user "ungaro" on a CUE machine, NOT scosg16.jlab.org (so it's not to slow it down)
+- 4 hours crontab: 44 */4 * * * ~/volatileQuery.sh
+- this script produces 2 outputs inside  web_interface/data:
+	a. volatile.log: a summary of disk usage (output of du)
+	b. disk.json: a JSON file containiing the breakdown of disk usage per user
