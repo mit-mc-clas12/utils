@@ -29,7 +29,7 @@ This dir contains various shell scripts used for the OSG portal:
 
 - run by user "gemc" on on scosg16.jlab.org
 - 2 minute crontab: */2 * * * * ~/priorityCron.sh >& ~/priorityCron.log
-- runs /group/clas12/SubMit/utils/update_priority.py with web_interface/data/osgLog.json as input
+- runs /home/gemc/software/Submit/utils/update_priority.py with web_interface/data/osgLog.json as input
 - produces 3 lines piped to condor_prior to increase priority according to number of jobs
 
 

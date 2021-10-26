@@ -46,7 +46,7 @@ end
 echo
 
 ### SubMit on /group
-set destination=/group/clas12/SubMit/test
+set destination=/home/gemc/software/Submit//test
 
 set installDir=$destination/SubMit
 rm -rf $installDir ; mkdir -p  $installDir ;  cd $installDir
@@ -76,11 +76,11 @@ chmod g+w -R *
 cd SubMit
 cp ../../SubMit/*.txt .
 
-cd /group/clas12/SubMit/test/SubMit
+cd /home/gemc/software/Submit//test/SubMit
 cp ../../*.txt .
 
-cp /group/clas12/SubMit/msql_conn.txt /group/clas12/SubMit/test/SubMit/msql_conn_test.txt
-cd /group/clas12/SubMit/test/SubMit/
+cp /home/gemc/software/Submit//msql_conn.txt /home/gemc/software/Submit//test/SubMit/msql_conn_test.txt
+cd /home/gemc/software/Submit//test/SubMit/
 sed -i s/CLAS12OCR/CLAS12TEST/ msql_conn_test.txt
 
 echo

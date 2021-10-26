@@ -86,8 +86,6 @@ class scard_class:
         #set coatjava version attribute
         self.coatjavaVersion = fs.coatjavaVersion[getattr(self,"configuration")]
 
-        print(self.coatjavaVersion)
-
         # Set event generator executable and output to null if the
         # generator doesn't exist in our container.  We are
         # trying to keep the client agnostic to SCard type.

@@ -15,13 +15,13 @@ if ($nrunning != "2") then
 	echo volatileQuery already running. Nothing to do.
 else
 	set dataDir   = /group/clas/www/gemc/html/web_interface/data
-	set scriptDir = /group/clas12/SubMit/utils/
+	set scriptDir = /home/gemc/software/Submit//utils/
 	set osgOutput = /volatile/clas12/osg2
 
 	if($1 == 'test') then
 		echo running test
 		set dataDir   = /group/clas/www/gemc/html/test/web_interface/data
-		set scriptDir = /group/clas12/SubMit/test/SubMit/utils/
+		set scriptDir = /home/gemc/software/Submit//test/SubMit/utils/
 	endif
 
 	### going to web interface data

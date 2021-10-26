@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 #
 # useful commands:
-# cd /group/clas12/SubMit/test/SubMit/utils/scripts/
+# cd /home/gemc/software/Submit/test/SubMit/utils/scripts/
 # python bkgrd_to_json.py -b=/work/osgpool/hallb/clas12/backgroundfiles -test=.
 # cp xrootd.json /group/clas/www/gemc/html/test/web_interface/data/xrootd.json
 # cp xrootd.json /group/clas/www/gemc/html/web_interface/data/xrootd.json
