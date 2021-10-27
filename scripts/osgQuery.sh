@@ -1,8 +1,5 @@
 #!/bin/csh -f
 
-set logDir    = /home/gemc/logs
-set scriptDir = /home/gemc/software/Submit/utils
-
-# creating osgLog.json inside $logDir
-cd $logDir
-python $scriptDir/gemc_json_logging.py
+# creating osgLog.json inside /home/gemc/logs
+cd /home/gemc/logs
+python /home/gemc/software/Submit/utils/gemc_json_logging.py

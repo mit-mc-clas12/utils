@@ -19,7 +19,7 @@ This dir contains various shell scripts used for the OSG portal:
 
 */5 * * * * flock -n $HOME/.jlog.lock $HOME/osgQuery.sh  > $HOME/logs/`date +\%d\%m\%y_\%H\%M\%S`".log" 2>&1
 
-- this script produces 2 outputs inside web_interface/data:
+- this script produces 2 outputs inside $HOME/logs:
 	a. gemcRunning.log that contains the output of condor
 	b. osgLog.json, a JSON file containing the breakdown of usage per user, used by priority cron
 
