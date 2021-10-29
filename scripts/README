@@ -9,6 +9,11 @@ s=/home/gemc/software/Submit/utils/scripts/
 */4  *  *  *  * flock -n $HOME/.osgpriority.lock $s/priorityCron.sh   >& $HOME/logs/priorityCron.log >/dev/null 2>&1
 
 
+On ifarm1801.jlab.org there is the crontab:
+
+*/3  *  *  *  * flock -n $HOME/.jlog.lock $HOME/osgLog.sh  >& $HOME/logs/osgLog.log >/dev/null 2>&1
+to copy files from /volatile to the web server
+
 ### gemcSubmitCron.sh
 
 - run by user "gemc" on on scosg20.jlab.org
