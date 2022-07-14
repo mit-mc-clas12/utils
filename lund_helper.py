@@ -115,8 +115,8 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
                 if lund_location[0] != "/":
                     lund_location = "/"+lund_location
                 
-                #Example full filepath: gemc@dtn1902-ib:/lustre19/expphy/volatile/clas12/robertej/testlund.txt
-                lund_copy_path = 'gemc@dtn1902-ib:/lustre19/expphy'+lund_location
+                #Example full filepath: gemc@dtn1902:/lustre19/expphy/volatile/clas12/robertej/testlund.txt
+                lund_copy_path = 'gemc@dtn1902:/lustre19/expphy'+lund_location
                 subprocess.call(['rsync', '-rlpgoD', lund_copy_path, lund_download_dir])
             except Exception as e:
                 print("ERROR: unable to copy lund files from {}".format(lund_location))
@@ -134,7 +134,7 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
             if "/lustre19/expphy" not in lund_location: 
                     lund_location ='/lustre19/expphy'+lund_location
             #print("trying to rsync {}".format(lund_location))
-            lund_copy_path = 'gemc@dtn1902-ib:'+lund_location
+            lund_copy_path = 'gemc@dtn1902:'+lund_location
 
             #subprocess.call(['rsync', '-a', lund_copy_path, lund_download_dir])
             subprocess.call(['rsync', '-zrlpgoDv','--prune-empty-dirs',"--include='*.dat'",
