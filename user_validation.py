@@ -5,7 +5,7 @@
 #and the OS host is also added
 """
 #****************************************************************
-from __future__ import print_function
+
 import sqlite3, time
 import utils, fs, argparse, socket, subprocess
 import datetime

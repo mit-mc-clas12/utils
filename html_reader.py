@@ -5,8 +5,8 @@
 #****************************************************************
 
 
-from __future__ import print_function
-import utils, fs
+
+from . import utils, fs
 
 def html_reader(url_dir,data_identifier=["",]):
     # create a subclass and override the handler methods
@@ -15,11 +15,11 @@ def html_reader(url_dir,data_identifier=["",]):
 
     pyversion = utils.getPythonVersion()
     if pyversion == 2:
-        from HTMLParser import HTMLParser #this seems not to work in python3
-        import urllib2, argparse
-        response = urllib2.urlopen(url_dir) #for python2
+        from html.parser import HTMLParser # this seems not to work in python3
+        import urllib.request, urllib.error, urllib.parse, argparse
+        response = urllib.request.urlopen(url_dir) # for python2
     elif pyversion == 3:
-        from html.parser import HTMLParser #python 3 version
+        from html.parser import HTMLParser # python 3 version
         from urllib.request import urlopen
         response = urlopen(url_dir) #for python 3, should work but havne't tested this yet (as of 6/1/2020)
     else:

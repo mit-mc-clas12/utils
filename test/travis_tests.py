@@ -1,6 +1,6 @@
 import subprocess
 import os
-import readtests
+from . import readtests
 
 def test_function(command):
 	process = subprocess.Popen(command.command,
@@ -28,12 +28,12 @@ if os.path.isdir(test_folder):
 	print('removing previous database file')
 	subprocess.call(['rm','-rf',test_folder])
 else:
-	print(test_folder+" is not present, not deleteing")
+	print((test_folder+" is not present, not deleteing"))
 
 
 
 subprocess.call(['mkdir','-p',test_folder])
-print(test_folder+" is now present")
+print((test_folder+" is now present"))
 
 
 
@@ -51,7 +51,7 @@ folders = ['utils','server','client']
 for folder in folders:
 	folder_name= os.path.dirname(os.path.abspath(__file__))+'/'+folder
 	if not os.path.isdir(folder_name):
-		print('{0} not found, cloning from github'.format(folder))
+		print(('{0} not found, cloning from github'.format(folder)))
 		substring = 'https://github.com/robertej19/{0}.git'.format(folder)
 		subprocess.call(['git','clone',substring])
 
@@ -69,7 +69,7 @@ def run_through_tests(command_sequence):
 	err_sum = 0 
 	for command in command_sequence:
 		out, err = test_function(command)
-		print('Testing command: {0}'.format(command.name))
+		print(('Testing command: {0}'.format(command.name)))
 		if not err:
 			print('... success')
 			#print(out)

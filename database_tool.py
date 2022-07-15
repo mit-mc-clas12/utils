@@ -7,8 +7,8 @@ import argparse
 import os 
 
 # This project                                                                                                                                           
-import fs
-from database import (get_database_connection,
+from . import fs
+from .database import (get_database_connection,
                       load_database_credentials)
 
 def connect_to_database(database_name="CLAS12TEST"):

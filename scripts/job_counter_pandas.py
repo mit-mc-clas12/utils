@@ -30,6 +30,6 @@ if __name__ == "__main__":
     idle_limit = 10000  # Set the threshold of idle jobs
     user_name = "testuser"
     bool_over_limit = shouldBeSubmitted(user_name,"example.json",idle_limit)
-    print("{} over {}: {}".format(user_name, idle_limit, bool_over_limit))
+    print(("{} over {}: {}".format(user_name, idle_limit, bool_over_limit)))
 
 

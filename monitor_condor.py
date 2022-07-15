@@ -10,10 +10,10 @@ import sys
 from collections import OrderedDict 
 
 # This project 
-import fs
-from database import (get_database_connection, 
+from . import fs
+from .database import (get_database_connection, 
                       load_database_credentials)
-from utils import gettime 
+from .utils import gettime 
 
 USER_QUERY = """
 SELECT user,user_submission_id FROM submissions 
@@ -117,7 +117,7 @@ if __name__ == '__main__':
 
     # Debug 
     sql.execute("SELECT pool_node FROM submissions")
-    print(sql.fetchall())
+    print((sql.fetchall()))
 
     # Don't read header/columns/footer 
     for line in log_text[2:-1]:
@@ -131,10 +131,10 @@ if __name__ == '__main__':
                 osg_id
             ))
             count = sql.fetchall()[0][0]
-            print("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(
+            print(("SELECT COUNT(pool_node) FROM submissions WHERE pool_node = {}".format(
                 osg_id
-            ))
-            print(sql.fetchall())
+            )))
+            print((sql.fetchall()))
 
             if count > 0:
                 # Get information from database to connect with this job
@@ -146,7 +146,7 @@ if __name__ == '__main__':
                 json_dict['user_data'].append(user_data)
 
             else:
-                print('Skipping {}'.format(osg_id))
+                print(('Skipping {}'.format(osg_id)))
 
     db_conn.close() 
 

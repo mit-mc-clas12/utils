@@ -8,9 +8,9 @@ import os
 import sqlite3
 import sys
 
-import database
-import fs
-import get_args
+from . import database
+from . import fs
+from . import get_args
 
 def add_field(db, sql, tablename, field_name, field_type):
     strn = "ALTER TABLE {0} ADD COLUMN {1} {2}".format(

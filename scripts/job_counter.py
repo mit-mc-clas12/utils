@@ -16,7 +16,7 @@ def shouldBeSubmitted(user_name, json_file="/home/gemc/logs/osgLog.json", idle_l
     columns = ['total','done','run','idle','hold']
 
     for job in data['user_data']:
-        if not job['user'] in user_info.keys():
+        if not job['user'] in list(user_info.keys()):
             user_info[job['user']] = {}
             for c in columns:
                 if job[c] != 'No data':
@@ -41,4 +41,4 @@ if __name__ == "__main__":
     idle_limit = 10000  # Set the threshold of idle jobs
     user_name = "robertej"
     bool_submit = shouldBeSubmitted(user_name,"/home/gemc/logs/osgLog.json",idle_limit)
-    print("{} over {}. Should submit: {}".format(user_name, idle_limit, bool_submit))
+    print(("{} over {}. Should submit: {}".format(user_name, idle_limit, bool_submit)))

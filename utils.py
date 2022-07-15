@@ -10,12 +10,12 @@
     db_grab - functions to write and read information to/from the DB
 """
 
-from __future__ import print_function
+
 import datetime
 import logging
 import sys
 import calendar
-import fs
+from . import fs
 #import MySQLdb
 import sqlite3
 

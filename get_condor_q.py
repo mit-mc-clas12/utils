@@ -4,8 +4,8 @@ Logfile jsonification for monitoring.
 import htcondor
 import classad
 
-import get_args
-import utils
+from . import get_args
+from . import utils
 
 def get_htcondor_q():
     schedd = htcondor.Schedd()
@@ -42,7 +42,7 @@ def get_htcondor_q():
                 job_status = int(job["JobStatus"]) #gets if the job is running (2) or idle (1)
                 
                 if job_status not in valid_job_stati: #Just error handling, should pipe to a central log
-                    print("HTCondor returned an invalid job status of {0}, investigate more".format(job_status))
+                    print(("HTCondor returned an invalid job status of {0}, investigate more".format(job_status)))
                 else:
                     if batch_id not in batch_ids:    
                         utils.printer("found new batch: {0}".format(batch_id))
@@ -112,7 +112,7 @@ def check_condor_info(condor_info):
     for index,total_jobs in enumerate(total_jobs_running):
         unaccounted_for_jobs = total_jobs - jc_set[1][index] - jc_set[2][index] - jc_set[5][index]
         if unaccounted_for_jobs != 0:
-            print("error, there is a mismatch between total jobs in condor and idle+running jobs: {0}".format(unaccounted_for_jobs))
+            print(("error, there is a mismatch between total jobs in condor and idle+running jobs: {0}".format(unaccounted_for_jobs)))
 
     #Should add other tests if can think of some (empty lists, etc)
 

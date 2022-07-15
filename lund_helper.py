@@ -36,9 +36,9 @@
     Local File typo - volatile/clas12/robertej/trans_test/rad.lund
 """
 #***************************************************************
-from __future__ import print_function
+
 import argparse, subprocess, os, sys
-import utils, fs, html_reader
+from . import utils, fs, html_reader
 import glob 
 
 def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):

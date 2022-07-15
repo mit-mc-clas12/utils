@@ -1,5 +1,5 @@
-#!/bin/csh -f
+#!/bin/bash
 
-set scriptDir = /home/gemc/software/Submit/server/src
+scriptDir=/home/gemc/software/Submit/server/src
 
-python $scriptDir/Submit_UserSubmission.py -s
+python3 $scriptDir/Submit_UserSubmission.py -s

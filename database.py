@@ -6,7 +6,7 @@ for the client side live in client/update_tables.py.
 
 """
 
-from __future__ import print_function
+
 import datetime 
 
 import fs, sqlite3

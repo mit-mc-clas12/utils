@@ -30,8 +30,8 @@ def create_ordered_dict(data, sort_key='total_size'):
         return int(line[:-1])
 
     output = OrderedDict()    
-    users = data.keys() 
-    sizes = [giga_stripper(d[sort_key]) for d in data.values()]
+    users = list(data.keys()) 
+    sizes = [giga_stripper(d[sort_key]) for d in list(data.values())]
     
     for size, user in sorted(zip(sizes, users))[::-1]:
         output[user] = data[user]

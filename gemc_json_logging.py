@@ -12,13 +12,13 @@ import classad
 from datetime import datetime
 
 # This project
-import get_condor_q
-import get_args
-import fs
-import utils
-from database import (get_database_connection,
+from . import get_condor_q
+from . import get_args
+from . import fs
+from . import utils
+from .database import (get_database_connection,
                       load_database_credentials)
-from utils import gettime
+from .utils import gettime
 
 
 # calculate the time difference between the today and the submission date. 
@@ -131,7 +131,7 @@ def create_json_dict(args):
                 json_dict['user_data'].append(user_data)
 
             else:
-                print('Skipping {}'.format(osg_id))
+                print(('Skipping {}'.format(osg_id)))
 
     # go over the DB and select rows that failed to be submited or waiting to be submitted.
     # If conditions are needed to make sure that we don't add empty rows.

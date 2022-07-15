@@ -4,8 +4,8 @@
 """
 #****************************************************************
 
-from __future__ import print_function
-import utils, fs
+
+from . import utils, fs
 import sqlite3, argparse
 
 def get_args():

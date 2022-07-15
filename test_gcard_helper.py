@@ -8,7 +8,7 @@ Informal tests to be replaced.
 import subprocess
 import unittest 
 
-from gcard_helper import get_valid_gcards
+from .gcard_helper import get_valid_gcards
 
 class GCardHelperTest(unittest.TestCase):
 

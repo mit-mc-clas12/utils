@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 #
 # useful commands:
 # cd /home/gemc/software/Submit/test/SubMit/utils/scripts/
@@ -42,5 +42,5 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     with open(os.path.join(args.outdir,'xrootd.json'), 'w') as f: #open xrootd.json
-        print(json.dump(path_hierarchy(args.bkgrd), f, indent=2, sort_keys=False)) #call main function and print output in json format
+        print((json.dump(path_hierarchy(args.bkgrd), f, indent=2, sort_keys=False))) #call main function and print output in json format
 

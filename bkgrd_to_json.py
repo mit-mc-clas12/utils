@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import os
 
@@ -30,4 +30,4 @@ if __name__ == '__main__':
 
 #    with open('xrootd.json', 'w') as f:
     with open('/group/clas/www/gemc/html/web_interface/xrootd/xrootd.json', 'w') as f:
-        print(json.dump(path_hierarchy(directory), f, indent=2, sort_keys=False))
+        print((json.dump(path_hierarchy(directory), f, indent=2, sort_keys=False)))

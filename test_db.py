@@ -7,8 +7,8 @@ needs to be coded first.
 
 """
 
-import fs
-from database import (get_database_connection, 
+from . import fs
+from .database import (get_database_connection, 
                       load_database_credentials, 
                       get_users, select_by_user_submission_id)
 
@@ -33,7 +33,7 @@ if __name__ == '__main__':
     # Test function 
     users = get_users(sql)
     print(users)
-    print(type(users))
+    print((type(users)))
 
     # Test selection by UserSubmissionID (with string, list)
     results = select_by_user_submission_id(usub_id=74, table='Gcards', 

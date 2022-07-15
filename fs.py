@@ -20,10 +20,10 @@
 """
 #****************************************************************
 
-from __future__ import print_function
+
 import sqlite3, os, datetime
 
-import gcard_helper
+from . import gcard_helper
 
 """*****************************************************************************
 ------------------------ Submission File Specifications ------------------------

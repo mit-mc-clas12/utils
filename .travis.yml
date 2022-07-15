@@ -16,5 +16,5 @@ install:
 # - pip install mysql-python
 # command to run tests
 
-#script: python2 testapp.py || python3 testapp.py #For now, can't get python3 to work properly
-script: python2 test/travis_tests.py
+#script: python3 testapp.py || python3 testapp.py #For now, can't get python3 to work properly
+script: python3 test/travis_tests.py

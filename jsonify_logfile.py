@@ -11,10 +11,10 @@ import sys
 from collections import OrderedDict
 
 # This project
-import fs
-from database import (get_database_connection,
+from . import fs
+from .database import (get_database_connection,
                       load_database_credentials)
-from utils import gettime
+from .utils import gettime
 
 USER_QUERY = """
 SELECT user,user_submission_id FROM submissions
@@ -104,11 +104,11 @@ if __name__ == '__main__':
     ap.add_argument('-q', '--lite', required=False)
     args = ap.parse_args()
 
-    print(args.lite)
+    print((args.lite))
     # Connect to our database with read/write access.
     db_conn, sql = connect_to_database(args.lite)
 
-    print(db_conn,sql)
+    print((db_conn,sql))
 
     logfile = args.logfile
     logtime = gettime()
@@ -157,7 +157,7 @@ if __name__ == '__main__':
                 json_dict['user_data'].append(user_data)
 
             else:
-                print('Skipping {}'.format(osg_id))
+                print(('Skipping {}'.format(osg_id)))
 
     db_conn.close()
 

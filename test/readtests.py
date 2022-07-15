@@ -11,31 +11,31 @@ class command_class:
 def create_commands():
 
     create_mysql_db = command_class('Create MySQL DB',
-                                    ['python2', 'utils/create_database.py'],
+                                    ['python3', 'utils/create_database.py'],
                                     '0')
 
     create_mysql_db_test = command_class('Create MySQL Test DB',
-                                    ['python2', 'utils/create_database.py','--test_database'],
+                                    ['python3', 'utils/create_database.py','--test_database'],
                                     '0')
 
     create_sqlite_db = command_class('Create SQLite DB',
-                                    ['python2', 'utils/create_database.py','--lite=utils/CLAS12OCR.db'],
+                                    ['python3', 'utils/create_database.py','--lite=utils/CLAS12OCR.db'],
                                     '0')
 
     submit_scard_1 = command_class('Submit scard 1 on client through sqlite',
-                                    ['python2', 'client/src/SubMit.py','--lite=utils/CLAS12OCR.db','-u=robertej','client/scards/scard_type1.txt'],
+                                    ['python3', 'client/src/SubMit.py','--lite=utils/CLAS12OCR.db','-u=robertej','client/scards/scard_type1.txt'],
                                     '0')
                                     
     submit_scard_1_mysql = command_class('Submit scard 1 on client through MySQL CLAS12OCR db',
-                                    ['python2', 'client/src/SubMit.py','-u=robertej','client/scards/scard_type1.txt'],
+                                    ['python3', 'client/src/SubMit.py','-u=robertej','client/scards/scard_type1.txt'],
                                     '0')
 
     submit_scard_1_mysql_test = command_class('Submit scard 1 on client through MySQL CLAS12TEST db',
-                                    ['python2', 'client/src/SubMit.py','--test_database','-u=robertej','client/scards/scard_type1.txt'],
+                                    ['python3', 'client/src/SubMit.py','--test_database','-u=robertej','client/scards/scard_type1.txt'],
                                     '0')
 
     #submit_scard_2 = command_class('Create scard 2 on client',
-    #								['python2', 'client/src/SubMit.py','--lite=utils/CLAS12OCR.db','-u=robertej','client/scard_type2.txt'],
+    #								['python3', 'client/src/SubMit.py','--lite=utils/CLAS12OCR.db','-u=robertej','client/scard_type2.txt'],
     #								'0')
 
     verify_submission_success = command_class('Verify scard submission success',
@@ -44,15 +44,15 @@ def create_commands():
 
 
     submit_server_jobs_test_db = command_class('Submit jobs from server on CLAS12TEST',
-                                    ['python2', 'server/src/Submit_UserSubmission.py', '-b','1', '--test_database', '-w', '-s', '-t'],
+                                    ['python3', 'server/src/Submit_UserSubmission.py', '-b','1', '--test_database', '-w', '-s', '-t'],
                                     '0')
 
     submit_server_jobs_prod_db = command_class('Submit jobs from server on CLAS12OCR',
-                                    ['python2', 'server/src/Submit_UserSubmission.py', '-b','1', '-w', '-s', '-t'],
+                                    ['python3', 'server/src/Submit_UserSubmission.py', '-b','1', '-w', '-s', '-t'],
                                     '0')
 
     submit_server_jobs_sqlite = command_class('Submit jobs from server',
-                                    ['python2', 'server/src/Submit_UserSubmission.py', '-b','1', '--lite=utils/CLAS12OCR.db', '-w', '-s', '-t','-o=TestOutputDir'],
+                                    ['python3', 'server/src/Submit_UserSubmission.py', '-b','1', '--lite=utils/CLAS12OCR.db', '-w', '-s', '-t','-o=TestOutputDir'],
                                     '0')
 
     command_sequence = [create_mysql_db,create_mysql_db_test,create_sqlite_db, 

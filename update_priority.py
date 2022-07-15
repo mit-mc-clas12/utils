@@ -13,7 +13,7 @@ import sys
 from copy import deepcopy
 
 # This project 
-from database import (get_database_connection, 
+from .database import (get_database_connection, 
                       load_database_credentials)
 
 class PrioritizedUser:
@@ -235,12 +235,12 @@ def update_database(users, db_conn, sql):
 
 def print_debug(users):
     for user in users:
-        print(user.username, user.weight, user.rank)
+        print((user.username, user.weight, user.rank))
 
 def print_commands(users):
     for user in users:
         for job_id in user.jobs:
-            print('-p +{} {}'.format(user.rank, job_id))
+            print(('-p +{} {}'.format(user.rank, job_id)))
 
 def process_args():
     ap = argparse.ArgumentParser() 
