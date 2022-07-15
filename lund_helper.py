@@ -38,7 +38,7 @@
 #***************************************************************
 
 import argparse, subprocess, os, sys
-from . import utils, fs, html_reader
+import utils, fs, html_reader
 import glob 
 
 def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):

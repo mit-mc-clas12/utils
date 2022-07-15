@@ -9,7 +9,7 @@
 
 
 import sqlite3, time
-from . import utils, fs
+import utils, fs
 
 class scard_class:
     def __init__(self,scard_text):

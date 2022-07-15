@@ -15,8 +15,8 @@ import datetime
 import logging
 import sys
 import calendar
-from . import fs
-import mysql
+import fs
+import pymysql
 import sqlite3
 
 def getPythonVersion():

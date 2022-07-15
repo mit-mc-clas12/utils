@@ -23,7 +23,7 @@
 
 import sqlite3, os, datetime
 
-from . import gcard_helper
+import gcard_helper
 
 """*****************************************************************************
 ------------------------ Submission File Specifications ------------------------

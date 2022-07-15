@@ -9,8 +9,9 @@ for the client side live in client/update_tables.py.
 
 import datetime 
 
-import fs, sqlite3
-import mysql
+import fs
+import sqlite3
+import pymysql
 
 def connect_to_mysql(host, username, password, db_name):
   """Return a MySQL database connection. """
@@ -19,7 +20,7 @@ def connect_to_mysql(host, username, password, db_name):
   if username == 'root':
     host='localhost' #This is so tests work on travis-ci, where we ue root user
 
-  return mysql.connect(host, username, password, db_name)
+  return pymysql.connect(host, username, password, db_name)
 
 def connect_to_sqlite(db_name):
   """Return an sqlite database connection. """
