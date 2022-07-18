@@ -35,7 +35,7 @@ else
 
 	cd $dataDir
 	pwd
-	# python $scriptDir/jsonify_disk_usage.py --logfile volatile.log --output disk.json
+	# python3 $scriptDir/jsonify_disk_usage.py --logfile volatile.log --output disk.json
 
 endif
 

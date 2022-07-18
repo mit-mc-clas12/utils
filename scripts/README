@@ -18,7 +18,7 @@ to copy files from /volatile to the web server
 
 - run by user "gemc" on on scosg20.jlab.org
 - 2 minute crontab
-- runs python src/Submit_UserSubmission.py : browse DB for non submitted jobs, and submit to OSG
+- runs python3 src/Submit_UserSubmission.py : browse DB for non submitted jobs, and submit to OSG
 
 
 ### osgQuery.sh

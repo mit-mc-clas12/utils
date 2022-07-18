@@ -19,11 +19,11 @@ def html_reader(url_dir,data_identifier=["",]):
         import urllib.request, urllib.error, urllib.parse, argparse
         response = urllib.request.urlopen(url_dir) # for python2
     elif pyversion == 3:
-        from html.parser import HTMLParser # python 3 version
+        from html.parser import HTMLParser # python3 version
         from urllib.request import urlopen
-        response = urlopen(url_dir) #for python 3, should work but havne't tested this yet (as of 6/1/2020)
+        response = urlopen(url_dir) # for python3, should work but havne't tested this yet (as of 6/1/2020)
     else:
-        print("This code only works with python version 2 or 3")
+        print("This code only works with python2 or python3")
         print("Python version is listed as {0}, please change".format(pyversion))
         exit()
 

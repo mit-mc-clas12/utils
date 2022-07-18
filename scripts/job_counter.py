@@ -1,9 +1,9 @@
 import json
 
 # to execute:
-# python /home/gemc/software/Submit/utils/scripts/job_counter.py
+# python3 /home/gemc/software/Submit/utils/scripts/job_counter.py
 # called also by
-# python /home/gemc/software/Submit/utils/update_priority.py -j /home/gemc/logs/osgLog.json -u 
+# python3 /home/gemc/software/Submit/utils/update_priority.py -j /home/gemc/logs/osgLog.json -u 
 
 def shouldBeSubmitted(user_name, json_file="/home/gemc/logs/osgLog.json", idle_limit=1000000):
     # Open JSON file and load as dictionary

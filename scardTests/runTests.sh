@@ -19,7 +19,7 @@ done
 echo
 echo Submitting Jobs to OSG
 cd /home/gemc/software/Submit//test/SubMit/server/
-python src/Submit_UserSubmission.py -s -t --test_database
+python3 src/Submit_UserSubmission.py -s -t --test_database
 echo
 
 # Output:
