@@ -160,8 +160,8 @@ def Lund_Downloader(lund_url_base,lund_download_dir,lund_filename,single_file=Tr
             if not single_file:
                 full_lund_path += "/"+lund_filename
             lund_raw_text = html_reader.html_reader(full_lund_path)[0]#This returns a tuple, we need the contents of the tuple
-            lund_raw_text = str(lund_raw_text) #This might not be needed, converts from bytes to strings
-            lund_content = lund_raw_text.replace('"',"'") #This isn't strictly needed but SQLite can't read " into data fields, only ' characters
+            lund_raw_text = str(lund_raw_text).decode('ascii') # This might not be needed, converts from bytes to strings
+            lund_content = lund_raw_text.replace('"',"'") # This isn't strictly needed but SQLite can't read " into data fields, only ' characters
             #print("Downloaded {}".format(full_lund_path))
         except Exception as e:
             print("Unable to download lund file sucessfully.")
