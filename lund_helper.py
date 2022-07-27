@@ -152,6 +152,7 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
 # lund_url_base - the full url to an online lund file directory (e.g. )
 # lund_filename - the name of the lund file
 # lund_download_dir - the full path to where the lund file should be downloaded to
+# this should be done with pycurl
 def Lund_Downloader(lund_url_base,lund_download_dir,lund_filename,single_file=True):
         lund_content = ""
         try:
@@ -160,7 +161,7 @@ def Lund_Downloader(lund_url_base,lund_download_dir,lund_filename,single_file=Tr
             if not single_file:
                 full_lund_path += "/"+lund_filename
             lund_raw_text = html_reader.html_reader(full_lund_path)[0]#This returns a tuple, we need the contents of the tuple
-            lund_raw_text = str(lund_raw_text).decode('ascii') # This might not be needed, converts from bytes to strings
+            lund_raw_text = str(lund_raw_text.decode('ascii')) # This might not be needed, converts from bytes to strings
             lund_content = lund_raw_text.replace('"',"'") # This isn't strictly needed but SQLite can't read " into data fields, only ' characters
             #print("Downloaded {}".format(full_lund_path))
         except Exception as e:
