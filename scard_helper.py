@@ -15,20 +15,19 @@ class scard_class:
     def __init__(self,scard_text):
         self.name = 'scard.txt'
 
-        #Define scard properties:
+        # Define scard properties:
         self.project = None
-
-
-        #This is likely not needed anymore
-        self.farm_name = None
-        
         self.configuration = None
         self.generator = None
+        self.gemcv = None
+        self.coatjavav = None
+
         self.generatorOUT = None
         self.gemcEvioOUT = None
         self.gemcHipoOUT = None
         self.reconstructionOUT = None
         self.dstOUT = None
+
         self.jobs = None
         self.genOptions = None
         self.nevents = None
@@ -57,7 +56,9 @@ class scard_class:
 
 
     def parse_scard(self, scard_text):
+
         scard_lines = scard_text.split("\n")
+
         for linenum, line in enumerate(scard_lines):
             if not line:
               print("Reached end of scard")
@@ -73,8 +74,12 @@ class scard_class:
 
     
             setattr(self,key,value)
-        
-        
+
+        softwarevs = getattr(self,"softwarev")
+        gemca, coatjavaa, dummy = softwarevs.split(" ")
+        self.gemv = gemca[5:]
+        self.coatjavav = coatjavaa[10:]
+
         magfields = getattr(self,"fields")
         tor, sol = magfields.split("_")
         tor_val = tor[3:]
