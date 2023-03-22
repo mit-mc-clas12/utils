@@ -19,8 +19,8 @@ class scard_class:
         self.project = None
         self.configuration = None
         self.generator = None
-        self.gemcv = None
-        self.coatjavav = None
+        self.gemcv = 'na'
+        self.coatjavav = 'na'
 
         self.generatorOUT = None
         self.gemcEvioOUT = None
@@ -44,6 +44,9 @@ class scard_class:
         self.solenoid = None
         self.submission = None
         self.bkmerging = None
+
+        self.softwarev = 'na na na'
+        self.farm_name = 'na'
 
         self.parse_scard(scard_text)
 
@@ -76,9 +79,12 @@ class scard_class:
             setattr(self,key,value)
 
         softwarevs = getattr(self,"softwarev")
-        gemca, coatjavaa, dummy = softwarevs.split(" ")
-        self.gemv = gemca[5:]
-        self.coatjavav = coatjavaa[10:]
+        print(f'Software Versions: {softwarevs}')
+        gemca, coatjavaa, dummy = softwarevs.split(' ', 2)
+        self.gemcv = gemca[5:]
+        self.coatjavav = coatjavaa[9:]
+        print(f'GEMC Version: {self.gemcv}, COATJAVA Version: {self.coatjavav} ')
+
 
         magfields = getattr(self,"fields")
         tor, sol = magfields.split("_")
