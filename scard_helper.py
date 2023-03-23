@@ -21,6 +21,9 @@ class scard_class:
         self.generator = None
         self.gemcv = 'na'
         self.coatjavav = 'na'
+        self.jdkv = '17.0.2'
+        self.rootv = '6.26.10'
+        self.mcgenv = '2.22b'
 
         self.generatorOUT = None
         self.gemcEvioOUT = None
@@ -79,11 +82,16 @@ class scard_class:
             setattr(self,key,value)
 
         softwarevs = getattr(self,"softwarev")
-        print(f'Software Versions: {softwarevs}')
+        print(f'Selected Software Versions: {softwarevs}')
         gemca, coatjavaa, dummy = softwarevs.split(' ', 2)
         self.gemcv = gemca[5:]
         self.coatjavav = coatjavaa[9:]
-        print(f'GEMC Version: {self.gemcv}, COATJAVA Version: {self.coatjavav} ')
+        print(f'GEMC Version: {self.gemcv}')
+        print(f'COATJAVA Version: {self.coatjavav} ')
+        print(f'JDK Version: {self.jdkv} ')
+        print(f'ROOT Version: {self.rootv} ')
+        print(f'MCGEN Version: {self.mcgen} ')
+
 
 
         magfields = getattr(self,"fields")
