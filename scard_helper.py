@@ -90,7 +90,7 @@ class scard_class:
         print(f'COATJAVA Version: {self.coatjavav} ')
         print(f'JDK Version: {self.jdkv} ')
         print(f'ROOT Version: {self.rootv} ')
-        print(f'MCGEN Version: {self.mcgen} ')
+        print(f'MCGEN Version: {self.mcgenv} ')
 
 
 
