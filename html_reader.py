@@ -4,8 +4,6 @@
 """
 #****************************************************************
 
-
-
 import utils, fs
 
 def html_reader(url_dir,data_identifier=["",]):
@@ -29,15 +27,22 @@ def html_reader(url_dir,data_identifier=["",]):
 
     class MyHTMLParser(HTMLParser):
         def handle_starttag(self, tag, attrs):
-            #print("Encountered a start tag: {0}".format(tag))
+            if 'a' in tag:
+              for name, value in attrs:
+                if name == "href":
+                   if any([ext in value for ext in data_identifier]):
+                     urls.append(value)
+
             pass
         def handle_endtag(self, tag):
-            #print("Encountered an end tag: {0}".format(tag))
+            #print("End tag  :", tag)
             pass
         def handle_data(self, data):
+            # print("Data     :", data)
             #print("Encountered some data  : {0}".format(data))
-            if any([ext in data for ext in data_identifier]):
-                urls.append(data)
+            #if any([ext in data for ext in data_identifier]):
+            #    urls.append(data)
+            pass
 
     raw_html = response.read()
     parser = MyHTMLParser()
