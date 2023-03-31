@@ -50,6 +50,7 @@ class scard_class:
 
         self.softwarev = 'na na na'
         self.farm_name = 'na'
+        self.digi_variation = 'default'
 
         self.parse_scard(scard_text)
 
@@ -92,8 +93,6 @@ class scard_class:
         print(f'ROOT Version: {self.rootv} ')
         print(f'MCGEN Version: {self.mcgenv} ')
 
-
-
         magfields = getattr(self,"fields")
         tor, sol = magfields.split("_")
         tor_val = tor[3:]
@@ -102,9 +101,30 @@ class scard_class:
         self.torus = tor_val
         self.solenoid = sol_val
 
-        #set coatjava version attribute
+        # deprecated
         self.coatjavaVersion = fs.coatjavaVersion[getattr(self,"configuration")]
-
+       
+        if self.configuration == rgk_fall2018_FTOff:
+          self.digi_variation = rga_fall2018_bg
+        if self.configuration == rgf_spring2020:
+          self.digi_variation = rgf_spring2020_mc
+        if self.configuration == rgk_fall2018_FTOn:
+          self.digi_variation = rga_fall2018_bg
+        if self.configuration == rgc:
+          self.digi_variation = rga_fall2018_bg
+        if self.configuration == rga_fall2018:
+          self.digi_variation = rga_fall2018_bg
+        if self.configuration == rga_spring2019:
+          self.digi_variation = rga_fall2018_bg
+        if self.configuration == rgb_spring2019:
+          self.digi_variation = rga_fall2018_bg
+        if self.configuration == rga_spring2018:
+          self.digi_variation = rga_spring2018_mc
+        if self.configuration == clas12-default:
+          self.digi_variation = default
+        if self.configuration == rgb_fall2019:
+          self.digi_variation = rga_fall2018_bg
+          
         # Set event generator executable and output to null if the
         # generator doesn't exist in our container.  We are
         # trying to keep the client agnostic to SCard type.
