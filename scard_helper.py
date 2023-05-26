@@ -25,6 +25,11 @@ class scard_class:
         self.rootv = '6.26.10'
         self.mcgenv = '2.22b'
 
+        # options to be passed to gemc
+        self.vertex_z = '0*cm, 0*cm'
+        self.beamspot = '0.0*mm, 0.0*mm,  0.0*mm, 0.0*mm,  0*deg'
+        self.raster = '0*cm, 0*cm'
+
         self.generatorOUT = None
         self.gemcEvioOUT = None
         self.gemcHipoOUT = None
@@ -124,7 +129,24 @@ class scard_class:
           self.digi_variation = 'default'
         if self.configuration == "rgb_fall2019":
           self.digi_variation = 'rga_fall2018_bg'
-          
+
+
+        vertex_choice = getattr(self,"vertex_choice")
+        vertex_z_selection = getattr(self,"zposition")
+        beamspot_selection = getattr(self,"raster")
+        raster_selection = getattr(self,"beam")
+
+        if vertex_choice == "0":
+            self.vertex_z = vertex_z_selection + ', reset" '
+            self.beamspot = beamspot_selection + ', reset" '
+            self.raster   = raster_selection + ', reset" '
+        else:
+            self.vertex_z = vertex_z_selection
+            self.beamspot = beamspot_selection
+            self.raster = raster_selection
+
+
+
         # Set event generator executable and output to null if the
         # generator doesn't exist in our container.  We are
         # trying to keep the client agnostic to SCard type.
