@@ -96,9 +96,8 @@ class scard_class:
     
             setattr(self, key, value)
 
-        softwarevs = getattr(self,"softwarev")
-        print(f'Selected Software Versions: {softwarevs}')
-        gemca, coatjavaa, dummy = softwarevs.split(' ', 2)
+        print(f'Selected Software Version String: {self.softwarev}')
+        gemca, coatjavaa, dummy = self.softwarev.split(' ', 2)
         self.gemcv = gemca[5:]
         self.coatjavav = coatjavaa[9:]
         print(f'GEMC Version: {self.gemcv}')
