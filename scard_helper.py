@@ -96,15 +96,17 @@ class scard_class:
     
             setattr(self, key, value)
 
-        print(f'Selected Software Version String: {self.softwarev}')
+        # python 2.7 style of formatting
+        # need to go to 3.6!
+        print('Selected Software Version String: "{}"'.format(self.softwarev))
         gemca, coatjavaa, dummy = self.softwarev.split(' ', 2)
         self.gemcv = gemca[5:]
         self.coatjavav = coatjavaa[9:]
-        print(f'GEMC Version: {self.gemcv}')
-        print(f'COATJAVA Version: {self.coatjavav} ')
-        print(f'JDK Version: {self.jdkv} ')
-        print(f'ROOT Version: {self.rootv} ')
-        print(f'MCGEN Version: {self.mcgenv} ')
+        print('GEMC Version: "{}"'.format(self.gemcv))
+        print('COATJAVA Version: "{}"'.format(self.coatjavav))
+        print('JDK Version: "{}"'.format(self.jdkv))
+        print('ROOT Version: "{}"'.format(self.rootv))
+        print('MCGEN Version: "{}"'.format(self.mcgenv))
 
         magfields = getattr(self,"fields")
         tor, sol = magfields.split("_")
