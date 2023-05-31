@@ -11,6 +11,8 @@
 import sqlite3, time
 import utils, fs
 
+# TODO: separate the variables to be parsed from the one to be passed to gemc
+
 class scard_class:
     def __init__(self,scard_text):
         self.name = 'scard.txt'
@@ -26,9 +28,9 @@ class scard_class:
         self.mcgenv = '2.22b'
 
         # options to be passed to gemc
-        self.vertex_z = '0*cm, 0*cm'
-        self.beamspot = '0.0*mm, 0.0*mm,  0.0*mm, 0.0*mm,  0*deg'
-        self.raster = '0*cm, 0*cm'
+        self.vertex_z_to_gemc = '0*cm, 0*cm'
+        self.beamspot_to_gemc = '0.0*mm, 0.0*mm,  0.0*mm, 0.0*mm,  0*deg'
+        self.raster_to_gemc = '0*cm, 0*cm'
 
         self.generatorOUT = None
         self.gemcEvioOUT = None
@@ -53,7 +55,14 @@ class scard_class:
         self.submission = None
         self.bkmerging = None
 
-        self.softwarev = 'na na na'
+        # to be parsed from the scard
+        self.softwarev = None
+        self.zposition = None
+        self.raster = None
+        self.beam = None
+        self.vertex_choice = None
+
+
         self.farm_name = 'na'
         self.digi_variation = 'default'
 
@@ -85,7 +94,7 @@ class scard_class:
                   # utils.printer("That line must have the key '{0}'.".format(fs.scard_key[linenum]))
 
     
-            setattr(self,key,value)
+            setattr(self, key, value)
 
         softwarevs = getattr(self,"softwarev")
         print(f'Selected Software Versions: {softwarevs}')
@@ -131,19 +140,19 @@ class scard_class:
           self.digi_variation = 'rga_fall2018_bg'
 
 
-        vertex_choice = getattr(self,"vertex_choice")
-        vertex_z_selection = getattr(self,"zposition")
-        beamspot_selection = getattr(self,"raster")
-        raster_selection = getattr(self,"beam")
+        vertex_choice = getattr(self, "vertex_choice")
+        vertex_z_selection = getattr(self, "zposition")
+        beamspot_selection = getattr(self, "raster")
+        raster_selection = getattr(self, "beam")
 
         if vertex_choice == "0":
-            self.vertex_z = vertex_z_selection + ', reset" '
-            self.beamspot = beamspot_selection + ', reset" '
-            self.raster   = raster_selection + ', reset" '
+            self.vertex_z_to_gemc = vertex_z_selection + ', reset" '
+            self.beamspot_to_gemc = beamspot_selection + ', reset" '
+            self.raster_to_gemc   = raster_selection + ', reset" '
         else:
-            self.vertex_z = vertex_z_selection
-            self.beamspot = beamspot_selection
-            self.raster = raster_selection
+            self.vertex_z_to_gemc = vertex_z_selection
+            self.beamspot_to_gemc = beamspot_selection
+            self.raster_to_gemc = raster_selection
 
 
 
