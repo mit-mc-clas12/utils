@@ -147,9 +147,9 @@ class scard_class:
         raster_selection = getattr(self, "raster")
 
         if vertex_choice == "0":
-            self.vertex_z_to_gemc = vertex_z_selection + ', reset" '
-            self.beamspot_to_gemc = beamspot_selection + ', reset" '
-            self.raster_to_gemc   = raster_selection + ', reset" '
+            self.vertex_z_to_gemc = vertex_z_selection + ', reset '
+            self.beamspot_to_gemc = beamspot_selection + ', reset '
+            self.raster_to_gemc   = raster_selection + ', reset '
         else:
             self.vertex_z_to_gemc = vertex_z_selection
             self.beamspot_to_gemc = beamspot_selection
