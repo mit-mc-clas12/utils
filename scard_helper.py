@@ -64,7 +64,6 @@ class scard_class:
 
 
         self.farm_name = 'na'
-        self.digi_variation = 'default'
 
         self.parse_scard(scard_text)
 
@@ -118,28 +117,6 @@ class scard_class:
 
         # deprecated
         self.coatjavaVersion = fs.coatjavaVersion[getattr(self,"configuration")]
-       
-        if self.configuration == "rgk_fall2018_FTOff":
-          self.digi_variation = 'rga_fall2018_bg'
-        if self.configuration == "rgf_spring2020":
-          self.digi_variation = 'rgf_spring2020_mc'
-        if self.configuration == "rgk_fall2018_FTOn":
-          self.digi_variation = 'rga_fall2018_bg'
-        if self.configuration == "rgc":
-          self.digi_variation = 'rga_fall2018_bg'
-        if self.configuration == "rga_fall2018":
-          self.digi_variation = 'rga_fall2018_bg'
-        if self.configuration == "rga_spring2019":
-          self.digi_variation = 'rga_fall2018_bg'
-        if self.configuration == "rgb_spring2019":
-          self.digi_variation = 'rga_fall2018_bg'
-        if self.configuration == "rga_spring2018":
-          self.digi_variation = 'rga_spring2018_mc'
-        if self.configuration == "clas12-default":
-          self.digi_variation = 'default'
-        if self.configuration == "rgb_fall2019":
-          self.digi_variation = 'rga_fall2018_bg'
-
 
         vertex_choice = getattr(self, "vertex_choice")
         vertex_z_selection = getattr(self, "zposition")
