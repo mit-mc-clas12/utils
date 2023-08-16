@@ -13,7 +13,7 @@ import sys
 from copy import deepcopy
 
 # This project 
-from .database import (get_database_connection, 
+from database import (get_database_connection,
                       load_database_credentials)
 
 class PrioritizedUser:
