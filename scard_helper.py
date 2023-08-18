@@ -98,7 +98,7 @@ class scard_class:
         # python 2.7 style of formatting
         # need to go to 3.6!
         print('Selected Software Version String: "{}"'.format(self.softwarev))
-        gemca, coatjavaa, dummy = self.softwarev.split(' ', 2)
+        gemca, coatjavaa = self.softwarev.split(' ', 2)
         self.gemcv = gemca[5:]
         self.coatjavav = coatjavaa[9:]
         print('GEMC Version: "{}"'.format(self.gemcv))
