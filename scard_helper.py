@@ -46,8 +46,6 @@ class scard_class:
         self.userSubmissionID = None
         self.client_ip = None
 
-        self.coatjavaVersion = "0.0.0"
-        
         self.raw_text = None
         self.fields = None
         self.torus = None
@@ -114,9 +112,6 @@ class scard_class:
 
         self.torus = tor_val
         self.solenoid = sol_val
-
-        # deprecated
-        self.coatjavaVersion = fs.coatjavaVersion[getattr(self,"configuration")]
 
         vertex_choice = getattr(self, "vertex_choice")
         vertex_z_selection = getattr(self, "zposition")
