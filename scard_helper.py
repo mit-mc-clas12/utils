@@ -25,7 +25,7 @@ class scard_class:
         self.coatjavav = 'na'
         self.jdkv = '17.0.2'
         self.rootv = '6.26.10'
-        self.mcgenv = '2.31'
+        self.mcgenv = '2.23'
 
         # options to be passed to gemc
         self.vertex_z_to_gemc = '0*cm, 0*cm'
