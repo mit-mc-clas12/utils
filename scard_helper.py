@@ -61,7 +61,7 @@ class scard_class:
         self.vertex_choice = None
 
 
-        self.farm_n/ame = 'n/a'
+        self.farm_name = 'n/a'
 
         self.parse_scard(scard_text)
 
