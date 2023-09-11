@@ -21,11 +21,10 @@ class scard_class:
         self.project = None
         self.configuration = None
         self.generator = None
-        self.gemcv = 'na'
-        self.coatjavav = 'na'
+        self.gemcv = 'n/a'
+        self.coatjavav = 'n/a'
         self.jdkv = '17.0.2'
         self.rootv = '6.26.10'
-        self.mcgenv = '2.31'
 
         # options to be passed to gemc
         self.vertex_z_to_gemc = '0*cm, 0*cm'
@@ -55,13 +54,14 @@ class scard_class:
 
         # to be parsed from the scard
         self.softwarev = None
+        self.mcgenv = None
         self.zposition = None
         self.raster = None
         self.beam = None
         self.vertex_choice = None
 
 
-        self.farm_name = 'na'
+        self.farm_n/ame = 'n/a'
 
         self.parse_scard(scard_text)
 
@@ -101,9 +101,9 @@ class scard_class:
         self.coatjavav = coatjavaa[9:]
         print('GEMC Version: "{}"'.format(self.gemcv))
         print('COATJAVA Version: "{}"'.format(self.coatjavav))
+        print('MCGEN Version: "{}"'.format(self.mcgenv))
         print('JDK Version: "{}"'.format(self.jdkv))
         print('ROOT Version: "{}"'.format(self.rootv))
-        print('MCGEN Version: "{}"'.format(self.mcgenv))
 
         magfields = getattr(self,"fields")
         tor, sol = magfields.split("_")
