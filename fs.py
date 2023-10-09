@@ -1,4 +1,4 @@
-#****************************************************************
+# ****************************************************************
 """
 # File Structure (fs)
 # This file is the central location for this software information. It includes:
@@ -18,29 +18,33 @@
 # - other specifications, including:
 #      - mapping between scard generator keyword and genOutput & genExecutable
 """
-#****************************************************************
+# ****************************************************************
 
 
-import sqlite3, os, datetime
+# import sqlite3, os, datetime
+import os
 
-import gcard_helper
+# import gcard_helper
 
 """*****************************************************************************
 ------------------------ Submission File Specifications ------------------------
 *****************************************************************************"""
+
+
 # Create a class for all submission files. There are other ways to store this information
 # But a class seemed like a reasonable way to go, so if we want to add more
 # submission files we can just create a new submission file object.
 # We don't need to declare any fields in the class constructor but it helps code readability
 
-class sub_file():
-  def __init__(self,name):
-    self.name = name
-    self.file_path = -1
-    self.file_base = -1
-    self.file_end = -1
-    self.overwrite_vals = -1
-    self.file_text_fieldname = -1
+class sub_file:
+	def __init__(self, name):
+		self.name = name
+		self.file_path = -1
+		self.file_base = -1
+		self.file_end = -1
+		self.overwrite_vals = -1
+		self.file_text_fieldname = -1
+
 
 # There might be a more succient way to create these objects, but for now this works
 runscript_file_obj = sub_file('runscript.sh')
@@ -53,15 +57,15 @@ condor_file_obj.file_base = 'clas12'
 condor_file_obj.file_end = '.condor'
 condor_file_obj.file_text_fieldname = 'clas12_condor_text'
 
-#run_job_obj = sub_file('run_job')
-#run_job_obj.file_base = 'run_job'
-#run_job_obj.file_end = '.sh'
-#run_job_obj.file_text_fieldname = 'run_job_text'
+# run_job_obj = sub_file('run_job')
+# run_job_obj.file_base = 'run_job'
+# run_job_obj.file_end = '.sh'
+# run_job_obj.file_text_fieldname = 'run_job_text'
 #
-#cw_obj = sub_file('condor_wrapper')
-#cw_obj.file_base = 'condor_wrapper'
-#cw_obj.file_end = ''
-#cw_obj.file_text_fieldname = 'condor_wrapper_text'
+# cw_obj = sub_file('condor_wrapper')
+# cw_obj.file_base = 'condor_wrapper'
+# cw_obj.file_end = ''
+# cw_obj.file_text_fieldname = 'condor_wrapper_text'
 
 """*****************************************************************************
 -------------------------  DB Schema Specification -----------------------------
@@ -74,22 +78,21 @@ db_hostname = 'jsubmit.jlab.org'
 prod_db_cred_file = '/../msqlrw.txt'
 test_db_cred_file = '/../msqlrw.txt'
 
-
 tables = ['users', 'submissions', 'job_queue']
 pks = ['user_id', 'user_submission_id', 'entry']
-user_fields = (('user','TEXT'), ('domain_name','TEXT'), ('join_date','TEXT'),
-               ('priority','INT'), ('total_running_jobs','INT'),
-               ('priority_weight','FLOAT'), ('condor_rank','INT'))
+user_fields = (('user', 'TEXT'), ('domain_name', 'TEXT'), ('join_date', 'TEXT'),
+               ('priority', 'INT'), ('total_running_jobs', 'INT'),
+               ('priority_weight', 'FLOAT'), ('condor_rank', 'INT'))
 submissions_fields = (
-  ('user','TEXT'), ('client_time','TEXT'), ('scard','TEXT'),
-  ('client_ip','TEXT'), ('server_time','TEXT'),
-  ('pool_node','TEXT'), ('run_status','TEXT'),
-  (runscript_file_obj.file_text_fieldname,'TEXT'),
-  (condor_file_obj.file_text_fieldname,'TEXT')
+	('user', 'TEXT'), ('client_time', 'TEXT'), ('scard', 'TEXT'),
+	('client_ip', 'TEXT'), ('server_time', 'TEXT'),
+	('pool_node', 'TEXT'), ('run_status', 'TEXT'),
+	(runscript_file_obj.file_text_fieldname, 'TEXT'),
+	(condor_file_obj.file_text_fieldname, 'TEXT')
 )
-job_queue_fields = (('total','INT'), ('update_time','TEXT'),
-                        ('run', 'INT'), ('hold', 'INT'), ('idle', 'INT'),
-                        ('done', 'INT'), ('osg_id', 'INT'), ('submitted', 'INT'))
+job_queue_fields = (('total', 'INT'), ('update_time', 'TEXT'),
+                    ('run', 'INT'), ('hold', 'INT'), ('idle', 'INT'),
+                    ('done', 'INT'), ('osg_id', 'INT'), ('submitted', 'INT'))
 
 user_foreign_keys = ""
 submission_foreign_keys = """, user_id INT, FOREIGN KEY(user_id) REFERENCES users(user_id)"""
@@ -100,56 +103,55 @@ table_fields = [user_fields, submissions_fields, job_queue_fields]
 """*****************************************************************************
 -------------------- Scard and Runscripts Specifications -----------------------
 *****************************************************************************"""
-#This defines the ordering and items that need to be in scard.txt
+# This defines the ordering and items that need to be in scard.txt
 
-scard_key = ('scardID', 'userSubmissionID', 'project',   'farm_name', 'generator',
-            'genOptions', 'nevents',  'configuration',    'luminosity',
-				'tcurrent',   'pcurrent', 'cores_req',' mem_req','jobs', 'fields', 'bkmerging','client_ip',)
+scard_key = ('scardID', 'userSubmissionID', 'project', 'farm_name', 'generator',
+             'genOptions', 'nevents', 'configuration', 'luminosity',
+             'tcurrent', 'pcurrent', 'cores_req', ' mem_req', 'jobs', 'fields', 'bkmerging', 'client_ip',)
 
-#This defines the variables that will be written out to submission scripts and maps to DB values
-condor_file_obj.overwrite_vals = {'project_scard':'project','jobs_scard':'jobs',
-                          'cores_req_scard':'cores_req','mem_req_scard':'mem_req','nevents_scard': 'nevents'}
+# This defines the variables that will be written out to submission scripts and maps to DB values
+condor_file_obj.overwrite_vals = {'project_scard': 'project', 'jobs_scard': 'jobs',
+                                  'cores_req_scard': 'cores_req', 'mem_req_scard': 'mem_req', 'nevents_scard': 'nevents'}
 
-#This does not go through the database, but instead just replaces runscript.overwrite with the file location
-#Note that the value here is unimportant, as the overwrite value that is used is generated in sub_script_generator.py
+# This does not go through the database, but instead just replaces runscript.overwrite with the file location
+# Note that the value here is unimportant, as the overwrite value that is used is generated in sub_script_generator.py
 # obsolete?
-#run_job_obj.overwrite_vals  = {'runscript.overwrite': 'rs_overwrite_unused'}
+# run_job_obj.overwrite_vals  = {'runscript.overwrite': 'rs_overwrite_unused'}
 
-#This is unused currently as the condor_wrapper does not need any unique filenames
+# This is unused currently as the condor_wrapper does not need any unique filenames
 # cw_obj.overwrite_vals = {}
 
 """*****************************************************************************
 ------------------------- File Path Specifications -----------------------------
 *****************************************************************************"""
 
-dirname = os.path.dirname(os.path.abspath(__file__))#os.path.dirname(__file__)
+dirname = os.path.dirname(os.path.abspath(__file__))  # os.path.dirname(__file__)
 
-#Specify the location of where all submission files live (runscripts, gcards,etc)
-sub_files_path = dirname+'/../server/submission_files/generated_files/'
-#Specify the location of the DB relative to here (This will get changed when moving to SQL RDBMS)
+# Specify the location of where all submission files live (runscripts, gcards,etc)
+sub_files_path = dirname + '/../server/submission_files/generated_files/'
+# Specify the location of the DB relative to here (This will get changed when moving to SQL RDBMS)
 
 # To Do: the sql lite database should be used only in "test" mode
 # This variable can bet set with a command line argument, for example: -testDB=../CLAS12_OCRDB.db
 # The argument should be handled by both the client and server
 
 use_mysql = True
-mysql_uname  = "Null_User"
-mysql_psswrd =  "Null_Password"
-MySQL_DB_path  = "jsubmit.jlab.org"
+mysql_uname = "Null_User"
+mysql_psswrd = "Null_Password"
+MySQL_DB_path = "jsubmit.jlab.org"
 SQLite_DB_path = dirname + '/../tests/test.sqlite'
 
 # Specify the location of the scard
-scard_path = dirname+"/../client/"
-
+scard_path = dirname + "/../client/"
 
 # Specify scard name
 scard_name = 'scard.txt'
 
 # Specify the directory names of all submission files
 gcards_dir = 'gcards/'
-condor_file_obj.file_path    = sub_files_path+'condor_files/'
-runscript_file_obj.file_path = sub_files_path+'runscript_files/'
-#run_job_obj.file_path        = sub_files_path+'run_job_files/'
+condor_file_obj.file_path = sub_files_path + 'condor_files/'
+runscript_file_obj.file_path = sub_files_path + 'runscript_files/'
+# run_job_obj.file_path        = sub_files_path+'run_job_files/'
 # cw_obj.file_path             = sub_files_path+'condor_wrapper_files/' # This is not currently used / needed, but included for completeness
 
 """*****************************************************************************
@@ -159,26 +161,29 @@ runscript_file_obj.file_path = sub_files_path+'runscript_files/'
 # Definition of valid scard types. Explainations for these types can be found in the documentation.
 valid_scard_types = [1, 2, 3, 4]
 
-#Below is for gemc json logging
+# Below is for gemc json logging
 default_osg_json_log = "osgLog.json"
-user_data_keys = ["user",  "job id","submitted", "total", "done", "run", "idle", "hold","osg id"]
-null_user_info = ["No user", "No ID", "No data", "No data","No data" ,"No data","No data","No data","No ID"]
+user_data_keys = ["user", "job id", "submitted", "total", "done", "run", "idle", "hold", "osg id"]
+null_user_info = ["No user", "No ID", "No data", "No data", "No data", "No data", "No data", "No data", "No ID"]
 
 # Notice: we need to remove all this now that the generators satisfy naming requirements
-genOutput     =  {'clasdis': 'clasdis.dat', 'MCEGENpiN_radcorr': 'MCEGENpiN_radcorr.dat', 'claspyth': 'claspyth.dat', 'dvcsgen': 'dvcsgen.dat', 'genKYandOnePion': 'genKYandOnePion.dat', 'inclusive-dis-rad':'inclusive-dis-rad.dat' , 'JPsiGen':'JPsiGen.dat', 'TCSGen':'TCSGen.dat', 'twopeg':'twopeg.dat', 'clas12-elSpectro':'clas12-elSpectro.dat', 'deep-pipi-gen': 'deep-pipi-gen.dat', 'genepi': 'genepi.dat', 'gemc': 'gemc'}
-genExecutable =  {'clasdis': 'clasdis'  ,   'MCEGENpiN_radcorr': 'MCEGENpiN_radcorr',     'claspyth': 'claspyth',     'dvcsgen': 'dvcsgen'    , 'genKYandOnePion': 'genKYandOnePion'    , 'inclusive-dis-rad':'inclusive-dis-rad',      'JPsiGen':'JPsiGen',     'TCSGen':'TCSGen',     'twopeg':'twopeg',     'clas12-elSpectro':'clas12-elSpectro',     'deep-pipi-gen': 'deep-pipi-gen',     'genepi': 'genepi',     'gemc': 'gemc'}
+genOutput = {'clasdis': 'clasdis.dat', 'MCEGENpiN_radcorr': 'MCEGENpiN_radcorr.dat', 'claspyth': 'claspyth.dat', 'dvcsgen': 'dvcsgen.dat', 'genKYandOnePion': 'genKYandOnePion.dat',
+             'inclusive-dis-rad': 'inclusive-dis-rad.dat', 'JPsiGen': 'JPsiGen.dat', 'TCSGen': 'TCSGen.dat', 'twopeg': 'twopeg.dat', 'clas12-elSpectro': 'clas12-elSpectro.dat', 'deep-pipi-gen': 'deep-pipi-gen.dat',
+             'genepi': 'genepi.dat', 'onepigen': 'onepigen.dat', 'gemc': 'gemc'}
+genExecutable = {'clasdis': 'clasdis', 'MCEGENpiN_radcorr': 'MCEGENpiN_radcorr', 'claspyth': 'claspyth', 'dvcsgen': 'dvcsgen', 'genKYandOnePion': 'genKYandOnePion', 'inclusive-dis-rad': 'inclusive-dis-rad',
+                 'JPsiGen': 'JPsiGen', 'TCSGen': 'TCSGen', 'twopeg': 'twopeg', 'clas12-elSpectro': 'clas12-elSpectro', 'deep-pipi-gen': 'deep-pipi-gen', 'genepi': 'genepi', 'onepigen': 'onepigen', 'gemc': 'gemc'}
 
 # This is the debug variable for print statments - 0 = no messages, 1 = some, 2 = all messages. Initalized to 1
 DEBUG = 0
 debug_short = '-d'
 debug_long = 'debug'
-debug_longdash ='--'+debug_long
+debug_longdash = '--' + debug_long
 debug_default = DEBUG
 debug_help = help = """0 (default) - no messages,1 - general messages,
                     2 - all messages, all reads and writes into and out of the database"""
 
-gcard_identifying_text = '.gcard' # For use in gcard_helper.py
+gcard_identifying_text = '.gcard'  # For use in gcard_helper.py
 gcard_default = '/jlab/clas12Tags/gcards/clas12-default.gcard'
 
-lund_identifying_text = '.txt' #For use in gcard_helper.py
+lund_identifying_text = '.txt'  # For use in gcard_helper.py
 lund_default = ""
