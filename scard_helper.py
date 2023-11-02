@@ -1,20 +1,21 @@
-#****************************************************************
+# ****************************************************************
 """
 # This file reads the text of the scard, validates the information,
 # and writes it into the scard table in the database.
 # Some effort should be developed to sanitize the scard to prevent
 # against sql injection attacks
 """
-#****************************************************************
+# ****************************************************************
 
 
-import sqlite3, time
-import utils, fs
+import fs
+import utils
+
 
 # TODO: separate the variables to be parsed from the one to be passed to gemc
 
 class scard_class:
-    def __init__(self,scard_text):
+    def __init__(self, scard_text):
         self.name = 'scard.txt'
 
         # Define scard properties:
@@ -36,6 +37,7 @@ class scard_class:
         self.gemcHipoOUT = None
         self.reconstructionOUT = None
         self.dstOUT = None
+        self.user_string = None
 
         self.jobs = None
         self.genOptions = None
@@ -59,8 +61,6 @@ class scard_class:
         self.raster = None
         self.beam = None
         self.vertex_choice = None
-
-
         self.farm_name = 'n/a'
 
         self.parse_scard(scard_text)
@@ -69,7 +69,7 @@ class scard_class:
         print("Here are all the attributes of {}".format(self.name))
         #print(self.__dict__)
         for key in self.__dict__:
-            print('"{}" has value "{}"'.format(key,self.__dict__[key]))
+            print('"{}" has value "{}"'.format(key, self.__dict__[key]))
 
 
 
@@ -79,12 +79,12 @@ class scard_class:
 
         for linenum, line in enumerate(scard_lines):
             if not line:
-              print("Reached end of scard")
-              break
+                print("Reached end of scard")
+                break
             pos_delimeter_colon = line.find(":")
             key   =  line[:pos_delimeter_colon].strip()
             value =  line[pos_delimeter_colon+1:].strip()
-            if key == "generator" and not 'http' in value:
+            if key == "generator" and 'http' not in value:
               if key != fs.scard_key[linenum]:
                   pass
                   # utils.printer("ERROR: Line {0} of the steering card has the key '{1}''.".format(linenum+1,key))
@@ -105,7 +105,7 @@ class scard_class:
         print('JDK Version: "{}"'.format(self.jdkv))
         print('ROOT Version: "{}"'.format(self.rootv))
 
-        magfields = getattr(self,"fields")
+        magfields = getattr(self, "fields")
         tor, sol = magfields.split("_")
         tor_val = tor[3:]
         sol_val = sol[3:]
@@ -117,6 +117,7 @@ class scard_class:
         vertex_z_selection = getattr(self, "zposition")
         beamspot_selection = getattr(self, "beam")
         raster_selection = getattr(self, "raster")
+        user_string_id = getattr(self, "string_id")
 
         if vertex_choice == "0":
             self.vertex_z_to_gemc = vertex_z_selection + ', reset '
@@ -127,7 +128,8 @@ class scard_class:
             self.beamspot_to_gemc = beamspot_selection
             self.raster_to_gemc = raster_selection
 
-
+        if user_string_id != "":
+            self.user_string = user_string_id
 
         # Set event generator executable and output to null if the
         # generator doesn't exist in our container.  We are
@@ -143,13 +145,13 @@ class scard_class:
         """
 
     def validate_scard_line(self, linenum, line):
-        if line.count("#") ==0:
+        if line.count("#") == 0:
             utils.printer("Warning: No comment in line {0}.".format(linenum+1))
-        elif line.count("#")>1:
+        elif line.count("#") > 1:
             utils.printer("ERROR: number of hashes>1 in line {0}".format(linenum+1))
             utils.printer("# can be used only as a delimeter and only once per line. Edit scard to fix.")
             #exit() No longer mandating hastags as a format as of 20200708
-        if line.count(":") ==0:
+        if line.count(":") == 0:
             utils.printer("ERROR: No colon in line {0}".format(linenum+1))
             utils.printer("The data cannot be interpreted. Stopped.")
             exit()
