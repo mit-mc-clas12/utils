@@ -129,7 +129,7 @@ class scard_class:
             self.raster_to_gemc = raster_selection
 
         if user_string_id != "":
-            self.user_string = user_string_id
+            self.user_string = user_string_id + '-'
 
         # Set event generator executable and output to null if the
         # generator doesn't exist in our container.  We are
