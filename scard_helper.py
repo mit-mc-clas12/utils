@@ -37,7 +37,7 @@ class scard_class:
         self.gemcHipoOUT = None
         self.reconstructionOUT = None
         self.dstOUT = None
-        self.user_string = None
+        self.user_string = ''
 
         self.jobs = None
         self.genOptions = None
