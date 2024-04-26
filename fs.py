@@ -107,11 +107,13 @@ table_fields = [user_fields, submissions_fields, job_queue_fields]
 
 scard_key = ('scardID', 'userSubmissionID', 'project', 'farm_name', 'generator',
              'genOptions', 'nevents', 'configuration', 'luminosity',
-             'tcurrent', 'pcurrent', 'cores_req', ' mem_req', 'jobs', 'fields', 'bkmerging', 'client_ip',)
+             'tcurrent', 'pcurrent', 'cores_req', ' mem_req', 'jobs', 'fields', 'bkmerging',
+             'client_ip',)
 
 # This defines the variables that will be written out to submission scripts and maps to DB values
-condor_file_obj.overwrite_vals = {'project_scard': 'project', 'jobs_scard': 'jobs',
-                                  'cores_req_scard': 'cores_req', 'mem_req_scard': 'mem_req', 'nevents_scard': 'nevents'}
+condor_file_obj.overwrite_vals = {'project_scard':   'project', 'jobs_scard': 'jobs',
+                                  'cores_req_scard': 'cores_req', 'mem_req_scard': 'mem_req',
+                                  'nevents_scard':   'nevents'}
 
 # This does not go through the database, but instead just replaces runscript.overwrite with the file location
 # Note that the value here is unimportant, as the overwrite value that is used is generated in sub_script_generator.py
@@ -164,14 +166,39 @@ valid_scard_types = [1, 2, 3, 4]
 # Below is for gemc json logging
 default_osg_json_log = "osgLog.json"
 user_data_keys = ["user", "job id", "submitted", "total", "done", "run", "idle", "hold", "osg id"]
-null_user_info = ["No user", "No ID", "No data", "No data", "No data", "No data", "No data", "No data", "No ID"]
+null_user_info = ["No user", "No ID", "No data", "No data", "No data", "No data", "No data",
+                  "No data", "No ID"]
 
 # Notice: we need to remove all this now that the generators satisfy naming requirements
-genOutput = {'clasdis': 'clasdis.dat', 'MCEGENpiN_radcorr': 'MCEGENpiN_radcorr.dat', 'claspyth': 'claspyth.dat', 'dvcsgen': 'dvcsgen.dat', 'genKYandOnePion': 'genKYandOnePion.dat',
-             'inclusive-dis-rad': 'inclusive-dis-rad.dat', 'JPsiGen': 'JPsiGen.dat', 'TCSGen': 'TCSGen.dat', 'twopeg': 'twopeg.dat', 'clas12-elSpectro': 'clas12-elSpectro.dat', 'deep-pipi-gen': 'deep-pipi-gen.dat',
-             'genepi': 'genepi.dat', 'onepigen': 'onepigen.dat', 'gemc': 'gemc'}
-genExecutable = {'clasdis': 'clasdis', 'MCEGENpiN_radcorr': 'MCEGENpiN_radcorr', 'claspyth': 'claspyth', 'dvcsgen': 'dvcsgen', 'genKYandOnePion': 'genKYandOnePion', 'inclusive-dis-rad': 'inclusive-dis-rad',
-                 'JPsiGen': 'JPsiGen', 'TCSGen': 'TCSGen', 'twopeg': 'twopeg', 'clas12-elSpectro': 'clas12-elSpectro', 'deep-pipi-gen': 'deep-pipi-gen', 'genepi': 'genepi', 'onepigen': 'onepigen', 'gemc': 'gemc'}
+genOutput = {'clasdis':           'clasdis.dat',
+             'MCEGENpiN_radcorr': 'MCEGENpiN_radcorr.dat',
+             'claspyth':          'claspyth.dat',
+             'dvcsgen':           'dvcsgen.dat',
+             'genKYandOnePion':   'genKYandOnePion.dat',
+             'inclusive-dis-rad': 'inclusive-dis-rad.dat',
+             'JPsiGen':           'JPsiGen.dat',
+             'TCSGen':            'TCSGen.dat',
+             'twopeg':            'twopeg.dat',
+             'clas12-elSpectro':  'clas12-elSpectro.dat',
+             'deep-pipi-gen':     'deep-pipi-gen.dat',
+             'genepi':            'genepi.dat',
+             'onepigen':          'onepigen.dat',
+             'gibuu':             'gibuu.dat',
+             'gemc':              'gemc'}
+genExecutable = {'clasdis':           'clasdis',
+                 'MCEGENpiN_radcorr': 'MCEGENpiN_radcorr',
+                 'claspyth':          'claspyth',
+                 'dvcsgen':           'dvcsgen',
+                 'genKYandOnePion':   'genKYandOnePion',
+                 'inclusive-dis-rad': 'inclusive-dis-rad',
+                 'JPsiGen':           'JPsiGen',
+                 'TCSGen':            'TCSGen',
+                 'twopeg':            'twopeg',
+                 'clas12-elSpectro':  'clas12-elSpectro',
+                 'deep-pipi-gen':     'deep-pipi-gen',
+                 'genepi':            'genepi',
+                 'gibuu':             'gibuu',
+                 'gemc':              'gemc'}
 
 # This is the debug variable for print statments - 0 = no messages, 1 = some, 2 = all messages. Initalized to 1
 DEBUG = 0
