@@ -132,7 +132,10 @@ def Lund_Entry(lund_location, lund_download_dir="lund_dir/"):
             if lund_location[-1] != "/":
                     lund_location += "/"
             if "/lustre19/expphy" not in lund_location and "/lustre/expphy" not in lund_location:
-                    lund_location ='/lustre19/expphy'+lund_location
+                    lund_location ='/lustre/expphy'+lund_location
+            # if lund_location contains lustre19, replace it with lustre
+            lund_location = lund_location.replace("lustre19","lustre")
+
             #print("trying to rsync {}".format(lund_location))
             lund_copy_path = 'gemc@dtn1902:'+lund_location
 
