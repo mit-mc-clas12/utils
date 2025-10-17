@@ -231,9 +231,14 @@ def get_unsubmitted_jobs(sql):
   - ids - list of UserSubmissionID
   """
   query = """
-  SELECT user_submission_id FROM submissions
-  WHERE run_status NOT LIKE '{0}';""".format(
-  "Submitted to%") 
+    SELECT user_submission_id 
+    FROM submissions
+    WHERE run_status NOT LIKE '{0}'
+      AND run_status NOT LIKE '{1}';
+  """.format(
+	  "Submitted to%",
+	  "Submission scripts generated%"
+  )
   sql.execute(query)
 
   return [entry[0] for entry in sql.fetchall()]
