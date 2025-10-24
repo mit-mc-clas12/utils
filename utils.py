@@ -16,7 +16,7 @@ import logging
 import sys
 import calendar
 import fs
-import pymysql
+#import pymysql
 import sqlite3
 
 def getPythonVersion():

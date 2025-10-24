@@ -22,7 +22,9 @@
 """
 #***************************************************************
 
-import utils, fs, html_reader
+from . import html_reader
+from . import utils
+import fs
 
 def db_gcard_write(UserSubmissionID,timestamp,gcard_text):
     strn = "INSERT INTO Gcards(UserSubmissionID) VALUES ({0});".format(UserSubmissionID)
