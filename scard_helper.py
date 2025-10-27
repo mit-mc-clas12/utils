@@ -7,10 +7,9 @@
 """
 # ****************************************************************
 
-
-from . import fs
+from fs import scard_key   # if scard_key is what you use
+import fs
 import utils
-
 
 # TODO: separate the variables to be parsed from the one to be passed to gemc
 
