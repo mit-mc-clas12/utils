@@ -45,6 +45,7 @@ env = os.environ.copy()
 env["XDG_RUNTIME_DIR"] = "/run/user/6635"
 env["BEARER_TOKEN_FILE"] = "/var/run/user/6635/bt_u6635"
 
+
 def Lund_Entry(lund_location, lund_files="lund_files"):
 	valid_lund_extensions = ['.dat', '.txt', '.lund']
 
@@ -53,13 +54,11 @@ def Lund_Entry(lund_location, lund_files="lund_files"):
 		print('Not downloading files due to SCard type.')
 		return lund_location
 
-
 	#######################################################
 	# Use pelican to copy files from a jlab location to OSG
 	#######################################################
 	if '/volatile/clas12' in lund_location:
 		lund_pelican_path = lund_location
-
 
 		# Swap 'volatile' and 'clas12' → '/clas12/volatile/...'
 		#    Example: '/volatile/clas12/user2/exp1/exp2'
@@ -95,9 +94,38 @@ def Lund_Entry(lund_location, lund_files="lund_files"):
 
 	else:
 		raise ValueError(
-			f"lund_location must contain '{required_segment}' with additional subdirectories: {lund_location!r}"
+			f"lund_location must contain /volatile/clas12/ "
 		)
 	return lund_files
+
+
+def count_files(lund_location):
+	"""
+	Use `pelican object ls` on `lund_location` and return
+	the number of entries ending in .txt, .lund, or .dat.
+	"""
+	# Run pelican ls
+	result = subprocess.run(
+		["pelican", "object", "ls", lund_location],
+		stdout=subprocess.PIPE,
+		text=True,
+		check=True,
+	)
+
+	allowed_ext = {".txt", ".lund", ".dat"}
+
+	lines = [
+		line.strip()
+		for line in result.stdout.splitlines()
+		if line.strip()
+	]
+
+	filtered = [
+		line for line in lines
+		if os.path.splitext(line)[1] in allowed_ext
+	]
+
+	return len(filtered)
 
 
 # Lund_Downloader() is a helper function which takes as input:
@@ -140,9 +168,6 @@ def Lund_Downloader(lund_url_base, lund_download_dir, lund_filename, single_file
 			f.write("\n an exception was encountered at {}, see below: \n".format(utils.gettime()))
 			f.write(str(e))
 			f.close()
-
-
-
 
 
 if __name__ == '__main__':
