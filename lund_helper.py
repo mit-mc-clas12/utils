@@ -45,7 +45,6 @@ env["XDG_RUNTIME_DIR"] = "/run/user/6635"
 env["BEARER_TOKEN_FILE"] = "/var/run/user/6635/bt_u6635"
 
 
-
 def _to_pelican_path(lund_location):
     """
     Convert a /volatile/clas12/... path into the corresponding
@@ -111,3 +110,36 @@ def Lund_Entry(lund_location, lund_files="lund_files"):
             f.write('\n'.join(full_paths) + '\n')
 
     return lund_files
+
+
+
+def count_files(lund_location):
+    """
+    Use `pelican object ls` on the *OSDF* version of `lund_location`
+    and return the number of entries ending in .txt, .lund, or .dat.
+    """
+    lund_pelican_path = to_pelican_path(lund_location)
+
+    result = subprocess.run(
+        ["pelican", "object", "ls", lund_pelican_path],
+        stdout=subprocess.PIPE,
+        universal_newlines=True,  # Python 3.6-compatible way to get str output
+        check=True,
+    )
+
+    allowed_ext = {".txt", ".lund", ".dat"}
+
+    # Split lines, strip whitespace, drop empties
+    lines = [
+        line.strip()
+        for line in result.stdout.splitlines()
+        if line.strip()
+    ]
+
+    # Keep only files with allowed extensions
+    filtered = [
+        line for line in lines
+        if os.path.splitext(line)[1] in allowed_ext
+    ]
+
+    return len(filtered)
