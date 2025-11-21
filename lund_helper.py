@@ -45,7 +45,7 @@ env["XDG_RUNTIME_DIR"] = "/run/user/6635"
 env["BEARER_TOKEN_FILE"] = "/var/run/user/6635/bt_u6635"
 
 
-def _to_pelican_path(lund_location):
+def to_pelican_path(lund_location):
     """
     Convert a /volatile/clas12/... path into the corresponding
     osdf:///jlab-osdf/clas12/volatile/... path for pelican.
@@ -71,7 +71,7 @@ def Lund_Entry(lund_location, lund_files="lund_files"):
     #######################################################
     # Use pelican to copy files from a jlab location to OSG
     #######################################################
-    lund_pelican_path = _to_pelican_path(lund_location)
+    lund_pelican_path = to_pelican_path(lund_location)
 
     # Get listing from pelican
     result = subprocess.run(
