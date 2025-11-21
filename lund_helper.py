@@ -125,6 +125,7 @@ def count_files(lund_location):
         stdout=subprocess.PIPE,
         universal_newlines=True,  # Python 3.6-compatible way to get str output
         check=True,
+	    env=env,  # assuming env is defined elsewhere
     )
 
     allowed_ext = {".txt", ".lund", ".dat"}
