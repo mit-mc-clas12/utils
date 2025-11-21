@@ -37,93 +37,94 @@
 """
 # ***************************************************************
 
-import argparse, subprocess, os, sys
-import utils, fs, html_reader
-import glob
+import subprocess, os, sys
+
 
 env = os.environ.copy()
 env["XDG_RUNTIME_DIR"] = "/run/user/6635"
 env["BEARER_TOKEN_FILE"] = "/var/run/user/6635/bt_u6635"
 
 
+def to_pelican_path(lund_location):
+    """
+    Convert a /volatile/clas12/... path into the corresponding
+    osdf:///jlab-osdf/clas12/volatile/... path for pelican.
+    """
+    if '/volatile/clas12/' not in lund_location:
+        raise ValueError("lund_location must contain /volatile/clas12/")
+
+    # Swap 'volatile' and 'clas12' → '/clas12/volatile/...'
+    # Example: '/volatile/clas12/user2/exp1/exp2'
+    #       →  '/clas12/volatile/user2/exp1/exp2'
+    swapped = lund_location.replace('/volatile/clas12/', '/clas12/volatile/', 1)
+
+    # Prefix OSDF
+    return 'osdf:///jlab-osdf' + swapped
+
+
 def Lund_Entry(lund_location, lund_files="lund_files"):
-	valid_lund_extensions = ['.dat', '.txt', '.lund']
+    valid_lund_extensions = ['.dat', '.txt', '.lund']
 
-	# A case used to work around not downloading for types 1/3
-	if lund_location == "no_download":
-		print('Not downloading files due to SCard type.')
-		return lund_location
+    # A case used to work around not downloading for types 1/3
+    if lund_location == "no_download":
+        print('Not downloading files due to SCard type.')
+        return lund_location
 
-	#######################################################
-	# Use pelican to copy files from a jlab location to OSG
-	#######################################################
-	if '/volatile/clas12' in lund_location:
-		lund_pelican_path = lund_location
+    #######################################################
+    # Use pelican to copy files from a jlab location to OSG
+    #######################################################
+    lund_pelican_path = to_pelican_path(lund_location)
 
-		# Swap 'volatile' and 'clas12' → '/clas12/volatile/...'
-		#    Example: '/volatile/clas12/user2/exp1/exp2'
-		#          →  '/clas12/volatile/user2/exp1/exp2'
-		lund_pelican_path = lund_pelican_path.replace(
-			"/volatile/clas12/", "/clas12/volatile/", 1
-		)
+    # write list of files, filter, and save to lund_files
+    result = subprocess.run(
+        ['pelican', 'object', 'ls', lund_pelican_path],
+        env=env,                     # assuming env is defined elsewhere
+        stdout=subprocess.PIPE,
+        universal_newlines=True,     # Python 3.6-compatible
+        check=True,
+    )
 
-		# Prefix 'osdf:///hello-osdf/' to lund_pelican_path
-		#    Result: 'osdf:///hello-osdf/clas12/volatile/...'
-		lund_pelican_path = "osdf:///jlab-osdf" + lund_pelican_path
+    allowed_ext = {'.txt', '.lund', '.dat'}
 
-		# write list of files, filter, and save to 'tmp_lund_files'
-		result = subprocess.run(
-			['pelican', 'object', 'ls', lund_pelican_path],
-			env=env,
-			stdout=subprocess.PIPE,
-			text=True,
-			check=True,
-		)
+    lines = result.stdout.splitlines()
+    filtered = [
+        line for line in lines
+        if os.path.splitext(line)[1] in allowed_ext
+    ]
 
-		allowed_ext = {'.txt', '.lund', '.dat'}
+    with open(lund_files, 'w') as f:
+        f.write('\n'.join(filtered) + '\n')
 
-		lines = result.stdout.splitlines()
-		filtered = [
-			line for line in lines
-			if os.path.splitext(line)[1] in allowed_ext
-		]
-
-		with open(lund_files, 'w') as f:
-			f.write('\n'.join(filtered) + '\n')
-
-
-	else:
-		raise ValueError(
-			f"lund_location must contain /volatile/clas12/ "
-		)
-	return lund_files
+    return lund_files
 
 
 def count_files(lund_location):
-	"""
-	Use `pelican object ls` on `lund_location` and return
-	the number of entries ending in .txt, .lund, or .dat.
-	"""
-	result = subprocess.run(
-		["pelican", "object", "ls", lund_location],
-		stdout=subprocess.PIPE,
-		universal_newlines=True,  # Python 3.6-compatible way to get str output
-		check=True,
-	)
+    """
+    Use `pelican object ls` on the *OSDF* version of `lund_location`
+    and return the number of entries ending in .txt, .lund, or .dat.
+    """
+    lund_pelican_path = to_pelican_path(lund_location)
 
-	allowed_ext = {".txt", ".lund", ".dat"}
+    result = subprocess.run(
+        ["pelican", "object", "ls", lund_pelican_path],
+        stdout=subprocess.PIPE,
+        universal_newlines=True,  # Python 3.6-compatible way to get str output
+        check=True,
+    )
 
-	# Split lines, strip whitespace, drop empties
-	lines = [
-		line.strip()
-		for line in result.stdout.splitlines()
-		if line.strip()
-	]
+    allowed_ext = {".txt", ".lund", ".dat"}
 
-	# Keep only files with allowed extensions
-	filtered = [
-		line for line in lines
-		if os.path.splitext(line)[1] in allowed_ext
-	]
+    # Split lines, strip whitespace, drop empties
+    lines = [
+        line.strip()
+        for line in result.stdout.splitlines()
+        if line.strip()
+    ]
 
-	return len(filtered)
+    # Keep only files with allowed extensions
+    filtered = [
+        line for line in lines
+        if os.path.splitext(line)[1] in allowed_ext
+    ]
+
+    return len(filtered)
