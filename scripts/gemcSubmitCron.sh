@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Renew the token
+/home/gemc/sw/utilities/osg/bin/token-renew
 
 # Run the command and extract the total for query using grep and awk
 total=$(condor_q -totals | grep "Total for query:" | awk '{print $4}')
