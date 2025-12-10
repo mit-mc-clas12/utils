@@ -36,7 +36,7 @@ def json_data_update(sql, pattern, key, json_dict):
     if key == 0:
        pattern = 'Failed to submit'
     for row in sql:
-       if days_between(row[2]) > 4 :
+       if days_between(row[2]) > 30 :
          continue
        jstart = datetime.strptime(row[2], '%Y-%m-%d %H:%M:%S').strftime('%m/%d %H:%M')
        #print(jstart)
