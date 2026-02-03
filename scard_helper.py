@@ -119,7 +119,7 @@ class scard_class:
 		user_string_id = getattr(self, "string_id")
 
 		if output_type_id == "1":
-			self.output_type = 1
+			self.output_type = '1'
 
 		if vertex_choice == "0":
 			self.vertex_z_to_gemc = vertex_z_selection + ', reset '
