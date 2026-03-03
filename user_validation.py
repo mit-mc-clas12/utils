@@ -7,7 +7,8 @@
 #****************************************************************
 
 import sqlite3, time
-import utils, fs, argparse, socket, subprocess
+from . import fs
+import utils, argparse, socket, subprocess
 import datetime
 from subprocess import PIPE, Popen
 import os

@@ -9,7 +9,7 @@ for the client side live in client/update_tables.py.
 
 import datetime 
 
-import fs
+from . import fs
 import sqlite3
 import pymysql
 

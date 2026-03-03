@@ -7,8 +7,7 @@
 """
 # ****************************************************************
 
-from fs import scard_key  # if scard_key is what you use
-import fs
+from . import fs
 import utils
 
 

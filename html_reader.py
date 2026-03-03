@@ -4,7 +4,8 @@
 """
 #****************************************************************
 
-import utils, fs
+from . import fs
+import utils
 
 def html_reader(url_dir,data_identifier=["",]):
     # create a subclass and override the handler methods

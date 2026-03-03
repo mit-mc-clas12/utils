@@ -15,7 +15,7 @@ import datetime
 import logging
 import sys
 import calendar
-import fs
+from . import fs
 #import pymysql
 import sqlite3
 
