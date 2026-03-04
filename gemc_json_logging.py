@@ -16,9 +16,9 @@ from . import get_condor_q
 from . import get_args
 from . import fs
 from . import utils
-from database import (get_database_connection,
-                      load_database_credentials)
-from utils import gettime
+from .database import (get_database_connection,
+                       load_database_credentials)
+from .utils import gettime
 
 
 # calculate the time difference between the today and the submission date. 
