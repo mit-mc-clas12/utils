@@ -8,7 +8,7 @@
 # ****************************************************************
 
 from . import fs
-import utils
+from . import utils
 
 
 # TODO: separate the variables to be parsed from the one to be passed to gemc

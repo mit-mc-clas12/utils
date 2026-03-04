@@ -15,7 +15,7 @@ from datetime import datetime
 import get_condor_q
 import get_args
 import fs
-import utils
+from . import utils
 from database import (get_database_connection,
                       load_database_credentials)
 from utils import gettime

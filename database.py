@@ -234,7 +234,8 @@ def get_unsubmitted_jobs(sql):
     SELECT user_submission_id 
     FROM submissions
     WHERE run_status NOT LIKE '{0}'
-      AND run_status NOT LIKE '{1}';
+      AND run_status NOT LIKE '{1}'
+      AND priority > '0' ORDER BY CAST(priority AS UNSIGNED) ASC'
   """.format(
 	  "Submitted to%",
 	  "Submission scripts generated%"
