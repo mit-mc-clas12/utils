@@ -12,9 +12,9 @@ import classad
 from datetime import datetime
 
 # This project
-import get_condor_q
+from . import get_condor_q
 from . import get_args
-import fs
+from . import fs
 from . import utils
 from database import (get_database_connection,
                       load_database_credentials)
