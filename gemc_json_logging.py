@@ -13,7 +13,7 @@ from datetime import datetime
 
 # This project
 import get_condor_q
-import get_args
+from . import get_args
 import fs
 from . import utils
 from database import (get_database_connection,

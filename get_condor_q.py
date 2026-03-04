@@ -4,7 +4,7 @@ Logfile jsonification for monitoring.
 import htcondor
 import classad
 
-import get_args
+from . import get_args
 from . import utils
 
 def get_htcondor_q():
