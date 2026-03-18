@@ -23,53 +23,45 @@ def get_htcondor_q():
     held_jc = []
     submission_err_jc = []
 
-    """#HTCondor job status codes:
-    0 - unexpanded
-    1 - idle
-    2 - running
-    3 - removed
-    4 - completed
-    5 - held
-    6 - submission error
-    """
+    valid_job_stati = [0, 1, 2, 3, 4, 5, 6]
+    job_counting_set = [
+        unexpanded_jc, idle_jc, running_jc, removed_jc,
+        completed_jc, held_jc, submission_err_jc
+    ]
 
+    jobs = schedd.query(
+        constraint='Owner == "gemc"',
+        projection=["ClusterID", "JobStatus", "TotalSubmitProcs", "QDate"],
+    )
 
-    valid_job_stati = [0,1,2,3,4,5,6]
-    job_counting_set = [unexpanded_jc, idle_jc, running_jc, removed_jc, completed_jc, held_jc, submission_err_jc]
+    for job in jobs:
+        batch_id = str(job.get("ClusterID"))
+        job_status = int(job["JobStatus"])
 
-    for job in schedd.xquery(requirements = 'Owner =="gemc"'): #look through all jobs in condor with owner == gemc
-                batch_id = str(job.get("ClusterID")) #get cluster id (batch ID) and convert from Long to string. Can also turn to int if want.
-                job_status = int(job["JobStatus"]) #gets if the job is running (2) or idle (1)
-                
-                if job_status not in valid_job_stati: #Just error handling, should pipe to a central log
-                    print(("HTCondor returned an invalid job status of {0}, investigate more".format(job_status)))
-                else:
-                    if batch_id not in batch_ids:    
-                        utils.printer("found new batch: {0}".format(batch_id))
-                        total_jobs_for_batch = job.get("TotalSubmitProcs") #Get total number of jobs in batch submitted
-                        start_date_unix = job.get("QDate")  #Get submitted date
-                        batch_ids.append(batch_id)
-                        total_jobs_submitted.append(int(total_jobs_for_batch)) #convert from long to int
-                        jobs_start_dates.append(int(start_date_unix)) #convert from long to int
-                        total_jobs_running.append(1) #initialzie entry for manual job counting
-                        
+        if job_status not in valid_job_stati:
+            print(f"HTCondor returned an invalid job status of {job_status}, investigate more")
+            continue
 
-                        #initialize a new counter value in job counter arrays 
-                        job_counting_set[job_status].append(1)
-                        null_jc = [0,1,2,3,4,5,6]
-                        null_jc.remove(job_status)
-                        for jc in null_jc:  #set all other jc counter arrays to 0 
-                            job_counting_set[jc].append(0)
+        if batch_id not in batch_ids:
+            utils.printer(f"found new batch: {batch_id}")
+            total_jobs_for_batch = job.get("TotalSubmitProcs", 0)
+            start_date_unix = job.get("QDate", 0)
 
-                    else:
-                        total_jobs_running[batch_ids.index(batch_id)] += 1
-                        job_counting_set[job_status][batch_ids.index(batch_id)] += 1
+            batch_ids.append(batch_id)
+            total_jobs_submitted.append(int(total_jobs_for_batch))
+            jobs_start_dates.append(int(start_date_unix))
+            total_jobs_running.append(1)
 
-
-
+            job_counting_set[job_status].append(1)
+            for jc in [0, 1, 2, 3, 4, 5, 6]:
+                if jc != job_status:
+                    job_counting_set[jc].append(0)
+        else:
+            idx = batch_ids.index(batch_id)
+            total_jobs_running[idx] += 1
+            job_counting_set[job_status][idx] += 1
 
     condor_info = [batch_ids, total_jobs_submitted, total_jobs_running, jobs_start_dates, job_counting_set]
-
     return condor_info
 
 
