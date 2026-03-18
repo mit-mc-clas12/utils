@@ -2,7 +2,7 @@
 Logfile jsonification for monitoring.
 """
 import htcondor2
-import classad
+import classad2
 
 from . import get_args
 from . import utils

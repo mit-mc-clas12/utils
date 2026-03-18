@@ -8,7 +8,7 @@ import os
 import sys
 from collections import OrderedDict
 import htcondor2
-import classad
+import classad2
 from datetime import datetime
 
 # This project
