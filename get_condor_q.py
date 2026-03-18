@@ -8,7 +8,7 @@ from . import get_args
 from . import utils
 
 def get_htcondor_q():
-    schedd = htcondor.Schedd()
+    schedd = htcondor2.Schedd()
 
     batch_ids = []
     total_jobs_submitted = []
