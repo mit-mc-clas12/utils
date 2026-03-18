@@ -1,7 +1,7 @@
 """
 Logfile jsonification for monitoring.
 """
-import htcondor
+import htcondor2
 import classad
 
 from . import get_args

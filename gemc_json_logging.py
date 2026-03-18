@@ -7,7 +7,7 @@ import json
 import os
 import sys
 from collections import OrderedDict
-import htcondor
+import htcondor2
 import classad
 from datetime import datetime
 
